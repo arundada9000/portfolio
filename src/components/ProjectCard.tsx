@@ -9,7 +9,7 @@ export function ProjectCard({ project }: { project: Project }) {
   const hasCase = !!project.caseStudy;
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-lg border border-line bg-panel transition-all duration-300 hover:-translate-y-1.5 hover:border-amber/50 hover:shadow-[0_20px_60px_-20px_rgba(255,180,84,0.25)]">
+    <article className="group flex h-full flex-col overflow-hidden rounded-lg border border-line bg-panel transition-all duration-300 hover:-translate-y-1.5 hover:border-amber/50 hover:shadow-[0_4px_16px_-6px_rgba(255,180,84,0.25)]">
       {hasCase ? (
         <Link href={`/work/${project.slug}`} aria-label={`Read the ${project.title} case study`} className="block">
           <ProjectVisual slug={project.slug} title={project.title} terminal={project.terminal} image={cover} />

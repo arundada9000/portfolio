@@ -67,7 +67,7 @@ export function Hero() {
         </motion.div>
 
         {/* the name - masked line reveal */}
-        <h1 className="text-display mt-6 text-[clamp(3.5rem,13vw,11rem)] uppercase">
+        <h1 className="text-display mt-6 text-[clamp(3rem,10vw,6rem)] uppercase">
           <MaskLine delay={0.15}>Arun</MaskLine>
           <MaskLine delay={0.28} className="text-amber">Neupane</MaskLine>
         </h1>

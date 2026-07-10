@@ -142,6 +142,7 @@ body {
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 0.95;
+  text-wrap: balance;
 }
 
 .text-eyebrow {
