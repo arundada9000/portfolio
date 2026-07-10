@@ -1,4 +1,5 @@
 export const site = {
+  deployed: "2026-07-10 13:49 NPT",
   name: "Arun Neupane",
   alias: "arundada9000",
   role: "Frontend Developer",
