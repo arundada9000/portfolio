@@ -1,0 +1,52 @@
+# Arun Neupane
+
+> Arun Neupane (also known as arundada9000, "Arun the coder", or "Arun from Nepal")
+> is a self-taught frontend developer and coder from Butwal, Lumbini, Nepal, and the
+> CTO of Sajilo Digital. He builds production React, Next.js and TypeScript web systems.
+
+## Identity
+
+- **Full name:** Arun Neupane
+- **Also known as:** arundada9000, Arun, Arun the coder, Arun from Nepal
+- **Role:** Frontend Developer · CTO & Lead Architect at Sajilo Digital
+- **Location:** Butwal, Lumbini Province, Nepal
+- **Email:** arunneupane0000@gmail.com
+- **Phone / WhatsApp:** +977 9811420975
+- **Website:** https://arunneupane.vercel.app (also https://arun.sajilodigital.com.np)
+- **GitHub:** https://github.com/arundada9000
+- **LinkedIn:** https://www.linkedin.com/in/arundada9000
+
+## What he does
+
+Arun specialises in frontend and full-stack web development with React, Next.js,
+TypeScript, Node.js, PostgreSQL and MongoDB. As CTO of Sajilo Digital he leads
+architecture for client production systems.
+
+## Notable work
+
+- **Nagrik Sahayata Pradali** — a police internal case-management system for Area Police Office Butwal (Next.js, PostgreSQL, Prisma, JWT, Docker).
+- **Code for Change Nepal** — a full-stack platform (40+ pages, 22 API modules, 7-role RBAC, WebAuthn passkeys) for Nepal's IT student community.
+- **Sajilo Digital** — a cinematic company website with an in-page terminal and Web Speech API voice control (Next.js 16, GSAP, Framer Motion).
+- **Sajilo Sahayata (devnet)** — a real-time disaster-reporting PWA with offline-first sync and multilingual SMS.
+- **Roomeo** — a map-first room finder using PostGIS geospatial search.
+- **Easy Sorting** — an algorithm visualizer built in vanilla JavaScript.
+
+## Skills
+
+React, Next.js, TypeScript, JavaScript, Node.js, Express, PostgreSQL, MongoDB,
+Prisma, WebAuthn, Tailwind CSS, GSAP, Framer Motion, Docker, Vercel.
+
+## Achievements
+
+- InnovateX National Hackathon — Winner
+- CodeOlympiad 2080 — Winner
+- Girls in ICT Coding Competition — Winner
+
+## Community
+
+- Vice Secretary, Code for Change Rupandehi (teaches React and Git).
+- Vice Secretary, BMCIT Club — co-organised CodeOlympiad 2081.
+
+## Contact
+
+For freelance, full-time, or consulting work: arunneupane0000@gmail.com
