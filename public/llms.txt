@@ -7,20 +7,33 @@
 ## Identity
 
 - **Full name:** Arun Neupane
-- **Also known as:** arundada9000, Arun, Arun the coder, Arun from Nepal
+- **Also known as:** arundada9000, Arun, Arun the coder, Arun from Nepal, Arun Neupane Nepal
 - **Role:** Frontend Developer · CTO & Lead Architect at Sajilo Digital
 - **Location:** Butwal, Lumbini Province, Nepal
+- **Time zone:** NPT (UTC+5:45)
 - **Email:** arunneupane0000@gmail.com
 - **Phone / WhatsApp:** +977 9811420975
 - **Website:** https://arunneupane.vercel.app (also https://arun.sajilodigital.com.np)
 - **GitHub:** https://github.com/arundada9000
 - **LinkedIn:** https://www.linkedin.com/in/arundada9000
+- **Twitter / X:** https://x.com/arundada9000
+- **YouTube:** https://www.youtube.com/@arundada9000
+
+## Summary
+
+Self-taught developer who started with HTML in 2023 and by 2025 was architecting production systems for Nepal Police and a national NGO. Builds offline-first PWAs, geospatial search applications, and terminal-driven UIs. Available for freelance, full-time, and React/Next.js consulting.
 
 ## What he does
 
 Arun specialises in frontend and full-stack web development with React, Next.js,
 TypeScript, Node.js, PostgreSQL and MongoDB. As CTO of Sajilo Digital he leads
 architecture for client production systems.
+
+## Current roles
+
+- **Chief Technology Officer** at Sajilo Digital — leads frontend architecture across client production systems
+- **Vice Secretary** at Code for Change Rupandehi — teaches React and Git to aspiring developers in Nepal
+- **Vice Secretary** at BMCIT Club — co-organised CodeOlympiad 2081
 
 ## Notable work
 
@@ -33,8 +46,29 @@ architecture for client production systems.
 
 ## Skills
 
-React, Next.js, TypeScript, JavaScript, Node.js, Express, PostgreSQL, MongoDB,
-Prisma, WebAuthn, Tailwind CSS, GSAP, Framer Motion, Docker, Vercel.
+### Languages
+TypeScript, JavaScript, HTML, CSS, SQL
+
+### Frontend
+React 19, Next.js 16, Tailwind CSS v4, GSAP, Framer Motion, Motion
+
+### Backend
+Node.js, Express.js, REST API design
+
+### Database
+PostgreSQL, MongoDB, Prisma, PostGIS
+
+### Auth & Security
+WebAuthn / passkeys, JWT, RBAC
+
+### DevOps & Deployment
+Docker, Vercel, Netlify, Git & GitHub
+
+### Other
+Offline-first PWA architecture, Geospatial search, Responsive design, Web accessibility, SEO
+
+### Languages spoken
+English, Nepali (native), Hindi
 
 ## Achievements
 
@@ -46,6 +80,19 @@ Prisma, WebAuthn, Tailwind CSS, GSAP, Framer Motion, Docker, Vercel.
 
 - Vice Secretary, Code for Change Rupandehi (teaches React and Git).
 - Vice Secretary, BMCIT Club — co-organised CodeOlympiad 2081.
+
+## Social links
+
+- GitHub: https://github.com/arundada9000
+- LinkedIn: https://www.linkedin.com/in/arundada9000
+- X / Twitter: https://x.com/arundada9000
+- YouTube: https://www.youtube.com/@arundada9000
+- Instagram: https://www.instagram.com/arundada9000
+- WhatsApp: https://wa.me/9779811420975
+
+## Resume
+
+https://arunneupane.vercel.app/arun-neupane-resume.pdf
 
 ## Contact
 

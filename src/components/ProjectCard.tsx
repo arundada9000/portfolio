@@ -58,11 +58,11 @@ export function ProjectCard({ project }: { project: Project }) {
               read case study →
             </Link>
           )}
-          <a href={project.github} target="_blank" rel="noreferrer" className="link-underline ml-auto text-dust">
+          <a href={project.github} target="_blank" rel="noopener noreferrer" className="link-underline ml-auto text-dust">
             github
           </a>
           {project.live && (
-            <a href={project.live} target="_blank" rel="noreferrer" className="link-underline text-dust">
+            <a href={project.live} target="_blank" rel="noopener noreferrer" className="link-underline text-dust">
               live ↗
             </a>
           )}

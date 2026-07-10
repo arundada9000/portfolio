@@ -39,7 +39,7 @@ export function ExperienceTimeline() {
                 {item.role}
                 <span className="text-dust"> · </span>
                 {item.url ? (
-                  <a href={item.url} target="_blank" rel="noreferrer" className="text-amber transition-opacity hover:opacity-80">
+                  <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-amber transition-opacity hover:opacity-80">
                     {item.org}
                   </a>
                 ) : (

@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const project = getProject(slug);
   if (!project) return {};
   return {
-    title: `${project.title} - Case Study`,
+    title: `${project.title} - Case Study by ${site.name}`,
     description: project.summary,
     alternates: { canonical: `/work/${project.slug}` },
     openGraph: {
@@ -28,7 +28,17 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
       description: project.summary,
       url: `${site.url}/work/${project.slug}`,
       type: "article",
+      publishedTime: "2025-01-01T00:00:00Z",
+      modifiedTime: new Date().toISOString(),
+      tags: project.tech,
+      images: [{ url: `${site.url}/opengraph-image`, width: 1200, height: 630 }],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: `${project.title} - ${site.name}`,
+      description: project.summary,
+    },
+    keywords: [...project.tech, project.title, site.name, "case study", "portfolio", "frontend project"],
   };
 }
 
@@ -38,8 +48,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
   if (!project?.caseStudy) notFound();
   const cs = project.caseStudy;
 
-  const jsonLd = {
-    "@context": "https://schema.org",
+  const softwareJsonLd = {
     "@type": "SoftwareSourceCode",
     name: project.title,
     description: project.summary,
@@ -48,6 +57,17 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
     author: { "@type": "Person", name: site.name, url: site.url },
     ...(project.live ? { url: project.live } : {}),
   };
+
+  const breadcrumbJsonLd = {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: site.url },
+      { "@type": "ListItem", position: 2, name: "Work", item: `${site.url}/#work` },
+      { "@type": "ListItem", position: 3, name: project.title, item: `${site.url}/work/${project.slug}` },
+    ],
+  };
+
+  const jsonLd = { "@context": "https://schema.org", "@graph": [softwareJsonLd, breadcrumbJsonLd] };
 
   return (
     <main data-section={project.slug} className="mx-auto max-w-4xl px-4 pt-28 pb-24 sm:px-6">
@@ -66,11 +86,11 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
 
       <div className="mt-6 flex flex-wrap items-center gap-4 font-mono text-sm">
         <span className="text-dust">{project.year}</span>
-        <a href={project.github} target="_blank" rel="noreferrer" className="border border-line px-4 py-2 text-fog transition-colors hover:border-amber hover:text-amber">
+        <a href={project.github} target="_blank" rel="noopener noreferrer" className="border border-line px-4 py-2 text-fog transition-colors hover:border-amber hover:text-amber">
           github ↗
         </a>
         {project.live && (
-          <a href={project.live} target="_blank" rel="noreferrer" className="bg-amber px-4 py-2 font-bold text-night transition-colors hover:bg-ember">
+          <a href={project.live} target="_blank" rel="noopener noreferrer" className="bg-amber px-4 py-2 font-bold text-night transition-colors hover:bg-ember">
             live demo ↗
           </a>
         )}

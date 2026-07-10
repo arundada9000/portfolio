@@ -31,11 +31,11 @@ export function Projects() {
               </div>
               <p className="mt-2 text-sm text-dust">{project.summary}</p>
               <div className="mt-4 flex gap-3 font-mono text-xs">
-                <a href={project.github} target="_blank" rel="noreferrer" className="link-underline text-dust">
+                <a href={project.github} target="_blank" rel="noopener noreferrer" className="link-underline text-dust">
                   github
                 </a>
                 {project.live && (
-                  <a href={project.live} target="_blank" rel="noreferrer" className="link-underline text-dust">
+                  <a href={project.live} target="_blank" rel="noopener noreferrer" className="link-underline text-dust">
                     live
                   </a>
                 )}

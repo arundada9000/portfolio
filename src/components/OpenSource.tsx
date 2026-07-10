@@ -51,7 +51,7 @@ export function OpenSource() {
       <div className="mt-8 grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2">
         {contributions.map((c, i) => (
           <Reveal key={c.name} delay={i * 0.06}>
-            <a href={c.href} target="_blank" rel="noreferrer" className="group block h-full bg-panel p-6 transition-colors hover:bg-night">
+            <a href={c.href} target="_blank" rel="noopener noreferrer" className="group block h-full bg-panel p-6 transition-colors hover:bg-night">
               <h3 className="font-mono text-sm font-bold text-fog group-hover:text-amber">
                 {site.alias}/{c.name} ↗
               </h3>
@@ -65,7 +65,7 @@ export function OpenSource() {
         <a
           href={`https://github.com/${site.alias}`}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           className="inline-block border border-amber/60 px-6 py-3 font-mono text-sm text-amber transition-colors hover:bg-amber hover:text-night"
         >
           view github profile ↗

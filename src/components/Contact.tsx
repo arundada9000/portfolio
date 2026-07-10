@@ -83,7 +83,7 @@ export function Contact() {
             <a
               href={`https://wa.me/${site.whatsapp}?text=Hi%20Arun%2C%20I%20saw%20your%20portfolio`}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 border border-line px-4 py-2.5 font-mono text-sm text-fog transition-colors hover:border-amber hover:text-amber"
             >
               <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden="true">
@@ -94,7 +94,7 @@ export function Contact() {
             <a
               href={site.linkedin}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 border border-line px-4 py-2.5 font-mono text-sm text-fog transition-colors hover:border-amber hover:text-amber"
             >
               <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden="true">

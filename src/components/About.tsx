@@ -18,7 +18,7 @@ export function About() {
             </p>
             <p>
               Today I&apos;m <span className="text-fog">{site.company.role}</span> at{" "}
-              <a href={site.company.url} target="_blank" rel="noreferrer" className="link-underline text-fog">
+              <a href={site.company.url} target="_blank" rel="noopener noreferrer" className="link-underline text-fog">
                 {site.company.name}
               </a>
               , where I lead frontend architecture across client production systems, and Vice

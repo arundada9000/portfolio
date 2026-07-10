@@ -10,7 +10,7 @@ export function Footer() {
         <ul className="flex gap-4">
           {site.socials.map((s) => (
             <li key={s.label}>
-              <a href={s.href} target="_blank" rel="noreferrer" className="transition-colors hover:text-amber">
+              <a href={s.href} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-amber">
                 {s.label.toLowerCase()}
               </a>
             </li>

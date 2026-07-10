@@ -80,7 +80,7 @@ export function Hero() {
         <motion.p {...fade(0.82)} className="mt-6 max-w-xl text-lg leading-relaxed text-dust">
           I build production web systems from Nepal - disaster-response platforms, map-first
           apps, and terminal-driven company sites. Currently CTO at{" "}
-          <a href={site.company.url} className="link-underline text-fog" target="_blank" rel="noreferrer">
+          <a href={site.company.url} className="link-underline text-fog" target="_blank" rel="noopener noreferrer">
             Sajilo Digital
           </a>
           . {site.tagline}
@@ -114,7 +114,7 @@ export function Hero() {
         <motion.ul {...fade(1.02)} className="mt-10 flex flex-wrap gap-5 font-mono text-sm">
           {site.socials.map((s) => (
             <li key={s.label}>
-              <a href={s.href} target="_blank" rel="noreferrer" className="text-dust transition-colors hover:text-amber">
+              <a href={s.href} target="_blank" rel="noopener noreferrer" className="text-dust transition-colors hover:text-amber">
                 {s.label.toLowerCase()} ↗
               </a>
             </li>

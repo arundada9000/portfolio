@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import { site } from "@/lib/data/site";
+import { skillCategories } from "@/lib/data/skills";
 import { Nav } from "@/components/Nav";
 import { StatusLine } from "@/components/StatusLine";
 import { Footer } from "@/components/Footer";
@@ -34,6 +35,8 @@ const jetbrains = JetBrains_Mono({
 const IDENTITY_DESC =
   "Arun Neupane - also known as arundada9000 - is a self-taught frontend developer and coder from Butwal, Lumbini, Nepal, and CTO at Sajilo Digital. Arun builds production React, Next.js and TypeScript systems: a police case-management system, the Code for Change Nepal platform, and disaster-response apps.";
 
+const IDENTITY_DESC_SHORT = "Arun Neupane (arundada9000): self-taught frontend developer from Nepal. CTO at Sajilo Digital. React, Next.js, TypeScript.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   applicationName: `${site.name} - Portfolio`,
@@ -57,6 +60,15 @@ export const metadata: Metadata = {
     "Next.js developer",
     "TypeScript developer Butwal",
     "Sajilo Digital CTO",
+    "Nepali frontend developer",
+    "React Nepal",
+    "Next.js Nepal portfolio",
+    "hire frontend developer Nepal",
+    "freelance React developer Nepal",
+    "web developer Butwal",
+    "Sajilo Sahayata disaster app",
+    "Roomeo room finder",
+    "Code for Change Nepal",
   ],
   authors: [{ name: site.name, url: site.url }],
   creator: site.name,
@@ -73,11 +85,17 @@ export const metadata: Metadata = {
     firstName: "Arun",
     lastName: "Neupane",
     username: site.alias,
+    images: [{ url: `${site.url}/opengraph-image`, width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${site.name} - Frontend Developer & Coder from Nepal`,
-    description: "Arun Neupane (arundada9000): production React & Next.js systems from Nepal. CTO at Sajilo Digital.",
+    description: IDENTITY_DESC_SHORT,
+    images: [`${site.url}/opengraph-image`],
+  },
+  other: {
+    "theme-color": "#0a0e15",
+    "color-scheme": "dark",
   },
   robots: {
     index: true,
@@ -102,22 +120,36 @@ const entityGraph = {
       name: site.name,
       givenName: "Arun",
       familyName: "Neupane",
-      alternateName: ["Arun", "arundada9000", "Arun Neupane Nepal", "Arun the coder"],
+      alternateName: ["Arun", "arundada9000", "Arun Neupane Nepal", "Arun the coder", "Arun from Nepal"],
       description: IDENTITY_DESC,
       url: site.url,
       mainEntityOfPage: site.url,
       image: `${site.url}/images/arun.png`,
       email: `mailto:${site.email}`,
       telephone: site.phone,
-      jobTitle: ["Frontend Developer", "CTO", "Full-Stack Engineer"],
-      hasOccupation: {
-        "@type": "Occupation",
-        name: "Frontend Developer",
-        occupationalCategory: "15-1254.00 Web Developers",
-        skills: "React, Next.js, TypeScript, Node.js, PostgreSQL, WebAuthn",
-      },
+      gender: "Male",
+      birthPlace: { "@type": "Place", address: { "@type": "PostalAddress", addressLocality: "Butwal", addressRegion: "Lumbini", addressCountry: "NP" } },
+      jobTitle: ["Frontend Developer", "CTO", "Lead Architect", "Full-Stack Engineer"],
+      hasOccupation: [
+        {
+          "@type": "Occupation",
+          name: "Frontend Developer",
+          occupationalCategory: "15-1254.00 Web Developers",
+          skills: "React, Next.js, TypeScript, Node.js, PostgreSQL, WebAuthn",
+        },
+        {
+          "@type": "Occupation",
+          name: "Chief Technology Officer",
+          occupationalCategory: "11-9041.00",
+          skills: "Technical architecture, team leadership, full-stack development",
+        },
+      ],
       worksFor: { "@id": ORG_ID },
-      alumniOf: { "@type": "CollegeOrUniversity", name: "Bhairahawa Multiple Campus" },
+      memberOf: [
+        { "@type": "Organization", name: "Code for Change Rupandehi", url: "https://github.com/arundada9000/Code-for-Change" },
+        { "@type": "Organization", name: "BMCIT Club" },
+      ],
+      alumniOf: { "@type": "CollegeOrUniversity", name: "Bhairahawa Multiple Campus", url: "https://bmc.tu.edu.np" },
       nationality: { "@type": "Country", name: "Nepal" },
       homeLocation: {
         "@type": "Place",
@@ -132,7 +164,10 @@ const entityGraph = {
       knowsAbout: [
         "React", "Next.js", "TypeScript", "JavaScript", "Node.js", "Express.js",
         "PostgreSQL", "MongoDB", "Prisma", "WebAuthn", "Tailwind CSS", "GSAP",
-        "Framer Motion", "Frontend development", "Full-stack web development",
+        "Framer Motion", "Motion", "Frontend development", "Full-stack web development",
+        "Offline-first PWA", "Geospatial search", "PostGIS", "REST API design",
+        "Git & GitHub", "Docker", "Vercel", "Netlify", "Responsive design",
+        "Web accessibility", "SEO", "Technical teaching",
       ],
       award: [
         "InnovateX National Hackathon - Winner",
@@ -149,7 +184,11 @@ const entityGraph = {
       "@id": ORG_ID,
       name: site.company.name,
       url: site.company.url,
+      description: "IT company based in Nepal delivering production web systems: case management, WebAuthn biometric authentication, terminal-driven websites.",
+      founder: { "@id": PERSON_ID },
       employee: { "@id": PERSON_ID },
+      foundingDate: "2025",
+      address: { "@type": "PostalAddress", addressLocality: "Butwal", addressRegion: "Lumbini", addressCountry: "NP" },
     },
     {
       "@type": "WebSite",
@@ -169,6 +208,22 @@ const entityGraph = {
       about: { "@id": PERSON_ID },
       mainEntity: { "@id": PERSON_ID },
       dateModified: new Date().toISOString(),
+    },
+    {
+      "@type": "ItemList",
+      "@id": `${site.url}/#skills`,
+      url: `${site.url}/#skills`,
+      name: "Skills & Technologies",
+      description: "A comprehensive list of Arun Neupane's technical skills and technologies.",
+      numberOfItems: skillCategories.reduce((acc, cat) => acc + cat.skills.length, 0),
+      itemListElement: skillCategories.flatMap((category, ci) =>
+        category.skills.map((skill, si) => ({
+          "@type": "ListItem",
+          position: ci * 100 + si + 1,
+          name: skill,
+          description: `${skill} - ${category.label}`,
+        })),
+      ),
     },
     {
       "@type": "FAQPage",
@@ -204,6 +259,38 @@ const entityGraph = {
           acceptedAnswer: {
             "@type": "Answer",
             text: `You can reach Arun by email at ${site.email}, on WhatsApp at ${site.phone}, or via his portfolio at ${site.url}.`,
+          },
+        },
+        {
+          "@type": "Question",
+          name: "What projects has Arun Neupane built?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Arun built Sajilo Sahayata (disaster reporting PWA with offline sync), Roomeo (PostGIS-powered room finder), Sajilo Digital (terminal-driven company site), a police case-management system for Nepal Police, Easy Sorting (algorithm visualizer), and the Code for Change Nepal platform.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "Is Arun Neupane available for hire?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Yes, Arun is open to freelance projects, full-time roles, and React/Next.js consulting. He can be reached at arunneupane0000@gmail.com.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "What technologies does Arun Neupane use?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "Arun works with React 19, Next.js 16, TypeScript, Tailwind CSS v4, Node.js, Express, PostgreSQL, MongoDB, Prisma, WebAuthn, GSAP, Framer Motion, and Leaflet/PostGIS.",
+          },
+        },
+        {
+          "@type": "Question",
+          name: "What is arundada9000?",
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: "arundada9000 is the GitHub username and online alias of Arun Neupane, a frontend developer from Nepal.",
           },
         },
       ],

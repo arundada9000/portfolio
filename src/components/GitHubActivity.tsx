@@ -147,7 +147,7 @@ export function GitHubActivity() {
                 <a
                   href={repo.html_url}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
                   className="group flex h-full flex-col p-5 transition-colors hover:bg-night"
                 >
                   <div className="flex items-start justify-between gap-2">
@@ -168,7 +168,7 @@ export function GitHubActivity() {
           <a
             href={site.github}
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="mt-8 inline-block border border-line px-6 py-3 font-mono text-sm text-fog transition-colors hover:border-amber hover:text-amber"
           >
             see all {state.totalRepos} repos ↗
