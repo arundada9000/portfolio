@@ -50,11 +50,11 @@ export const projects: Project[] = [
       problem:
         "When a flood or landslide hits rural Nepal, reports reach local government through phone calls and hearsay. Responders lose the first critical hours confirming where the incident actually is, how severe it is, and who has already responded.",
       context:
-        "Citizens on cheap Android phones with intermittent connectivity; ward-level officials with little technical training; nine local languages in one district. The platform had to work for both sides — a panicked citizen and an overloaded admin — at the same time.",
+        "Citizens on cheap Android phones with intermittent connectivity; ward-level officials with little technical training; nine local languages in one district. The platform had to work for both sides - a panicked citizen and an overloaded admin - at the same time.",
       constraints: [
-        "Reports must survive zero connectivity — offline queue with auto-sync when the network returns.",
+        "Reports must survive zero connectivity - offline queue with auto-sync when the network returns.",
         "No-data fallback: emergencies can be submitted over plain SMS via Twilio, and admins can reply two-way.",
-        "Multilingual by default — nine languages including Nepali, Hindi and Maithili, with AI-assisted translation via Google Gemini.",
+        "Multilingual by default - nine languages including Nepali, Hindi and Maithili, with AI-assisted translation via Google Gemini.",
         "Location must be captured automatically; asking a distressed user to type an address is a failure mode.",
       ],
       architecture: [
@@ -70,7 +70,7 @@ export const projects: Project[] = [
       decisions: [
         {
           title: "Offline-first, not offline-tolerant",
-          body: "The report form writes to a local queue first and treats the network as an enhancement. Zustand holds the queue, and a sync worker drains it when connectivity returns — so the UX is identical online and offline.",
+          body: "The report form writes to a local queue first and treats the network as an enhancement. Zustand holds the queue, and a sync worker drains it when connectivity returns - so the UX is identical online and offline.",
         },
         {
           title: "SMS as a first-class transport",
@@ -94,7 +94,7 @@ export const projects: Project[] = [
     title: "Sajilo Digital",
     year: "2025",
     summary:
-      "Company website for the IT firm where I'm CTO — a cinematic, terminal-driven site built as an exploration of what a 2026 company site can be.",
+      "Company website for the IT firm where I'm CTO - a cinematic, terminal-driven site built as an exploration of what a 2026 company site can be.",
     outcome:
       "Radical transparency as a sales tool: live development telemetry, system diagnostics, and a global command terminal instead of a static brochure.",
     tech: ["Next.js 16", "React 19", "TypeScript", "Tailwind v4", "GSAP", "Framer Motion", "pnpm"],
@@ -110,11 +110,11 @@ export const projects: Project[] = [
     ],
     caseStudy: {
       problem:
-        "Every IT company site in the region looks the same: stock hero, three service cards, a contact form. For a firm selling technical excellence, the site itself is the portfolio — it had to prove capability instead of claiming it.",
+        "Every IT company site in the region looks the same: stock hero, three service cards, a contact form. For a firm selling technical excellence, the site itself is the portfolio - it had to prove capability instead of claiming it.",
       context:
         "I led architecture and frontend as CTO. The site doubles as our engineering showcase for clients who can't read code but can feel quality.",
       constraints: [
-        "Cinematic animation without wrecking performance — GSAP timelines are orchestrated and lazy-mounted per section.",
+        "Cinematic animation without wrecking performance - GSAP timelines are orchestrated and lazy-mounted per section.",
         "A real command terminal for navigation that never blocks normal point-and-click users.",
         "Modular, strictly-typed codebase the rest of the team can extend without touching animation internals.",
       ],
@@ -147,7 +147,7 @@ export const projects: Project[] = [
     title: "Roomeo",
     year: "2026",
     summary:
-      "Map-first room and flat finder — real-time availability, smart filters, and location-based exploration for renters in Nepal.",
+      "Map-first room and flat finder - real-time availability, smart filters, and location-based exploration for renters in Nepal.",
     outcome:
       "Replaces Facebook-group room hunting with a map you can actually search: PostGIS-backed 'near me' queries and landlord tooling in one app.",
     tech: ["Next.js 16", "TypeScript", "PostgreSQL", "PostGIS", "Prisma 7", "Leaflet", "Better Auth", "Zustand", "TanStack Query", "shadcn/ui"],
@@ -159,15 +159,15 @@ export const projects: Project[] = [
       "$ roomeo search --near butwal --max 12000",
       "  querying PostGIS… 23 units in radius",
       "  filters: attached bath, wifi, 2 rooms",
-      "✓ 6 matches — opening map view",
+      "✓ 6 matches - opening map view",
     ],
     caseStudy: {
       problem:
         "Room hunting in Nepali cities happens in Facebook groups and word of mouth: no map, no filters, no way to know if a listing is still available. Renters waste days calling numbers on expired posts.",
       context:
-        "Three user roles with different jobs: renters exploring by location, landlords managing properties and units, and admins moderating listings. The map is the product — everything else supports it.",
+        "Three user roles with different jobs: renters exploring by location, landlords managing properties and units, and admins moderating listings. The map is the product - everything else supports it.",
       constraints: [
-        "Location queries had to be real geography, not bounding-box hacks — PostgreSQL + PostGIS from day one.",
+        "Location queries had to be real geography, not bounding-box hacks - PostgreSQL + PostGIS from day one.",
         "Strict TypeScript end to end: Prisma schema as the single source of truth for types.",
         "Mobile-first: the map with a bottom-sheet list mirrors how people actually browse on phones.",
       ],
@@ -200,7 +200,7 @@ export const projects: Project[] = [
     title: "Easy Sorting",
     year: "2024",
     summary:
-      "Sorting algorithms visualized step by step — built from scratch in vanilla HTML, CSS, and JavaScript, no libraries.",
+      "Sorting algorithms visualized step by step - built from scratch in vanilla HTML, CSS, and JavaScript, no libraries.",
     outcome:
       "Turns textbook pseudocode into something you can watch: fellow CSIT students use it to see what bubble sort actually does before an exam.",
     tech: ["JavaScript", "HTML", "CSS"],
@@ -213,15 +213,15 @@ export const projects: Project[] = [
       "$ sort visualize --algo bubble --n 40",
       "  comparing a[3] ⇄ a[4]… swap",
       "  pass 2/39 complete",
-      "✓ sorted in 780 steps — replay?",
+      "✓ sorted in 780 steps - replay?",
     ],
     caseStudy: {
       problem:
-        "Data-structures courses teach sorting as pseudocode on a slide. Most students memorize the steps without ever seeing the array move — and it shows in exams and interviews.",
+        "Data-structures courses teach sorting as pseudocode on a slide. Most students memorize the steps without ever seeing the array move - and it shows in exams and interviews.",
       context:
         "Built during my BSc CSIT while studying DSA myself. The goal was a tool I would have wanted: pick an algorithm, watch every comparison and swap, control the speed.",
       constraints: [
-        "Zero dependencies — every animation frame, timer, and state transition written by hand in vanilla JS.",
+        "Zero dependencies - every animation frame, timer, and state transition written by hand in vanilla JS.",
         "Step-accurate visualization: the animation must reflect the real algorithm, not a look-alike.",
         "Runs smoothly on the low-end laptops most students actually have.",
       ],
@@ -234,7 +234,7 @@ export const projects: Project[] = [
       decisions: [
         {
           title: "Algorithms emit steps, the renderer replays them",
-          body: "Each sort runs to completion producing a step log, and the visualizer plays it back. That separation made every new algorithm a pure function — no animation code inside the sort.",
+          body: "Each sort runs to completion producing a step log, and the visualizer plays it back. That separation made every new algorithm a pure function - no animation code inside the sort.",
         },
       ],
       results: [
@@ -244,7 +244,7 @@ export const projects: Project[] = [
       ],
     },
   },
-  // ——— more projects (grid, no case study) ———
+  // --- more projects (grid, no case study) ---
   {
     slug: "color-picker",
     title: "Color Picker",
@@ -274,7 +274,7 @@ export const projects: Project[] = [
     slug: "qr-toolkit",
     title: "QR Creator & Scanner",
     year: "2024",
-    summary: "Create, scan, and save QR codes — fully client-side, nothing leaves the browser.",
+    summary: "Create, scan, and save QR codes - fully client-side, nothing leaves the browser.",
     outcome: "Privacy-friendly QR tooling with zero backend.",
     tech: ["JavaScript", "HTML", "CSS"],
     github: "https://github.com/arundada9000/Qr-code-scanner-and-generator",
@@ -324,7 +324,7 @@ export const projects: Project[] = [
     slug: "cr7-tribute",
     title: "CR7 Tribute",
     year: "2024",
-    summary: "A Cristiano Ronaldo tribute site — my most-starred repo, naturally.",
+    summary: "A Cristiano Ronaldo tribute site - my most-starred repo, naturally.",
     outcome: "Proof that passion projects travel furthest.",
     tech: ["JavaScript", "HTML", "CSS"],
     github: "https://github.com/arundada9000/Cr7",

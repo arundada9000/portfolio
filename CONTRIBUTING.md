@@ -1,6 +1,6 @@
 # Contributing
 
-Thank you for your interest in **Arun Neupane's Portfolio**. This is a personal project — my frontend development showcase, not a community library.
+Thank you for your interest in **Arun Neupane's Portfolio**. This is a personal project - my frontend development showcase, not a community library.
 
 ## I'm not accepting pull requests
 

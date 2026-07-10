@@ -19,10 +19,10 @@ export function Contact() {
     const form = e.currentTarget;
 
     if (!WEB3FORMS_KEY) {
-      // no key configured — fall back to a prefilled email
+      // no key configured - fall back to a prefilled email
       const data = new FormData(form);
       const subject = encodeURIComponent(`Portfolio inquiry from ${data.get("name")}`);
-      const body = encodeURIComponent(`${data.get("message")}\n\n— ${data.get("name")} <${data.get("email")}>`);
+      const body = encodeURIComponent(`${data.get("message")}\n\n- ${data.get("name")} <${data.get("email")}>`);
       window.location.href = `mailto:${site.email}?subject=${subject}&body=${body}`;
       return;
     }
@@ -70,7 +70,7 @@ export function Contact() {
             </div>
             <div className="flex gap-3">
               <dt className="text-amber">timezone:</dt>
-              <dd>NPT (UTC+5:45) — see statusline below</dd>
+              <dd>NPT (UTC+5:45) - see statusline below</dd>
             </div>
             <div className="flex gap-3">
               <dt className="text-amber">phone:</dt>
@@ -78,7 +78,7 @@ export function Contact() {
             </div>
           </dl>
 
-          {/* quick channels — one tap to a real conversation */}
+          {/* quick channels - one tap to a real conversation */}
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href={`https://wa.me/${site.whatsapp}?text=Hi%20Arun%2C%20I%20saw%20your%20portfolio`}
@@ -133,10 +133,10 @@ export function Contact() {
               {status === "sending" ? "sending…" : "send message ↵"}
             </button>
             <p role="status" className="min-h-5 font-mono text-sm">
-              {status === "sent" && <span className="text-amber">✓ message sent — talk soon.</span>}
+              {status === "sent" && <span className="text-amber">✓ message sent - talk soon.</span>}
               {status === "error" && (
                 <span className="text-ember">
-                  ✗ something broke — email me directly at {site.email}
+                  ✗ something broke - email me directly at {site.email}
                 </span>
               )}
             </p>

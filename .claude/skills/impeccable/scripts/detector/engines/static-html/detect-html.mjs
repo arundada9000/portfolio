@@ -226,7 +226,7 @@ async function detectHtml(filePath, options = {}) {
 
   const byProvider = filterByProviders(findings, options.providers);
   // Static-HTML findings carry no line number, so only whole-file
-  // `impeccable-disable` directives apply here — exactly the standalone-document
+  // `impeccable-disable` directives apply here - exactly the standalone-document
   // waiver this primitive targets. Bypassed by `--no-config` / `--no-inline-ignores`.
   return options?.inlineIgnores === false ? byProvider : applyInlineIgnores(byProvider, html);
 }

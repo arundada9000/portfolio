@@ -22,7 +22,7 @@ export function Preloader() {
     const DURATION = 1500;
     let raf = 0;
     const tick = (now: number) => {
-      // easeOutCubic so it decelerates toward 100 — feels intentional
+      // easeOutCubic so it decelerates toward 100 - feels intentional
       const t = Math.min((now - start) / DURATION, 1);
       setPct(Math.round((1 - Math.pow(1 - t, 3)) * 100));
       if (t < 1) raf = requestAnimationFrame(tick);
@@ -52,7 +52,7 @@ export function Preloader() {
         phase === "leaving" ? "-translate-y-full" : ""
       }`}
     >
-      {/* top row — identity */}
+      {/* top row - identity */}
       <div className="flex items-center justify-between font-mono text-xs uppercase tracking-widest text-dust sm:text-sm">
         <span>
           <span className="text-amber">◆</span> Arun Neupane
@@ -60,7 +60,7 @@ export function Preloader() {
         <span className="hidden sm:inline">Frontend Developer</span>
       </div>
 
-      {/* center — status word cycling */}
+      {/* center - status word cycling */}
       <div className="flex flex-1 items-center">
         <p className="font-mono text-sm text-dust sm:text-base">
           <span className="text-amber">$</span> {word}
@@ -68,7 +68,7 @@ export function Preloader() {
         </p>
       </div>
 
-      {/* bottom — giant counter + filling rule */}
+      {/* bottom - giant counter + filling rule */}
       <div>
         <div className="mb-4 h-px w-full overflow-hidden bg-line">
           <div className="h-full bg-gradient-to-r from-amber to-ember" style={{ width: `${pct}%` }} />

@@ -22,7 +22,7 @@ type State =
   | { status: "ready"; repos: Repo[]; totalStars: number; totalRepos: number; languages: [string, number][] };
 
 const CACHE_KEY = "gh-repos-v1";
-const CACHE_TTL = 30 * 60 * 1000; // 30 min — respects GitHub's 60 req/hr anon limit
+const CACHE_TTL = 30 * 60 * 1000; // 30 min - respects GitHub's 60 req/hr anon limit
 
 // warm terminal palette for the language bar; deterministic per language
 const LANG_COLORS = ["#ffb454", "#ff7a2f", "#8d97a9", "#e9e4d8", "#c98a3a", "#5a6b85"];
@@ -71,7 +71,7 @@ export function GitHubActivity() {
         try {
           sessionStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), data }));
         } catch {
-          /* storage full / private mode — non-fatal */
+          /* storage full / private mode - non-fatal */
         }
         apply(summarize(data));
       })
@@ -83,7 +83,7 @@ export function GitHubActivity() {
   }, []);
 
   // If the API is unavailable/rate-limited, hide the section entirely
-  // rather than showing an error — the OpenSource section already covers GitHub.
+  // rather than showing an error - the OpenSource section already covers GitHub.
   if (state.status === "error") return null;
 
   return (
@@ -107,7 +107,7 @@ export function GitHubActivity() {
           <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-3">
             <Stat value={`${state.totalRepos}`} label="public repos (non-fork)" />
             <Stat value={`★ ${state.totalStars}`} label="total stars earned" />
-            <Stat value={state.languages[0]?.[0] ?? "—"} label="most-used language" />
+            <Stat value={state.languages[0]?.[0] ?? "-"} label="most-used language" />
           </dl>
 
           {/* language distribution bar */}
@@ -136,7 +136,7 @@ export function GitHubActivity() {
             </div>
           )}
 
-          {/* top repos — sibling stagger, not a section fade */}
+          {/* top repos - sibling stagger, not a section fade */}
           <ul className="mt-8 grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
             {state.repos.map((repo, i) => (
               <li

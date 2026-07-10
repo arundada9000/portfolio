@@ -10,7 +10,7 @@
  *   1. Active project root, if PRODUCT.md or DESIGN.md is there
  *   2. Active project .agents/context/ then docs/
  *   3. Monorepo root context, using the same order, as a per-file fallback
- *   4. $IMPECCABLE_CONTEXT_DIR (absolute or cwd-relative) — power-user
+ *   4. $IMPECCABLE_CONTEXT_DIR (absolute or cwd-relative) - power-user
  *      escape hatch, only consulted when defaults are empty
  *   5. Active project root as a "nothing found" default
  *
@@ -221,7 +221,7 @@ function findMonorepoRoot(startDir) {
     if (dir === homeDir) return null;
     // isMonorepoRoot is checked before hasGitBoundary on purpose: a workspace
     // root that also carries its own .git is still recognized. The trade-off is
-    // deliberate — a directory with a monorepo *marker* but no workspace patterns
+    // deliberate - a directory with a monorepo *marker* but no workspace patterns
     // and no apps/packages children is not a monorepo root, so its .git stops
     // traversal and a further-up root is not searched. The nested .git is treated
     // as an independent project boundary, which is the intended isolation.
@@ -285,7 +285,7 @@ function discoverTargetCandidates(repoRoot) {
     .filter(([rel]) => rel && !rel.startsWith('..'))
     // Honor negated workspace patterns (e.g. "!packages/internal"). resolveWorkspaceProjectRoot
     // sends an excluded package back to the repo root, so an excluded folder must not appear as a
-    // selectable target — choosing it would silently resolve to the root instead.
+    // selectable target - choosing it would silently resolve to the root instead.
     .filter(([rel]) => !isExcludedByWorkspacePattern(rel.split('/').filter(Boolean), patterns))
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([rel, root]) => {
@@ -859,7 +859,7 @@ async function cli() {
 
   if (!ctx.hasProduct) {
     // Direct stdout message instead of relying on empty output as a signal
-    // — cheap models miss the empty case more often than the explicit one.
+    // - cheap models miss the empty case more often than the explicit one.
     const parts = [
       'NO_PRODUCT_MD: This project has no PRODUCT.md yet. ' +
       'Follow SKILL.md Setup step 1: for `init`, `teach`, `craft`, `shape`, ' +

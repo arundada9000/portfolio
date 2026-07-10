@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  /* The night shift — amber phosphor on deep night blue */
+  /* The night shift - amber phosphor on deep night blue */
   --color-night: #0a0e15;
   --color-panel: #0f1520;
   --color-line: #1e2839;

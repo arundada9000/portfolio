@@ -5807,7 +5807,7 @@
   // divs are scaffolded into page source, so SSR frameworks (Next.js App
   // Router) server-render them; toggling their `hidden` / inline `style` /
   // `--p-*` client-side trips a React 19 hydration mismatch on the next
-  // Fast-Refresh re-render — the same failure mode the scroll-anchor (#276)
+  // Fast-Refresh re-render - the same failure mode the scroll-anchor (#276)
   // and pick-cursor (#286) fixes address. A stylesheet rule has the same
   // computed effect without mutating any hydrated element's attributes.
   // (steps params keep driving `data-p-*` attributes, matching scoped CSS.)

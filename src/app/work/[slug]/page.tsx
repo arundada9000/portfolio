@@ -20,11 +20,11 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const project = getProject(slug);
   if (!project) return {};
   return {
-    title: `${project.title} — Case Study`,
+    title: `${project.title} - Case Study`,
     description: project.summary,
     alternates: { canonical: `/work/${project.slug}` },
     openGraph: {
-      title: `${project.title} — Case Study by ${site.name}`,
+      title: `${project.title} - Case Study by ${site.name}`,
       description: project.summary,
       url: `${site.url}/work/${project.slug}`,
       type: "article",
@@ -93,14 +93,14 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
           </section>
         </Reveal>
 
-        {/* live, playable demo — Easy Sorting only */}
+        {/* live, playable demo - Easy Sorting only */}
         {project.slug === "easy-sorting" && (
           <Reveal>
             <section>
-              <h2 className="text-eyebrow mb-4">## try it — live sorting playground</h2>
+              <h2 className="text-eyebrow mb-4">## try it - live sorting playground</h2>
               <p className="mb-5 leading-relaxed text-dust">
                 Rebuilt natively for this page. Pick an algorithm, drag the sliders, and watch every
-                comparison and swap — the same idea behind the original project, running right here.
+                comparison and swap - the same idea behind the original project, running right here.
               </p>
               <SortingVisualizer />
             </section>
@@ -127,7 +127,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
         <Reveal>
           <section>
             <h2 className="text-eyebrow mb-4">## architecture</h2>
-            <TerminalWindow title={`${project.slug} — data flow`}>
+            <TerminalWindow title={`${project.slug} - data flow`}>
               <pre className="overflow-x-auto text-[13px] leading-relaxed text-fog">
                 {cs.architecture.join("\n")}
               </pre>

@@ -5,7 +5,7 @@ import { useInView, useReducedMotion } from "motion/react";
 
 /**
  * Counts a numeric value up when scrolled into view. Accepts the raw display
- * string ("70+", "★ 52", "1 AM", "TypeScript") — animates the number it finds
+ * string ("70+", "★ 52", "1 AM", "TypeScript") - animates the number it finds
  * and preserves the surrounding characters. No digits → renders as-is.
  */
 export function CountUp({ value, className }: { value: string; className?: string }) {

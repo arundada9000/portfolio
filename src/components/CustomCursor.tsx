@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 /**
  * Amber dot + trailing ring. The dot tracks the pointer 1:1; the ring lerps
- * behind it and swells over interactive targets. Desktop pointers only —
+ * behind it and swells over interactive targets. Desktop pointers only -
  * touch and reduced-motion users keep the native cursor.
  */
 export function CustomCursor() {

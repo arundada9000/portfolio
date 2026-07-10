@@ -26,7 +26,7 @@ export function ProjectVisual({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={image}
-          alt={`${title} — screenshot`}
+          alt={`${title} - screenshot`}
           loading="lazy"
           onError={() => setFailed(true)}
           className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
@@ -38,7 +38,7 @@ export function ProjectVisual({
 
   return (
     <div className="border-b border-line bg-night/60 p-4">
-      <TerminalWindow title={`${slug} — demo`} className="border-line/60 shadow-none">
+      <TerminalWindow title={`${slug} - demo`} className="border-line/60 shadow-none">
         <ol className="min-h-[6.5rem] text-[13px]">
           {terminal.map((line, i) => (
             <li

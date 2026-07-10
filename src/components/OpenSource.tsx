@@ -20,7 +20,7 @@ const contributions = [
   },
   {
     name: "Code-for-Change",
-    detail: "The organization's official website — built by members, for members.",
+    detail: "The organization's official website - built by members, for members.",
     href: "https://github.com/arundada9000/Code-for-Change",
   },
 ];
@@ -30,12 +30,12 @@ export function OpenSource() {
     <Section id="open-source" command="git shortlog --all" title="Open Source">
       <Reveal>
         <p className="mb-8 max-w-2xl text-lg text-dust">
-          Everything I learn ships as a public repo — 70+ and counting, plus GitHub&apos;s{" "}
+          Everything I learn ships as a public repo - 70+ and counting, plus GitHub&apos;s{" "}
           <span className="text-fog">Pull Shark</span> badge for merged pull requests. Most of
           my open-source energy goes into teaching materials for developers in Nepal.
         </p>
 
-        {/* contribution graph — inverted so the service's light empty cells read
+        {/* contribution graph - inverted so the service's light empty cells read
             as dark on-theme, with hue-rotate bringing the fill back to amber */}
         <div className="overflow-x-auto rounded-lg border border-line bg-panel p-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}

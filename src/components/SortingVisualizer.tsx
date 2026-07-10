@@ -148,7 +148,7 @@ export function SortingVisualizer() {
     [size]
   );
 
-  // randomize once after mount — server rendered the deterministic seed
+  // randomize once after mount - server rendered the deterministic seed
   useEffect(() => {
     setBase(randomArray(28));
   }, []);

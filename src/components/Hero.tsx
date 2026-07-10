@@ -66,7 +66,7 @@ export function Hero() {
           <span className="text-dust">butwal, nepal · UTC+5:45</span>
         </motion.div>
 
-        {/* the name — masked line reveal */}
+        {/* the name - masked line reveal */}
         <h1 className="text-display mt-6 text-[clamp(3.5rem,13vw,11rem)] uppercase">
           <MaskLine delay={0.15}>Arun</MaskLine>
           <MaskLine delay={0.28} className="text-amber">Neupane</MaskLine>
@@ -78,7 +78,7 @@ export function Hero() {
         </motion.p>
 
         <motion.p {...fade(0.82)} className="mt-6 max-w-xl text-lg leading-relaxed text-dust">
-          I build production web systems from Nepal — disaster-response platforms, map-first
+          I build production web systems from Nepal - disaster-response platforms, map-first
           apps, and terminal-driven company sites. Currently CTO at{" "}
           <a href={site.company.url} className="link-underline text-fog" target="_blank" rel="noreferrer">
             Sajilo Digital

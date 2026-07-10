@@ -73,7 +73,7 @@ export function CommandPalette() {
         args: "<project>",
         desc: "open a project case study",
         run: (arg) => {
-          if (!arg) return [{ kind: "err", text: "usage: open <project>  —  try `ls` for names" }];
+          if (!arg) return [{ kind: "err", text: "usage: open <project>  -  try `ls` for names" }];
           const match = projects.find(
             (p) => p.slug === arg || p.slug.includes(arg) || p.title.toLowerCase().includes(arg)
           );
@@ -134,7 +134,7 @@ export function CommandPalette() {
         name: "whoami",
         desc: "print bio",
         run: () => [
-          { kind: "out", text: "arun neupane — frontend developer & CTO @ sajilo digital" },
+          { kind: "out", text: "arun neupane - frontend developer & CTO @ sajilo digital" },
           { kind: "out", text: "butwal, nepal · react · next.js · typescript" },
         ],
       },
@@ -144,7 +144,7 @@ export function CommandPalette() {
         run: () => {
           setOpen(false);
           go("#contact");
-          return [{ kind: "hint", text: "opening contact — I usually reply within 24h." }];
+          return [{ kind: "hint", text: "opening contact - I usually reply within 24h." }];
         },
       },
       { name: "clear", desc: "clear the screen", run: () => { setLines([]); } },
@@ -174,7 +174,7 @@ export function CommandPalette() {
       if (!cmd) {
         setLines((prev) => [
           ...prev,
-          { kind: "err", text: `command not found: ${name} — type \`help\`` },
+          { kind: "err", text: `command not found: ${name} - type \`help\`` },
         ]);
         return;
       }
@@ -203,7 +203,7 @@ export function CommandPalette() {
     inputRef.current?.focus();
     if (lines.length === 0) {
       setLines([
-        { kind: "hint", text: "arun.sh — type a command, or `help`. ↑↓ history · esc to close." },
+        { kind: "hint", text: "arun.sh - type a command, or `help`. ↑↓ history · esc to close." },
       ]);
     }
     document.body.style.overflow = "hidden";
@@ -261,7 +261,7 @@ export function CommandPalette() {
           <span className="size-2.5 rounded-full bg-ember/70" />
           <span className="size-2.5 rounded-full bg-amber/70" />
           <span className="size-2.5 rounded-full bg-dust/40" />
-          <span className="ml-2 font-mono text-xs text-dust">arun@butwal — arun.sh</span>
+          <span className="ml-2 font-mono text-xs text-dust">arun@butwal - arun.sh</span>
         </div>
 
         <div ref={bodyRef} className="max-h-[40vh] overflow-y-auto px-4 py-3 font-mono text-sm">

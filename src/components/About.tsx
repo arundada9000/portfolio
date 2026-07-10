@@ -13,7 +13,7 @@ export function About() {
             <p>
               I&apos;m a self-taught developer from {site.location}. In 2023 I opened my first
               HTML course; by 2025 I was architecting systems used by Nepal Police and a
-              national NGO. Nobody handed me that path — I built it commit by commit,
+              national NGO. Nobody handed me that path - I built it commit by commit,
               usually well past midnight.
             </p>
             <p>
@@ -26,13 +26,13 @@ export function About() {
               batch of developers coming up the same road.
             </p>
             <p>
-              My home turf is <span className="text-fog">React, Next.js, and TypeScript</span> —
+              My home turf is <span className="text-fog">React, Next.js, and TypeScript</span> -
               but the projects I&apos;m proudest of solve local problems: disaster reporting
               that works offline, room hunting with real maps, algorithm visualizers my
               classmates study with.
             </p>
             <p className="border-l-2 border-amber pl-4 font-mono text-base text-fog">
-              Fun fact: the clock in the statusline below is live Nepal time (UTC+5:45 —
+              Fun fact: the clock in the statusline below is live Nepal time (UTC+5:45 -
               yes, the :45 is real). If it reads past midnight, I&apos;m probably still pushing commits.
             </p>
           </div>
@@ -61,7 +61,7 @@ export function About() {
               priority={false}
             />
             <figcaption className="mt-3 font-mono text-xs text-dust">
-              // {site.name.toLowerCase()}.png — {site.location.toLowerCase()}
+              // {site.name.toLowerCase()}.png - {site.location.toLowerCase()}
             </figcaption>
           </figure>
         </Reveal>

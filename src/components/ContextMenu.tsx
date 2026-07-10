@@ -19,7 +19,7 @@ export function ContextMenu() {
       setCopied(note);
       setTimeout(() => setCopied(null), 1400);
     } catch {
-      /* clipboard blocked — ignore */
+      /* clipboard blocked - ignore */
     }
   }, []);
 

@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Arun Neupane — Frontend Developer";
+export const alt = "Arun Neupane - Frontend Developer";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -30,7 +30,7 @@ export default function OgImage() {
           </div>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: 26, color: "#8d97a9" }}>
-          <span>frontend developer — react · next.js · typescript</span>
+          <span>frontend developer - react · next.js · typescript</span>
           <span style={{ color: "#ffb454" }}>butwal, nepal</span>
         </div>
       </div>

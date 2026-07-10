@@ -18,7 +18,7 @@ export const site = {
   whatsapp: "9779811420975",
   linkedin: "https://www.linkedin.com/in/arundada9000",
   github: "https://github.com/arundada9000",
-  // Web3Forms access key — routes contact submissions straight to email.
+  // Web3Forms access key - routes contact submissions straight to email.
   // Public by design (same key used on the previous portfolio). Override
   // with NEXT_PUBLIC_WEB3FORMS_KEY in .env.local if you rotate it.
   web3formsKey: "a70b99ba-e904-480f-9f8b-e420787fbc0d",

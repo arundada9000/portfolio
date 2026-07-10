@@ -32,14 +32,14 @@ const jetbrains = JetBrains_Mono({
 });
 
 const IDENTITY_DESC =
-  "Arun Neupane — also known as arundada9000 — is a self-taught frontend developer and coder from Butwal, Lumbini, Nepal, and CTO at Sajilo Digital. Arun builds production React, Next.js and TypeScript systems: a police case-management system, the Code for Change Nepal platform, and disaster-response apps.";
+  "Arun Neupane - also known as arundada9000 - is a self-taught frontend developer and coder from Butwal, Lumbini, Nepal, and CTO at Sajilo Digital. Arun builds production React, Next.js and TypeScript systems: a police case-management system, the Code for Change Nepal platform, and disaster-response apps.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
-  applicationName: `${site.name} — Portfolio`,
+  applicationName: `${site.name} - Portfolio`,
   title: {
-    default: `${site.name} (arundada9000) — Frontend Developer & Coder from Nepal`,
-    template: `%s — ${site.name}`,
+    default: `${site.name} (arundada9000) - Frontend Developer & Coder from Nepal`,
+    template: `%s - ${site.name}`,
   },
   description: IDENTITY_DESC,
   keywords: [
@@ -66,8 +66,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "profile",
     url: site.url,
-    siteName: `${site.name} — Portfolio`,
-    title: `${site.name} (arundada9000) — Frontend Developer & Coder from Nepal`,
+    siteName: `${site.name} - Portfolio`,
+    title: `${site.name} (arundada9000) - Frontend Developer & Coder from Nepal`,
     description: IDENTITY_DESC,
     locale: "en_US",
     firstName: "Arun",
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} — Frontend Developer & Coder from Nepal`,
+    title: `${site.name} - Frontend Developer & Coder from Nepal`,
     description: "Arun Neupane (arundada9000): production React & Next.js systems from Nepal. CTO at Sajilo Digital.",
   },
   robots: {
@@ -135,9 +135,9 @@ const entityGraph = {
         "Framer Motion", "Frontend development", "Full-stack web development",
       ],
       award: [
-        "InnovateX National Hackathon — Winner",
-        "CodeOlympiad 2080 — Winner",
-        "Girls in ICT Coding Competition — Winner",
+        "InnovateX National Hackathon - Winner",
+        "CodeOlympiad 2080 - Winner",
+        "Girls in ICT Coding Competition - Winner",
       ],
       sameAs: [
         site.altUrl,
@@ -155,7 +155,7 @@ const entityGraph = {
       "@type": "WebSite",
       "@id": SITE_ID,
       url: site.url,
-      name: `${site.name} — Portfolio`,
+      name: `${site.name} - Portfolio`,
       inLanguage: "en",
       author: { "@id": PERSON_ID },
       publisher: { "@id": PERSON_ID },
@@ -164,7 +164,7 @@ const entityGraph = {
       "@type": "ProfilePage",
       "@id": `${site.url}/#profilepage`,
       url: site.url,
-      name: `${site.name} — Portfolio`,
+      name: `${site.name} - Portfolio`,
       isPartOf: { "@id": SITE_ID },
       about: { "@id": PERSON_ID },
       mainEntity: { "@id": PERSON_ID },

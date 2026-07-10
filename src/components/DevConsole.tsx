@@ -6,7 +6,7 @@ import { site } from "@/lib/data/site";
 /**
  * Three developer-facing flourishes:
  *  1. A styled greeting when DevTools opens.
- *  2. Typeable console "commands" (property getters) — type `help`, `hire`,
+ *  2. Typeable console "commands" (property getters) - type `help`, `hire`,
  *     `github`, `neofetch`, `secret`, `cls` and hit enter.
  *  3. An animated <title> marquee while the tab is in the background.
  */
@@ -18,7 +18,7 @@ export function DevConsole() {
     const hot = "color:#ff7a2f;font:700 14px/1.6 monospace";
     console.log("%c> arun.sh", big);
     console.log(
-      "%cHey, curious developer 👋  You opened the console — I respect that.\n" +
+      "%cHey, curious developer 👋  You opened the console - I respect that.\n" +
         "This portfolio is Next.js 16 + React 19 + TypeScript, hand-built.\n",
       dim
     );
@@ -38,19 +38,19 @@ export function DevConsole() {
           configurable: true,
         });
       } catch {
-        /* already defined / restricted — skip */
+        /* already defined / restricted - skip */
       }
     };
 
     define("help", () => {
       console.log("%cavailable commands", hot);
-      line("  hire       — why you should hire Arun");
-      line("  github     — open the github profile");
-      line("  linkedin   — open linkedin");
-      line("  socials    — list every link");
-      line("  neofetch   — system info, portfolio edition");
-      line("  secret     — you'll see");
-      line("  cls / clear— clean the console");
+      line("  hire       - why you should hire Arun");
+      line("  github     - open the github profile");
+      line("  linkedin   - open linkedin");
+      line("  socials    - list every link");
+      line("  neofetch   - system info, portfolio edition");
+      line("  secret     - you'll see");
+      line("  cls / clear- clean the console");
     });
     define("hire", () => {
       console.log("%c$ hire arun --role any", hot);
@@ -73,12 +73,12 @@ export function DevConsole() {
      /_/ \\_\\      stack:  React · Next.js · TypeScript · Tailwind
                   repos:  70+ public
                   uptime: coding since 2023
-                  shell:  arun.sh — press ⌘K on the page`,
+                  shell:  arun.sh - press ⌘K on the page`,
         dim
       );
     });
     define("secret", () => {
-      console.log("%c🔓 you found it. type `hire` — that's the real secret.", hot);
+      console.log("%c🔓 you found it. type `hire` - that's the real secret.", hot);
     });
     const clearConsole = () => console.clear();
     define("cls", clearConsole);
@@ -87,7 +87,7 @@ export function DevConsole() {
 
     // ── 3. animated background-tab title ───────────────────────
     const original = document.title;
-    const marquee = "  ·  psst… come back — arun.sh is still running  ·  ⌘K to explore";
+    const marquee = "  ·  psst… come back - arun.sh is still running  ·  ⌘K to explore";
     let frame = 0;
     let spin: ReturnType<typeof setInterval> | null = null;
 

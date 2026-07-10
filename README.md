@@ -3,9 +3,9 @@
   <br />
   <br />
 
-  # Arun Neupane — Portfolio
+  # Arun Neupane - Portfolio
 
-  **`/arundada9000`** — Frontend Developer · CTO @ Sajilo Digital · Nepal
+  **`/arundada9000`** - Frontend Developer · CTO @ Sajilo Digital · Nepal
 
   <br />
 
@@ -27,14 +27,14 @@
 
 ## Overview
 
-This is the personal portfolio of **Arun Neupane (arundada9000)** — a self-taught frontend developer from Butwal, Lumbini, Nepal, and CTO at Sajilo Digital Pvt. Ltd.
+This is the personal portfolio of **Arun Neupane (arundada9000)** - a self-taught frontend developer from Butwal, Lumbini, Nepal, and CTO at Sajilo Digital Pvt. Ltd.
 
 The design concept is a **late-night amber-phosphor terminal session**. The signature element is a vim-style statusline fixed to the bottom of every page, showing the current section as an open buffer, scroll progress, and a live Nepal-time clock (UTC+5:45).
 
 ### What it showcases
 
 - **Production systems**: Disaster-response platform (Sajilo Sahayata), map-first room finder (Roomeo), terminal-driven company site (Sajilo Digital)
-- **Case studies**: Architecture decisions, constraint-driven design, and lessons learned — documented for each featured project
+- **Case studies**: Architecture decisions, constraint-driven design, and lessons learned - documented for each featured project
 - **Open source**: 70+ public repositories, algorithm visualizers, utilities, and learning-in-public artifacts
 - **Technical depth**: React 19, Next.js 16 App Router, TypeScript strict mode, Tailwind CSS v4, Motion (Framer Motion), GSAP, PostGIS, WebAuthn
 
@@ -120,7 +120,7 @@ arun-portfolio/
 
 ### Customization
 
-All content lives in `src/lib/data/` — edit the data files, not the components:
+All content lives in `src/lib/data/` - edit the data files, not the components:
 
 | File | What it drives |
 |---|---|

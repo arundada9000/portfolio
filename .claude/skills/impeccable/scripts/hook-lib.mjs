@@ -234,7 +234,7 @@ function applyDetectorConfigSource(config, raw) {
 }
 
 // Extra scanned extensions from `detector.extensions` config. Entries are
-// `{ ext, engine }` (engine 'html' | 'text', default 'html' — the common case
+// `{ ext, engine }` (engine 'html' | 'text', default 'html' - the common case
 // for server-side templates) or bare strings as shorthand. Extensions are
 // matched against the end of the filename, not path.extname, so double
 // extensions like `.blade.php` and `.html.erb` work (issue #316).
@@ -1376,7 +1376,7 @@ export function setDetectorForTesting(impl) {
 //
 // All three are short (≤ ~40 tokens each) so the cumulative cost stays
 // bounded across a long active editing session. Users who explicitly want
-// silence-on-clean can set `IMPECCABLE_HOOK_QUIET=1` — runHook checks that
+// silence-on-clean can set `IMPECCABLE_HOOK_QUIET=1` - runHook checks that
 // env before emitting #2 or #3.
 //
 // Why not stay silent on dedup-clean? Earlier versions did. The model
@@ -1401,7 +1401,7 @@ export function renderPendingAck(filePath, knownFindings, opts = {}) {
   // `knownFindings` here are the cache strings like "side-tab:3".
   const sample = knownFindings.slice(0, 3).join(', ');
   const more = count > 3 ? `, +${count - 3} more` : '';
-  return `${ENVELOPE_PREFIX} Design hook scanned ${display}. Still has ${count} finding(s) flagged earlier this session (${sample}${more}). Handle them before finalizing — the previous reminder still applies.`;
+  return `${ENVELOPE_PREFIX} Design hook scanned ${display}. Still has ${count} finding(s) flagged earlier this session (${sample}${more}). Handle them before finalizing - the previous reminder still applies.`;
 }
 
 export function shouldEmitAckForFile(filePath, config = null) {

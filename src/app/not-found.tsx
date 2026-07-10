@@ -4,7 +4,7 @@ import { TerminalWindow } from "@/components/TerminalWindow";
 export default function NotFound() {
   return (
     <main data-section="404" className="mx-auto flex min-h-[70vh] max-w-2xl flex-col justify-center px-4 pt-28 pb-20 sm:px-6">
-      <TerminalWindow title="arun@butwal — zsh">
+      <TerminalWindow title="arun@butwal - zsh">
         <p className="text-fog">
           <span className="text-amber">$ </span>open {`{requested_page}`}
         </p>

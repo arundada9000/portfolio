@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * `/impeccable hooks <on|off|status|reset>` — manage the design hook runtime
+ * `/impeccable hooks <on|off|status|reset>` - manage the design hook runtime
  * via the `hook` key and shared detector ignores via the `detector` key in
  * .impeccable/config.json / .impeccable/config.local.json.
  *
