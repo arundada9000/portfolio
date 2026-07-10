@@ -7,7 +7,8 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "*", allow: "/" },
       { userAgent: "GPTBot", allow: "/llms.txt" },
       { userAgent: "Googlebot", allow: "/" },
+      { userAgent: "Googlebot-Image", allow: "/my-images/" },
     ],
-    sitemap: `${site.url}/sitemap.xml`,
+    sitemap: [`${site.url}/sitemap.xml`, `${site.url}/image-sitemap`],
   };
 }

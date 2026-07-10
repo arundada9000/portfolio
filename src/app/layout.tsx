@@ -37,6 +37,8 @@ const IDENTITY_DESC =
 
 const IDENTITY_DESC_SHORT = "Arun Neupane (arundada9000): self-taught frontend developer from Nepal. CTO at Sajilo Digital. React, Next.js, TypeScript.";
 
+const MY_IMAGES = `${site.url}/my-images`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   applicationName: `${site.name} - Portfolio`,
@@ -124,10 +126,21 @@ const entityGraph = {
       description: IDENTITY_DESC,
       url: site.url,
       mainEntityOfPage: site.url,
-      image: `${site.url}/images/arun.png`,
+      image: [
+        `${site.url}/images/arun.png`,
+        `${MY_IMAGES}/about.jpg`,
+        `${MY_IMAGES}/arun-suit.jpg`,
+        `${MY_IMAGES}/arun-profile.png`,
+      ],
       email: `mailto:${site.email}`,
       telephone: site.phone,
       gender: "Male",
+      contactPoint: [
+        { "@type": "ContactPoint", contactType: "email", email: site.email, url: site.url },
+        { "@type": "ContactPoint", contactType: "telephone", telephone: site.phone, availableLanguage: ["English", "Nepali"] },
+        { "@type": "ContactPoint", contactType: "WhatsApp", telephone: `+${site.whatsapp}`, url: `https://wa.me/${site.whatsapp}` },
+        { "@type": "ContactPoint", contactType: "LinkedIn", url: site.linkedin },
+      ],
       birthPlace: { "@type": "Place", address: { "@type": "PostalAddress", addressLocality: "Butwal", addressRegion: "Lumbini", addressCountry: "NP" } },
       jobTitle: ["Frontend Developer", "CTO", "Lead Architect", "Full-Stack Engineer"],
       hasOccupation: [
@@ -177,6 +190,8 @@ const entityGraph = {
       sameAs: [
         site.altUrl,
         ...site.socials.filter((s) => s.href.startsWith("http")).map((s) => s.href),
+        "https://www.youtube.com/@arundada9000",
+        "https://x.com/arundada9000",
       ],
     },
     {
@@ -198,6 +213,20 @@ const entityGraph = {
       inLanguage: "en",
       author: { "@id": PERSON_ID },
       publisher: { "@id": PERSON_ID },
+      potentialAction: [
+        {
+          "@type": "SearchAction",
+          target: {
+            "@type": "EntryPoint",
+            urlTemplate: `${site.url}/?q={search_term_string}`,
+          },
+          "query-input": "required name=search_term_string",
+        },
+        {
+          "@type": "ReadAction",
+          target: { "@type": "EntryPoint", urlTemplate: `${site.url}/#work` },
+        },
+      ],
     },
     {
       "@type": "ProfilePage",
@@ -294,6 +323,47 @@ const entityGraph = {
           },
         },
       ],
+    },
+    {
+      "@type": "ImageObject",
+      "@id": `${MY_IMAGES}/about.jpg#image`,
+      url: `${MY_IMAGES}/about.jpg`,
+      contentUrl: `${MY_IMAGES}/about.jpg`,
+      caption: "Arun Neupane - professional portrait in casual setting",
+      description: "Portrait of Arun Neupane, self-taught frontend developer and CTO from Butwal, Nepal.",
+      author: { "@id": PERSON_ID },
+      representativeOfPage: true,
+      thumbnail: `${MY_IMAGES}/about.jpg`,
+    },
+    {
+      "@type": "ImageObject",
+      "@id": `${MY_IMAGES}/arun-suit.jpg#image`,
+      url: `${MY_IMAGES}/arun-suit.jpg`,
+      contentUrl: `${MY_IMAGES}/arun-suit.jpg`,
+      caption: "Arun Neupane in formal wear - professional developer photo",
+      description: "Arun Neupane wearing a suit - a professional portrait of the CTO at Sajilo Digital.",
+      author: { "@id": PERSON_ID },
+      representativeOfPage: false,
+    },
+    {
+      "@type": "ImageObject",
+      "@id": `${MY_IMAGES}/arun-profile.png#image`,
+      url: `${MY_IMAGES}/arun-profile.png`,
+      contentUrl: `${MY_IMAGES}/arun-profile.png`,
+      caption: "Arun Neupane - profile picture cutout",
+      description: "Clean profile portrait of Arun Neupane, frontend developer and arundada9000 on GitHub.",
+      author: { "@id": PERSON_ID },
+      representativeOfPage: false,
+    },
+    {
+      "@type": "ImageObject",
+      "@id": `${MY_IMAGES}/arun-classroom.jpg#image`,
+      url: `${MY_IMAGES}/arun-classroom.jpg`,
+      contentUrl: `${MY_IMAGES}/arun-classroom.jpg`,
+      caption: "Arun Neupane in a classroom setting",
+      description: "Arun Neupane in class - a self-taught developer who went from HTML courses to building production systems for Nepal Police.",
+      author: { "@id": PERSON_ID },
+      representativeOfPage: false,
     },
   ],
 };

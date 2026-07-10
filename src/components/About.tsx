@@ -53,15 +53,15 @@ export function About() {
           <figure className="relative">
             <div className="absolute -inset-2 rounded-lg border border-amber/30" aria-hidden="true" />
             <Image
-              src="/images/arun.png"
-              alt="Portrait of Arun Neupane"
+              src="/my-images/about.jpg"
+              alt="Arun Neupane - self-taught frontend developer and CTO from Butwal, Nepal"
               width={640}
               height={800}
               className="relative w-full rounded-lg border border-line bg-panel object-cover grayscale transition-all duration-500 hover:grayscale-0"
-              priority={false}
+              priority
             />
             <figcaption className="mt-3 font-mono text-xs text-dust">
-              // {site.name.toLowerCase()}.png - {site.location.toLowerCase()}
+              // arun-neupane-portrait - butwal, nepal
             </figcaption>
           </figure>
         </Reveal>
