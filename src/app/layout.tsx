@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Bricolage_Grotesque, Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import { site } from "@/lib/data/site";
 import { skillCategories } from "@/lib/data/skills";
@@ -98,6 +99,7 @@ export const metadata: Metadata = {
   other: {
     "theme-color": "#0a0e15",
     "color-scheme": "dark",
+    "google-adsense-account": "ca-pub-1708134460872611",
   },
   robots: {
     index: true,
@@ -379,6 +381,12 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(entityGraph) }}
+        />
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1708134460872611"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
         />
         <a
           href="#work"
