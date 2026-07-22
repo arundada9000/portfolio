@@ -22,26 +22,26 @@ const SONGS: { key: string; file: string; label: string }[] = [
 
 const JOKES = [
   "Why do programmers prefer dark mode? Because light attracts bugs.",
-  "How many programmers does it take to change a light bulb? None — that's a hardware problem.",
+  "How many programmers does it take to change a light bulb? None, that's a hardware problem.",
   "A SQL query walks into a bar, walks up to two tables and asks: 'Can I join you?'",
   "Why was the JavaScript developer sad? Because he didn't know how to 'null' his feelings.",
   "I told my computer I needed a break. Now it won't stop sending me vacation ads.",
   "There are only 10 kinds of people: those who know binary and those who don't.",
   "Why do Java developers wear glasses? Because they can't C#.",
-  "A UX designer walks into a bar — wait, that's already usable.",
+  "A UX designer walks into a bar... wait, that's already usable.",
   "99 little bugs in the code, 99 little bugs. Take one down, patch it around, 127 little bugs in the code.",
   "Programming is 10% writing code and 90% understanding why it worked yesterday.",
   "The best thing about a boolean is even if you're wrong, you're only off by a bit.",
   "I would tell you a UDP joke, but you might not get it.",
   "Why did the developer go broke? Because he used up all his cache.",
-  "Floating point numbers are like piles of sand — every time you pick one up, you lose a little precision.",
+  "Floating point numbers are like piles of sand: every time you pick one up, you lose a little precision.",
 ];
 
 const QUOTES = [
   { text: "The best way to predict the future is to create it.", author: "Alan Kay" },
   { text: "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.", author: "Martin Fowler" },
   { text: "First, solve the problem. Then, write the code.", author: "John Johnson" },
-  { text: "It's not a bug — it's an undocumented feature.", author: "Anonymous" },
+  { text: "It's not a bug, it's an undocumented feature.", author: "Anonymous" },
   { text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
   { text: "Talk is cheap. Show me the code.", author: "Linus Torvalds" },
   { text: "Code is like humor. When you have to explain it, it's bad.", author: "Cory House" },
@@ -53,7 +53,7 @@ const QUOTES = [
   { text: "Perfection is achieved not when there is nothing more to add, but rather when there is nothing more to take away.", author: "Antoine de Saint-Exupery" },
   { text: "A year from now you may wish you had started today.", author: "Karen Lamb" },
   { text: "The expert in anything was once a beginner.", author: "Helen Hayes" },
-  { text: "Your limitation — it's only your imagination.", author: "Anonymous" },
+  { text: "Your limitation, it's only your imagination.", author: "Anonymous" },
   { text: "Push yourself because no one else is going to do it for you.", author: "Anonymous" },
   { text: "Dream big. Work hard. Stay focused.", author: "Anonymous" },
 ];
@@ -69,12 +69,12 @@ const FORTUNES = [
   "Better a live bug than a dead hero.",
   "Commitment is the key to every relationship.",
   "Computer says: you will soon push code that passes on the first try.",
-  "Don't just think — act. Then think again.",
+  "Don't just think. Act. Then think again.",
   "Every big success depends on the small steps.",
   "Fortune favors the bold. And the ones who ship.",
   "Good news will come to you by mail.",
   "Happiness begins with a new pull request.",
-  "Help is on the way — but you'll still need to write the tests.",
+  "Help is on the way, but you'll still need to write the tests.",
   "It's not too late to start something new today.",
   "Now is the time to try something you've been putting off.",
   "Someone will invite you to a meeting today. Politely decline.",
@@ -232,7 +232,7 @@ export function CommandPalette() {
         ],
       },
       { name: "play", args: "<song>", desc: "play a song (blue, kalank, shayad, kamleya)", run: (arg) => {
-        if (!arg) return [{ kind: "err", text: `usage: play <song>  —  songs: ${SONGS.map((s) => s.key).join(" · ")}` }];
+        if (!arg) return [{ kind: "err", text: `usage: play <song>  |  songs: ${SONGS.map((s) => s.key).join(" · ")}` }];
         const m = SONGS.find((s) => s.key === arg || s.key.includes(arg));
         if (!m) return [{ kind: "err", text: `unknown song "${arg}"` }];
         playSong(m.key);
@@ -318,11 +318,11 @@ export function CommandPalette() {
       { name: "joke", desc: "random dev joke", run: () => [{ kind: "out", text: JOKES[Math.floor(Math.random() * JOKES.length)] }] },
       { name: "motivate", desc: "random motivation quote", run: () => {
         const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
-        return [{ kind: "out", text: `"${q.text}"` }, { kind: "out", text: `  — ${q.author}` }];
+        return [{ kind: "out", text: `"${q.text}"` }, { kind: "out", text: `  ~ ${q.author}` }];
       }},
       { name: "quote", desc: "random programming quote", run: () => {
         const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
-        return [{ kind: "out", text: `"${q.text}"` }, { kind: "out", text: `  — ${q.author}` }];
+        return [{ kind: "out", text: `"${q.text}"` }, { kind: "out", text: `  ~ ${q.author}` }];
       }},
       { name: "fortune", desc: "your fortune", run: () => [{ kind: "out", text: `🥠 ${FORTUNES[Math.floor(Math.random() * FORTUNES.length)]}` }] },
       { name: "ascii", desc: "show ascii art", run: () => [{ kind: "out", text: ASCII_ARUN }] },
@@ -335,7 +335,7 @@ export function CommandPalette() {
       { name: "coinflip", desc: "flip a coin", run: () => [{ kind: "out", text: `🪙 ${Math.random() > 0.5 ? "heads" : "tails"}` }] },
       { name: "8ball", args: "<question>", desc: "ask the magic 8-ball", run: (arg) => {
         if (!arg) return [{ kind: "err", text: "usage: 8ball <question>  -  e.g. 8ball will i get hired?" }];
-        const A = ["As I see it, yes.", "Ask again later.", "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.", "Don't count on it.", "It is certain.", "It is decidedly so.", "Most likely.", "My reply is no.", "My sources say no.", "Outlook good.", "Outlook not so good.", "Reply hazy, try again.", "Signs point to yes.", "Very doubtful.", "Without a doubt.", "Yes.", "Yes — definitely.", "You may rely on it."];
+        const A = ["As I see it, yes.", "Ask again later.", "Better not tell you now.", "Cannot predict now.", "Concentrate and ask again.", "Don't count on it.", "It is certain.", "It is decidedly so.", "Most likely.", "My reply is no.", "My sources say no.", "Outlook good.", "Outlook not so good.", "Reply hazy, try again.", "Signs point to yes.", "Very doubtful.", "Without a doubt.", "Yes.", "Yes, definitely.", "You may rely on it."];
         return [{ kind: "out", text: `🎱 ${A[Math.floor(Math.random() * A.length)]}` }];
       }},
       { name: "bofh", desc: "bastard operator from hell excuse", run: () => {
@@ -362,7 +362,7 @@ export function CommandPalette() {
           { kind: "out", text: "ARUN.SH(1)          User Commands          ARUN.SH(1)" },
           { kind: "out", text: "" },
           { kind: "out", text: "NAME" },
-          { kind: "out", text: `  ${m.name} — ${m.desc}` },
+          { kind: "out", text: `  ${m.name} - ${m.desc}` },
           { kind: "out", text: "" },
           { kind: "out", text: "SYNOPSIS" },
           { kind: "out", text: `  ${m.name}${m.args ? ` ${m.args}` : ""}` },
@@ -434,11 +434,11 @@ export function CommandPalette() {
       // ── easter eggs ──
       { name: "sudo", desc: "nice try", run: () => [{ kind: "err", text: "arun is not in the sudoers file. this incident will be reported. 😏" }] },
       { name: "secret", desc: "", run: () => [{ kind: "hint", text: "🔓 the real secret: type `hire`." }] },
-      { name: "hire", desc: "let's work together", run: () => { close(); go("#contact"); return [{ kind: "hint", text: "opening contact — I usually reply within 24h." }]; } },
-      { name: "namaste", desc: "nepali greeting", run: () => [{ kind: "out", text: "नमस्ते! 🙏  Hello from Butwal, Nepal — the land of Everest, momo, and midnight coders." }] },
+      { name: "hire", desc: "let's work together", run: () => { close(); go("#contact"); return [{ kind: "hint", text: "opening contact. I usually reply within 24h." }]; } },
+      { name: "namaste", desc: "nepali greeting", run: () => [{ kind: "out", text: "नमस्ते! 🙏  Hello from Butwal, Nepal, the land of Everest, momo, and midnight coders." }] },
       { name: "hello", desc: "greeting", run: () => { const G = ["Hey!", "Hello!", "Hi there!", "Hey hey!", "Yo!", "What's up?", "Hola!", "Bonjour!", "Ciao!", "Heyo!"]; return [{ kind: "out", text: `${G[Math.floor(Math.random() * G.length)]} 👋` }]; } },
       { name: "coffee", desc: "virtual coffee", run: () => [{ kind: "out", text: "☕  Here's a hot cup of virtual coffee. Ethiopian Yirgacheffe, black. Just how devs like it." }] },
-      { name: "tea", desc: "virtual tea", run: () => [{ kind: "out", text: "🍵  Here's a steaming cup of chiya — Nepali milk tea with ginger and cardamom. The official drink of late-night coding sessions." }] },
+      { name: "tea", desc: "virtual tea", run: () => [{ kind: "out", text: "🍵  Here's a steaming cup of chiya, Nepali milk tea with ginger and cardamom. The official drink of late-night coding sessions." }] },
       { name: "compliment", desc: "get a compliment", run: () => {
         const C = ["You have a great taste in terminal commands.", "Your code is probably cleaner than mine.", "You're the kind of person who reads error messages. I respect that.", "Your pull request will be merged with zero comments.", "You look like someone who writes tests before code.", "Your commit messages are better than most poetry.", "You have the energy of someone who actually reads documentation.", "You're doing great. Keep going."];
         return [{ kind: "out", text: `💬 ${C[Math.floor(Math.random() * C.length)]}` }];
