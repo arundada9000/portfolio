@@ -5,6 +5,11 @@ import { useRef } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { site } from "@/lib/data/site";
 import { Typing } from "./Typing";
+import dynamic from "next/dynamic";
+
+// canvas-only toy box: no SSR value, and deferring its chunk keeps the
+// hero's hydration light
+const HeroPlayground = dynamic(() => import("./HeroPlayground").then((m) => m.HeroPlayground), { ssr: false });
 
 function MaskLine({ children, delay, className = "" }: { children: string; delay: number; className?: string }) {
   const reduced = useReducedMotion();
@@ -24,14 +29,22 @@ function MaskLine({ children, delay, className = "" }: { children: string; delay
 
 export function Hero() {
   const reduced = useReducedMotion();
-  const spot = useRef<HTMLDivElement>(null);
+  const glow = useRef<HTMLDivElement>(null);
+  const pos = useRef({ x: 0, y: 0 });
+  const ticking = useRef(false);
 
+  // record coords per event, write the transform at most once per frame
   const onMove = (e: React.PointerEvent) => {
-    const el = spot.current;
-    if (!el) return;
-    const r = el.getBoundingClientRect();
-    el.style.setProperty("--mx", `${e.clientX - r.left}px`);
-    el.style.setProperty("--my", `${e.clientY - r.top}px`);
+    pos.current = { x: e.clientX, y: e.clientY };
+    if (ticking.current) return;
+    ticking.current = true;
+    requestAnimationFrame(() => {
+      ticking.current = false;
+      const el = glow.current;
+      if (!el || !el.parentElement) return;
+      const r = el.parentElement.getBoundingClientRect();
+      el.style.transform = `translate3d(${pos.current.x - r.left - 420}px, ${pos.current.y - r.top - 420}px, 0)`;
+    });
   };
 
   const fade = (delay: number) => ({
@@ -47,10 +60,14 @@ export function Hero() {
       className="relative overflow-hidden"
     >
       {/* ambient layers */}
-      <div ref={spot} className="hero-spotlight pointer-events-none absolute inset-0 z-0" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+        {/* initial resting spot ≈ upper middle, until the pointer takes over */}
+        <div ref={glow} className="hero-glow" style={{ transform: "translate3d(calc(50vw - 420px), -280px, 0)" }} />
+      </div>
       <div className="dot-grid pointer-events-none absolute inset-0 z-0" aria-hidden="true" />
 
-      <div className="relative z-10 mx-auto max-w-6xl px-4 pt-32 pb-24 sm:px-6 sm:pt-40">
+      <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-12 px-4 pt-32 pb-24 sm:px-6 sm:pt-40 lg:grid-cols-[1fr_420px]">
+        <div>
         {/* status row */}
         <motion.div {...fade(0.1)} className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-xs">
           <span className="text-eyebrow !text-dust">
@@ -120,6 +137,15 @@ export function Hero() {
             </li>
           ))}
         </motion.ul>
+        </div>
+
+        {/* right column: the playground (big screens only) */}
+        <motion.div
+          {...fade(0.9)}
+          className="hidden lg:block"
+        >
+          <HeroPlayground />
+        </motion.div>
       </div>
 
       {/* scroll cue */}
