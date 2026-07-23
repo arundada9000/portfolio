@@ -50,6 +50,8 @@ The design concept is a **late-night amber-phosphor terminal session**. The sign
 | **Styling** | Tailwind CSS v4 |
 | **Animation** | Motion (Framer Motion) + GSAP |
 | **Fonts** | Bricolage Grotesque, Instrument Sans, JetBrains Mono |
+| **Analytics** | Vercel Analytics (privacy-friendly, zero-config) |
+| **Offline** | Service worker + terminal-themed offline page |
 | **Deployment** | Vercel (zero-config) |
 
 ---
@@ -58,7 +60,8 @@ The design concept is a **late-night amber-phosphor terminal session**. The sign
 
 | Section | Description |
 |---|---|
-| **Hero** | Animated name reveal, typing role switcher, ambient spotlight + dot-grid layers |
+| **Loader** | A random language (bash, python, rust, sql…) types a fetch command, "downloads" Arun, then the page wipes in - once per session |
+| **Hero** | Animated name reveal, typing role switcher, cursor-following glow + dot-grid - and on big screens, the **playground**: four switchable canvas channels (particle portrait, playable snake, project radar, game of life) |
 | **About** | Self-taught origin story, portrait, live stats (70+ repos, 3 production systems, 2+ years) |
 | **Skills** | Category grids (Languages, Frontend, Backend, DevOps) + infinite marquee strip |
 | **Projects** | Featured case-study cards with terminal mockups, architecture diagrams, technical decisions |
@@ -66,6 +69,7 @@ The design concept is a **late-night amber-phosphor terminal session**. The sign
 | **Open Source** | Stats, pinned repos, contribution activity |
 | **Experience** | Timeline: CTO @ Sajilo Digital, Vice Secretary @ Code for Change, independent projects, BSc CSIT |
 | **Contact** | Form (Web3Forms) with terminal feedback + WhatsApp, LinkedIn, Email links |
+| **Terminal (⌘K)** | Full command palette: 40+ commands - navigation, socials, a working music player, snake-adjacent games, jokes, matrix, cowsay, and a few secrets |
 
 ---
 
@@ -98,12 +102,15 @@ arun-portfolio/
 ├── public/
 │   ├── images/           # Portrait, OG images
 │   ├── screenshots/      # Project screenshots for gallery
+│   ├── music/            # Terminal music player tracks
+│   ├── sw.js             # Service worker (offline + static caching)
 │   └── arun-neupane-resume.pdf
 ├── src/
 │   ├── app/              # Next.js App Router pages
 │   │   ├── layout.tsx    # Root layout + SEO/AEO JSON-LD
 │   │   ├── page.tsx      # Home page composition
 │   │   ├── not-found.tsx # Custom 404
+│   │   ├── offline/      # Offline fallback (served by the service worker)
 │   │   ├── robots.ts     # robots.txt
 │   │   ├── sitemap.ts    # sitemap.xml
 │   │   └── work/         # Case study routes (/work/[slug])

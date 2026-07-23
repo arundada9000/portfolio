@@ -66,16 +66,33 @@ Three roles, deliberately paired - not one neutral family doing everything.
 - **Nav** - fixed, blurred; desktop inline links, mobile full-screen opaque overlay
   (numbered), Escape + resize-past-breakpoint close it.
 - **Reveal / Typing** - motion primitives, both gated on `prefers-reduced-motion`.
+- **Preloader** - the "fetch Arun" bit: a random language (bash/python/rust/sql/…) types a
+  fetch command, a spinner resolves the host, the response lands, the page wipes in.
+  Server-rendered so it owns the first paint; plays once per session; ~2.5s of theater.
+- **HeroPlayground** (desktop only) - a terminal window with four switchable canvas
+  channels: particle portrait (cursor scatters it), playable snake, project radar
+  (blips link to case studies), game of life (drag to paint). Experiences, not info -
+  the left column already carries the identity. Loops pause off-screen; reduced motion
+  gets a still portrait.
+- **CommandPalette (⌘K)** - the site's terminal: 40+ commands, music player, games,
+  easter eggs. Chunk loads on idle, off the critical path.
+- **CustomCursor** - amber dot + trailing ring (`(pointer:fine)` only). Both live on
+  compositor layers; the ring lerp is frame-rate independent.
 
 ## Motion
 
 Restrained by mandate (over-animation is an anti-reference).
 
-- Hero: one orchestrated boot-then-reveal sequence on load. Not repeated elsewhere.
+- Load: the fetch-command preloader is the one theatrical moment; the hero reveal follows it.
+- Hero: one orchestrated reveal sequence. Not repeated elsewhere.
 - Scroll: single rise-and-fade (`Reveal`) per section, `once: true`. No parallax, no scroll-jacking.
 - Micro: card hover-lift, link underline, statusline mode flip. Small, purposeful.
 - Ambient: one faint CRT vignette + grain layer. A skill marquee (pauses for reduced motion).
 - **Every animation must survive `prefers-reduced-motion: reduce`** - all disabled there.
+- **Pointer-driven visuals follow one perf rule**: record coords in the event handler,
+  write styles once per rAF, move things with `translate3d` on `will-change: transform`
+  layers, cache `getBoundingClientRect`. Never repaint a gradient per mouse move
+  (the hero glow is a composited blob for exactly this reason).
 
 ## Accessibility floor
 
