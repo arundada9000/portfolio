@@ -6,7 +6,7 @@ import { skillCategories } from "@/lib/data/skills";
 import { Nav } from "@/components/Nav";
 import { StatusLine } from "@/components/StatusLine";
 import { Footer } from "@/components/Footer";
-import { CommandPalette } from "@/components/CommandPalette";
+import { LazyPalette } from "@/components/LazyPalette";
 import { Preloader } from "@/components/Preloader";
 import { CustomCursor } from "@/components/CustomCursor";
 import { BackToTop } from "@/components/BackToTop";
@@ -14,6 +14,8 @@ import { ContextMenu } from "@/components/ContextMenu";
 import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
 import { DevConsole } from "@/components/DevConsole";
 import { ScrollProgress } from "@/components/ScrollProgress";
+import { ServiceWorker } from "@/components/ServiceWorker";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -382,11 +384,12 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(entityGraph) }}
         />
+        {/* lazyOnload: ads can wait - afterInteractive was costing ~640ms of main-thread time during hydration */}
         <Script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1708134460872611"
           crossOrigin="anonymous"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
         <a
           href="#work"
@@ -400,12 +403,14 @@ export default function RootLayout({
         <div className="relative z-10 flex-1">{children}</div>
         <Footer />
         <StatusLine />
-        <CommandPalette />
+        <LazyPalette />
         <KeyboardShortcuts />
         <ContextMenu />
         <BackToTop />
         <CustomCursor />
         <DevConsole />
+        <ServiceWorker />
+        <Analytics />
       </body>
     </html>
   );
