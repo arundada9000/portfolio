@@ -36,7 +36,10 @@ export function ProjectCard({ project }: { project: Project }) {
         </div>
 
         <p className="mt-3 text-dust">{project.summary}</p>
-        <p className="mt-3 border-l-2 border-amber/60 pl-3 text-sm text-fog">{project.outcome}</p>
+        <p className="mt-3 flex gap-2 rounded bg-line/40 px-3 py-2 text-sm text-fog">
+          <span className="font-mono text-amber" aria-hidden="true">↳</span>
+          {project.outcome}
+        </p>
 
         <ul className="mt-4 flex flex-wrap gap-1.5">
           {project.tech.slice(0, 6).map((tech) => (

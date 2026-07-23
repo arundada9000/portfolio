@@ -31,7 +31,8 @@ export function About() {
               that works offline, room hunting with real maps, algorithm visualizers my
               classmates study with.
             </p>
-            <p className="border-l-2 border-amber pl-4 font-mono text-base text-fog">
+            <p className="rounded-lg bg-line/40 p-4 font-mono text-base text-fog">
+              <span className="text-amber" aria-hidden="true">{"// "}</span>
               Fun fact: the clock in the statusline below is live Nepal time (UTC+5:45 -
               yes, the :45 is real). If it reads past midnight, I&apos;m probably still pushing commits.
             </p>
