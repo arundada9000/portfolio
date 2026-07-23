@@ -25,10 +25,10 @@ export function CustomCursor() {
     let ry = my;
     let raf = 0;
 
+    // handlers only record coords; all style writes happen in the rAF loop
     const onMove = (e: PointerEvent) => {
       mx = e.clientX;
       my = e.clientY;
-      if (dot.current) dot.current.style.transform = `translate(${mx}px, ${my}px)`;
     };
 
     const isInteractive = (t: EventTarget | null) =>
@@ -48,13 +48,20 @@ export function CustomCursor() {
       if (ring.current) ring.current.style.opacity = "1";
     };
 
-    const loop = () => {
-      rx += (mx - rx) * 0.18;
-      ry += (my - ry) * 0.18;
-      if (ring.current) ring.current.style.transform = `translate(${rx}px, ${ry}px)`;
+    // one rAF loop writes both transforms: the dot pins to the latest coords,
+    // the ring trails with a frame-rate-independent lerp (same feel at any Hz)
+    let lastT = performance.now();
+    const loop = (now: number) => {
+      const dt = Math.min((now - lastT) / 1000, 0.05);
+      lastT = now;
+      const k = 1 - Math.exp(-16 * dt);
+      rx += (mx - rx) * k;
+      ry += (my - ry) * k;
+      if (dot.current) dot.current.style.transform = `translate3d(${mx}px, ${my}px, 0)`;
+      if (ring.current) ring.current.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
       raf = requestAnimationFrame(loop);
     };
-    loop();
+    raf = requestAnimationFrame(loop);
 
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("pointerover", onOver, { passive: true });
@@ -79,7 +86,9 @@ export function CustomCursor() {
 
   return (
     <>
-      <div ref={ring} className="cursor-ring" />
+      <div ref={ring} className="cursor-ring">
+        <span className="cursor-ring-inner" />
+      </div>
       <div ref={dot} className="cursor-dot" />
     </>
   );
