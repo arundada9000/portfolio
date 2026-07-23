@@ -35,6 +35,8 @@ export const site = {
   socials: [
     { label: "GitHub", href: "https://github.com/arundada9000", handle: "@arundada9000" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/arundada9000", handle: "in/arundada9000" },
+    { label: "X", href: "https://x.com/arundada9000", handle: "@arundada9000" },
+    { label: "YouTube", href: "https://www.youtube.com/@arundada9000", handle: "@arundada9000" },
     { label: "WhatsApp", href: "https://wa.me/9779811420975?text=Hi%20Arun%2C%20I%20saw%20your%20portfolio", handle: "+977 9811420975" },
     { label: "Email", href: "mailto:arunneupane0000@gmail.com", handle: "arunneupane0000@gmail.com" },
     { label: "Instagram", href: "https://www.instagram.com/arundada9000/", handle: "@arundada9000" },

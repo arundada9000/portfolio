@@ -178,11 +178,28 @@ export function CommandPalette() {
     const song = SONGS.find((s) => s.key === key);
     if (!song) return;
     const audio = ensureAudio();
-    audio.pause();
-    audio.src = song.file;
+    // same track already loaded → resume from position instead of restarting
+    const sameTrack = !!audio.src && audio.src.includes(song.file);
+    if (!sameTrack) {
+      audio.pause();
+      audio.src = song.file;
+    }
     audio.volume = musicState.volume / 100;
-    audio.play().catch(() => {});
-    setMusicState({ current: key, playing: true, volume: musicState.volume });
+    // reflect reality in the statusline: playing only once playback starts,
+    // and surface a terminal error instead of failing silently
+    audio.onended = () => setMusicState((p) => ({ ...p, playing: false }));
+    audio
+      .play()
+      .then(() => setMusicState((p) => ({ ...p, current: key, playing: true })))
+      .catch((err: unknown) => {
+        setMusicState((p) => ({ ...p, current: null, playing: false }));
+        const reason =
+          err instanceof DOMException && err.name === "NotAllowedError"
+            ? "browser blocked autoplay - click the page once, then retry"
+            : `couldn't load ${song.file} - is the file in public/music/? (names are case-sensitive on Vercel)`;
+        setLines((prev) => [...prev, { kind: "err", text: `✗ can't play ${song.label}: ${reason}` }]);
+      });
+    setMusicState((p) => ({ ...p, current: key }));
   }, [ensureAudio, musicState.volume]);
 
   const pauseMusic = useCallback(() => {
@@ -213,7 +230,7 @@ export function CommandPalette() {
           { kind: "hint", text: "── navigation ──  about · skills · work · gallery · open-source · experience · contact" },
           { kind: "hint", text: "── projects ──    ls · open <project> · repo <name>" },
           { kind: "hint", text: "── links ──       github · linkedin · whatsapp · instagram · facebook · email · youtube · twitter · sajilo" },
-          { kind: "hint", text: "── music ──       music · play <song> · pause · stop · next · volume <0-100>" },
+          { kind: "hint", text: "── music ──       music · play [song] · pause · stop · next · volume <0-100>" },
           { kind: "hint", text: "── fun ──         neofetch · matrix · joke · motivate · quote · fortune · ascii · cowsay <t> · 8ball <q> · roll · coinflip · bofh · bingo" },
           { kind: "hint", text: "── dev ──         man <cmd> · whoami · date · cal · uptime · weather · ping · curl · history · socials · echo <text>" },
           { kind: "hint", text: "── easter ──      sudo · secret · hire · namaste · hello · coffee · tea · compliment · invite · banner <t> · figlet <t>" },
@@ -228,13 +245,21 @@ export function CommandPalette() {
           { kind: "hint", text: `now playing: ${musicState.current ? `${musicState.current} ${musicState.playing ? "♪" : "⏸"}` : "none"}` },
           { kind: "hint", text: `volume: ${musicState.volume}%` },
           ...SONGS.map((s) => ({ kind: "out" as const, text: `  ${musicState.current === s.key ? "♪" : " "} ${s.key.padEnd(12)} ${s.label}` })),
-          { kind: "hint", text: "commands: play <song> · pause · stop · next · volume <0-100>" },
+          { kind: "hint", text: "commands: play [song] · pause · stop · next · volume <0-100>" },
         ],
       },
-      { name: "play", args: "<song>", desc: "play a song (blue, kalank, shayad, kamleya)", run: (arg) => {
-        if (!arg) return [{ kind: "err", text: `usage: play <song>  |  songs: ${SONGS.map((s) => s.key).join(" · ")}` }];
+      { name: "play", args: "[song]", desc: "play / resume (blue, kalank, shayad, kamleya)", run: (arg) => {
+        // no arg → resume the current track, or start from the top of the list
+        if (!arg) {
+          const key = musicState.current ?? SONGS[0].key;
+          const song = SONGS.find((s) => s.key === key);
+          if (!song) return [{ kind: "err", text: "no songs available." }];
+          const resuming = musicState.current === key && !musicState.playing;
+          playSong(key);
+          return [{ kind: "out", text: `♪ ${resuming ? "resuming" : "now playing"}: ${song.label}` }];
+        }
         const m = SONGS.find((s) => s.key === arg || s.key.includes(arg));
-        if (!m) return [{ kind: "err", text: `unknown song "${arg}"` }];
+        if (!m) return [{ kind: "err", text: `unknown song "${arg}"  |  songs: ${SONGS.map((s) => s.key).join(" · ")}` }];
         playSong(m.key);
         return [{ kind: "out", text: `♪ now playing: ${m.label}` }];
       }},
@@ -292,6 +317,8 @@ export function CommandPalette() {
       { name: "whatsapp", desc: "start a whatsapp chat", run: () => { window.open(`https://wa.me/${site.whatsapp}?text=Hi%20Arun`, "_blank"); } },
       { name: "instagram", desc: "open instagram", run: () => { window.open("https://www.instagram.com/arundada9000/", "_blank"); } },
       { name: "facebook", desc: "open facebook", run: () => { window.open("https://www.facebook.com/arundada9000/", "_blank"); } },
+      { name: "twitter", desc: "open x / twitter", run: () => { window.open("https://x.com/arundada9000", "_blank"); } },
+      { name: "youtube", desc: "open youtube", run: () => { window.open("https://www.youtube.com/@arundada9000", "_blank"); } },
       { name: "youtube", desc: "open youtube", run: () => { window.open("https://www.youtube.com/@arundada9000", "_blank"); } },
       { name: "twitter", desc: "open x/twitter", run: () => { window.open("https://x.com/arundada9000", "_blank"); } },
       { name: "email", desc: "email me", run: () => { window.location.href = `mailto:${site.email}`; } },
