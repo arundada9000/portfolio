@@ -7,7 +7,7 @@ export function Footer() {
         <p>
           © {new Date().getFullYear()} {site.name} · built with Next.js, caffeine, and NPT midnight oil
         </p>
-        <ul className="flex gap-4">
+        <ul className="flex flex-wrap gap-x-4 gap-y-2">
           {site.socials.map((s) => (
             <li key={s.label}>
               <a href={s.href} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-amber">
