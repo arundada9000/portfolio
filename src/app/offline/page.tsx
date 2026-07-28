@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "offline - arun.sh",
-  robots: { index: false },
+  description: "You're offline. Arun's portfolio will be right here when you reconnect.",
+  robots: { index: false, follow: false },
 };
 
 /** Served by the service worker when the network is gone. */
 export default function Offline() {
   return (
     <main className="flex min-h-[70vh] items-center px-4 sm:px-6">
+      <h1 className="sr-only">You are offline</h1>
       <div className="mx-auto w-full max-w-2xl font-mono">
         <p className="text-eyebrow mb-6">// connection lost</p>
         <div className="overflow-hidden rounded-lg border border-line bg-panel/80">

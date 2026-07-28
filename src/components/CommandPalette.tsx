@@ -161,6 +161,7 @@ export function CommandPalette() {
     current: null, playing: false, volume: 60,
   });
 
+  const dialogRef = useRef<HTMLDivElement>(null);
   const close = useCallback(() => setOpen(false), []);
 
   useEffect(() => {
@@ -319,8 +320,6 @@ export function CommandPalette() {
       { name: "facebook", desc: "open facebook", run: () => { window.open("https://www.facebook.com/arundada9000/", "_blank"); } },
       { name: "twitter", desc: "open x / twitter", run: () => { window.open("https://x.com/arundada9000", "_blank"); } },
       { name: "youtube", desc: "open youtube", run: () => { window.open("https://www.youtube.com/@arundada9000", "_blank"); } },
-      { name: "youtube", desc: "open youtube", run: () => { window.open("https://www.youtube.com/@arundada9000", "_blank"); } },
-      { name: "twitter", desc: "open x/twitter", run: () => { window.open("https://x.com/arundada9000", "_blank"); } },
       { name: "email", desc: "email me", run: () => { window.location.href = `mailto:${site.email}`; } },
       { name: "resume", desc: "download resume", run: () => { window.open(site.resume, "_blank"); } },
       { name: "sajilo", desc: "open sajilo digital", run: () => { window.open(site.company.url, "_blank"); } },
@@ -548,6 +547,38 @@ export function CommandPalette() {
 
   useEffect(() => setGhost(0), [input]);
 
+  // focus trap
+  useEffect(() => {
+    if (!open) return;
+    const el = dialogRef.current;
+    if (!el) return;
+    const focusable = el.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const prev = document.activeElement as HTMLElement | null;
+
+    first?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last?.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      prev?.focus();
+    };
+  }, [open]);
+
   if (!open) return null;
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -576,6 +607,7 @@ export function CommandPalette() {
 
   return (
     <div
+      ref={dialogRef}
       className="fixed inset-0 z-[70] flex items-start justify-center bg-night/70 p-4 pt-[12vh] backdrop-blur-sm"
       role="dialog"
       aria-modal="true"

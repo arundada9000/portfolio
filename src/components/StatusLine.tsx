@@ -74,7 +74,6 @@ export function StatusLine() {
 
   return (
     <div
-      aria-hidden="true"
       className="fixed inset-x-0 bottom-0 z-50 flex h-9 select-none items-stretch overflow-hidden border-t border-line bg-panel font-mono text-[11px] leading-9 sm:text-xs"
     >
       <span

@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { TerminalWindow } from "@/components/TerminalWindow";
+
+export const metadata: Metadata = {
+  title: "404 - Page Not Found",
+  robots: { index: false, follow: false },
+};
 
 export default function NotFound() {
   return (
     <main data-section="404" className="mx-auto flex min-h-[70vh] max-w-2xl flex-col justify-center px-4 pt-28 pb-20 sm:px-6">
+      <h1 className="sr-only">404 - Page Not Found</h1>
       <TerminalWindow title="arun@butwal - zsh">
         <p className="text-fog">
           <span className="text-amber">$ </span>open {`{requested_page}`}

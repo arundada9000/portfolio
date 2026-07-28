@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { site } from "@/lib/data/site";
 
 type Item =
@@ -10,6 +10,7 @@ type Item =
 export function ContextMenu() {
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const openTerminal = () => (window as unknown as { openTerminal?: () => void }).openTerminal?.();
 
@@ -60,10 +61,43 @@ export function ContextMenu() {
     };
   }, []);
 
+  // focus trap
+  useEffect(() => {
+    if (!pos) return;
+    const el = menuRef.current;
+    if (!el) return;
+    const focusable = el.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const prev = document.activeElement as HTMLElement | null;
+
+    first?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last?.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      prev?.focus();
+    };
+  }, [pos]);
+
   return (
     <>
       {pos && (
         <div
+          ref={menuRef}
           className="fixed z-[80] w-58 overflow-hidden rounded-lg border border-line bg-panel/95 py-1.5 font-mono text-sm shadow-2xl shadow-black/60 backdrop-blur"
           style={{ left: pos.x, top: pos.y, width: 232 }}
           onClick={(e) => e.stopPropagation()}

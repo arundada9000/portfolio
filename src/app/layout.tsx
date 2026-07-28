@@ -41,6 +41,7 @@ const IDENTITY_DESC =
 const IDENTITY_DESC_SHORT = "Arun Neupane (arundada9000): self-taught frontend developer from Nepal. CTO at Sajilo Digital. React, Next.js, TypeScript.";
 
 const MY_IMAGES = `${site.url}/my-images`;
+const DEPLOYED_ISO = "2026-07-10T13:49:00+05:45";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -79,7 +80,7 @@ export const metadata: Metadata = {
   creator: site.name,
   publisher: site.name,
   category: "technology",
-  alternates: { canonical: site.url },
+  alternates: { canonical: site.url, languages: { en: site.url } },
   openGraph: {
     type: "profile",
     url: site.url,
@@ -217,6 +218,10 @@ const entityGraph = {
       inLanguage: "en",
       author: { "@id": PERSON_ID },
       publisher: { "@id": PERSON_ID },
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: [".text-display", ".text-eyebrow"],
+      },
       potentialAction: [
         {
           "@type": "SearchAction",
@@ -240,7 +245,7 @@ const entityGraph = {
       isPartOf: { "@id": SITE_ID },
       about: { "@id": PERSON_ID },
       mainEntity: { "@id": PERSON_ID },
-      dateModified: new Date().toISOString(),
+      dateModified: DEPLOYED_ISO,
     },
     {
       "@type": "ItemList",

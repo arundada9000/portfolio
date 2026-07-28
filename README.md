@@ -56,6 +56,21 @@ The design concept is a **late-night amber-phosphor terminal session**. The sign
 
 ---
 
+## SEO & AEO (AI Engine Optimization)
+
+| Feature | Details |
+|---|---|
+| **JSON-LD entity graph** | Cross-linked Person, Organization, WebSite, ProfilePage, FAQPage (8 Q&As), ItemList for skills -- resolves entity disambiguation for Google and AI engines |
+| **llms.txt** | Structured markdown summary at `/llms.txt`, explicitly allowed for GPTBot -- enables LLMs (Claude, ChatGPT, Gemini) to ingest profile instantly |
+| **Speakable spec** | Marks hero/about content for Google Assistant voice search |
+| **FAQPage schema** | Triggers "People also ask" boxes and featured snippets |
+| **Open Graph + Twitter Cards** | Rich social previews with dynamic terminal-style OG image |
+| **Image sitemap** | Dedicated `/image-sitemap` route for Google Image Search |
+| **Security headers** | X-Content-Type-Options, X-Frame-Options, Permissions-Policy, Referrer-Policy |
+| **Core Web Vitals** | Next.js `<Image>` with AVIF/WebP, responsive sizes, lazy loading; preloader respects reduced motion; font subsetting |
+
+---
+
 ## Sections
 
 | Section | Description |
@@ -103,20 +118,24 @@ arun-portfolio/
 │   ├── images/           # Portrait, OG images
 │   ├── screenshots/      # Project screenshots for gallery
 │   ├── music/            # Terminal music player tracks
+│   ├── testimonials/     # Client testimonial images
 │   ├── sw.js             # Service worker (offline + static caching)
+│   ├── llms.txt          # LLM-friendly profile summary (AI Engine Optimization)
 │   └── arun-neupane-resume.pdf
 ├── src/
 │   ├── app/              # Next.js App Router pages
-│   │   ├── layout.tsx    # Root layout + SEO/AEO JSON-LD
+│   │   ├── layout.tsx    # Root layout + SEO/AEO JSON-LD entity graph
 │   │   ├── page.tsx      # Home page composition
-│   │   ├── not-found.tsx # Custom 404
+│   │   ├── not-found.tsx # Custom 404 with terminal theme
 │   │   ├── offline/      # Offline fallback (served by the service worker)
 │   │   ├── robots.ts     # robots.txt
 │   │   ├── sitemap.ts    # sitemap.xml
+│   │   ├── image-sitemap/route.ts  # Image sitemap for Google Images
 │   │   └── work/         # Case study routes (/work/[slug])
 │   ├── components/       # UI components (Hero, About, Skills, Projects, etc.)
 │   └── lib/
 │       └── data/         # All content: site, projects, skills, experience, gallery
+├── next.config.ts        # Security headers, image optimization config
 ├── LICENSE               # All Rights Reserved
 ├── CONTRIBUTING.md
 ├── SECURITY.md

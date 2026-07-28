@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { galleries } from "@/lib/data/gallery";
 import { Section } from "./Section";
@@ -30,12 +31,12 @@ export function Gallery() {
               className="absolute inset-0"
               aria-label={`View ${g.title} screenshots`}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={g.cover}
                 alt={`${g.title} cover`}
-                loading="lazy"
-                className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                fill
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
               />
               <span className="absolute inset-0 bg-gradient-to-t from-night via-night/30 to-transparent opacity-80 transition-opacity group-hover:opacity-95" />
             </button>

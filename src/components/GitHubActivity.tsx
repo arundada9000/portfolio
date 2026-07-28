@@ -42,6 +42,7 @@ export function GitHubActivity() {
 
   useEffect(() => {
     let alive = true;
+    const controller = new AbortController();
     const apply = (s: State) => alive && setState(s);
 
     const cached = (() => {
@@ -62,7 +63,7 @@ export function GitHubActivity() {
       };
     }
 
-    fetch(`https://api.github.com/users/${site.alias}/repos?per_page=100&sort=updated`)
+    fetch(`https://api.github.com/users/${site.alias}/repos?per_page=100&sort=updated`, { signal: controller.signal })
       .then((r) => {
         if (!r.ok) throw new Error(String(r.status));
         return r.json();
@@ -79,6 +80,7 @@ export function GitHubActivity() {
 
     return () => {
       alive = false;
+      controller.abort();
     };
   }, []);
 

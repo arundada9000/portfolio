@@ -28,8 +28,8 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
       description: project.summary,
       url: `${site.url}/work/${project.slug}`,
       type: "article",
-      publishedTime: "2025-01-01T00:00:00Z",
-      modifiedTime: new Date().toISOString(),
+      publishedTime: `${project.year}-01-01T00:00:00Z`,
+      modifiedTime: "2026-07-10T13:49:00+05:45",
       tags: project.tech,
       images: [{ url: `${site.url}/opengraph-image`, width: 1200, height: 630 }],
     },
@@ -74,9 +74,13 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <nav aria-label="Breadcrumb" className="mb-10 font-mono text-sm">
-        <Link href="/#work" className="text-dust transition-colors hover:text-amber">
-          ← cd ~/work
-        </Link>
+        <ol className="flex items-center gap-2 text-dust">
+          <li><Link href="/" className="transition-colors hover:text-amber">~/home</Link></li>
+          <li aria-hidden="true">/</li>
+          <li><Link href="/#work" className="transition-colors hover:text-amber">work</Link></li>
+          <li aria-hidden="true">/</li>
+          <li className="text-amber" aria-current="page">{project.slug}</li>
+        </ol>
       </nav>
 
       <p className="text-eyebrow">

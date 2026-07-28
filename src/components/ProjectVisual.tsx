@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { TerminalWindow } from "./TerminalWindow";
 
 /**
@@ -23,13 +24,13 @@ export function ProjectVisual({
   if (image && !failed) {
     return (
       <div className="relative aspect-[16/10] overflow-hidden border-b border-line bg-night">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src={image}
           alt={`${title} - screenshot`}
-          loading="lazy"
+          fill
+          sizes="(max-width: 1024px) 100vw, 50vw"
           onError={() => setFailed(true)}
-          className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
+          className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
         />
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-night/50 to-transparent" />
       </div>

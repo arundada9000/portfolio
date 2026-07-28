@@ -190,7 +190,7 @@ export function SortingVisualizer() {
       </div>
 
       {/* status line */}
-      <p className="mt-3 font-mono text-xs text-dust">
+      <p className="mt-3 font-mono text-xs text-dust" role="status" aria-live="polite">
         <span className="text-amber">{algo}Sort()</span> · {COMPLEXITY[algo]} ·{" "}
         <span className="text-fog">
           {done ? "sorted ✓" : `step ${step}/${frames.length - 1}`}

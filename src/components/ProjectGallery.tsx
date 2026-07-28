@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Lightbox } from "./Lightbox";
 
 /** Case-study screenshot strip. Renders the project's real screenshots and
@@ -23,12 +24,12 @@ export function ProjectGallery({ images, title }: { images: string[]; title: str
             }`}
             aria-label={`View screenshot ${i + 1} of ${title}`}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={src}
               alt={`${title} screenshot ${i + 1}`}
-              loading="lazy"
-              className="w-full transition-transform duration-500 group-hover:scale-[1.03]"
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 50vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
             />
             <span className="pointer-events-none absolute inset-0 bg-night/0 transition-colors group-hover:bg-night/20" />
             <span className="pointer-events-none absolute bottom-2 right-2 rounded border border-line bg-panel/80 px-2 py-0.5 font-mono text-[10px] text-dust opacity-0 backdrop-blur transition-opacity group-hover:opacity-100">

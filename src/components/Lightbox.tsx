@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import Image from "next/image";
 
 /** Full-screen image viewer with keyboard + click navigation. */
 export function Lightbox({
@@ -16,6 +17,7 @@ export function Lightbox({
   onClose: () => void;
   onNavigate: (i: number) => void;
 }) {
+  const dialogRef = useRef<HTMLDivElement>(null);
   const prev = () => onNavigate((index - 1 + images.length) % images.length);
   const next = () => onNavigate((index + 1) % images.length);
 
@@ -31,11 +33,42 @@ export function Lightbox({
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [index, images.length]);
+  }, [index, images.length, onClose, prev, next]);
+
+  // focus trap
+  useEffect(() => {
+    const el = dialogRef.current;
+    if (!el) return;
+    const focusable = el.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const prevFocus = document.activeElement as HTMLElement | null;
+
+    first?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last?.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      prevFocus?.focus();
+    };
+  }, []);
 
   return (
     <div
+      ref={dialogRef}
       className="fixed inset-0 z-[95] flex flex-col items-center justify-center bg-night/95 p-4 backdrop-blur-sm sm:p-8"
       role="dialog"
       aria-modal="true"
@@ -54,11 +87,12 @@ export function Lightbox({
 
       {/* image */}
       <div className="relative flex max-h-[78vh] w-full max-w-5xl items-center justify-center" onClick={(e) => e.stopPropagation()}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src={images[index]}
           alt={`${title} screenshot ${index + 1}`}
-          className="max-h-[78vh] w-auto max-w-full rounded-lg border border-line object-contain"
+          fill
+          sizes="(max-width: 1280px) 100vw, 1024px"
+          className="max-h-[78vh] w-auto !max-w-full rounded-lg border border-line object-contain"
         />
         {images.length > 1 && (
           <>
@@ -90,13 +124,12 @@ export function Lightbox({
               key={src}
               type="button"
               onClick={() => onNavigate(i)}
-              className={`h-14 w-20 shrink-0 overflow-hidden rounded border transition-opacity ${
+              className={`relative h-14 w-20 shrink-0 overflow-hidden rounded border transition-opacity ${
                 i === index ? "border-amber opacity-100" : "border-line opacity-50 hover:opacity-80"
               }`}
               aria-label={`Go to screenshot ${i + 1}`}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={src} alt="" className="h-full w-full object-cover" />
+              <Image src={src} alt="" fill className="object-cover" />
             </button>
           ))}
         </div>

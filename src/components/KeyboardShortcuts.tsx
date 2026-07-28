@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "motion/react";
 
 const NAV: Record<string, string> = {
   h: "#hero",
@@ -35,6 +36,8 @@ export function KeyboardShortcuts() {
   const [open, setOpen] = useState(false);
   const leader = useRef(false);
   const leaderTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     const inField = () => {
@@ -66,7 +69,7 @@ export function KeyboardShortcuts() {
       } else if (e.key.toLowerCase() === "t") {
         window.scrollTo({
           top: 0,
-          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+          behavior: reduced ? "auto" : "smooth",
         });
       } else if (e.key.toLowerCase() === "g") {
         leader.current = true;
@@ -83,6 +86,38 @@ export function KeyboardShortcuts() {
     };
   }, []);
 
+  // focus trap
+  useEffect(() => {
+    if (!open) return;
+    const el = dialogRef.current;
+    if (!el) return;
+    const focusable = el.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const prev = document.activeElement as HTMLElement | null;
+
+    first?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Tab") return;
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last?.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      prev?.focus();
+    };
+  }, [open]);
+
   if (!open) return null;
 
   return (
@@ -94,6 +129,7 @@ export function KeyboardShortcuts() {
       onClick={() => setOpen(false)}
     >
       <div
+        ref={dialogRef}
         className="w-full max-w-md overflow-hidden rounded-lg border border-line bg-panel shadow-2xl shadow-black/60"
         onClick={(e) => e.stopPropagation()}
       >

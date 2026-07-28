@@ -47,11 +47,14 @@ export function Preloader() {
 
   useEffect(() => {
     // full drama on the first view of a session; instant on repeat views
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || sessionStorage.getItem("fetched")) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setPhase("done");
       return;
     }
-    sessionStorage.setItem("fetched", "1");
+    let alreadyFetched = false;
+    try { alreadyFetched = !!sessionStorage.getItem("fetched"); } catch {}
+    if (alreadyFetched) { setPhase("done"); return; }
+    try { sessionStorage.setItem("fetched", "1"); } catch {}
     pick.current = FETCHES[Math.floor(Math.random() * FETCHES.length)];
     document.body.style.overflow = "hidden";
 
@@ -107,7 +110,7 @@ export function Preloader() {
       {/* repeat views: hide the SSR overlay during HTML parse, before hydration */}
       <script
         dangerouslySetInnerHTML={{
-          __html: `try{if(sessionStorage.getItem("fetched"))document.currentScript.parentElement.style.display="none"}catch(e){}`,
+          __html: `try{if(sessionStorage.getItem("fetched")){var p=document.currentScript&&document.currentScript.parentElement;if(p)p.style.display="none"}}catch(e){}`,
         }}
       />
       {/* top row - identity */}
@@ -153,7 +156,7 @@ export function Preloader() {
 
 const words = ["booting", "loading assets", "mounting ui", "almost there", "ready"];
 
-export function CountUpPreloader() {
+function CountUpPreloader() {
   const [phase, setPhase] = useState<"boot" | "leaving" | "done">("done");
   const [pct, setPct] = useState(0);
 

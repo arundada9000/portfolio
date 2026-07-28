@@ -24,7 +24,7 @@ export function ExperienceTimeline() {
         />
 
         {experience.map((item, i) => (
-          <li key={item.org} className="relative pb-12 last:pb-0">
+          <li key={`${item.org}-${item.period}`} className="relative pb-12 last:pb-0">
             <motion.span
               className="absolute -left-[37px] top-2 size-2.5 rounded-full bg-amber shadow-[0_0_12px_rgba(255,180,84,0.6)]"
               initial={reduced ? false : { scale: 0 }}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { featuredProjects } from "@/lib/data/projects";
 
 /**
@@ -52,7 +53,14 @@ function Particles({ running }: { running: boolean }) {
     type P = { x: number; y: number; vx: number; vy: number; hx: number; hy: number; bucket: number };
     const buckets: P[][] = [[], [], [], [], []];
 
-    const img = new Image();
+    const img = document.createElement("img");
+    img.onerror = () => {
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = `rgba(${AMBER},0.4)`;
+      ctx.font = "13px monospace";
+      ctx.textAlign = "center";
+      ctx.fillText("// portrait unavailable", W / 2, H / 2);
+    };
     img.src = "/images/arun.png";
     img.onload = () => {
       if (!alive) return;
@@ -91,6 +99,8 @@ function Particles({ running }: { running: boolean }) {
       }
       loop();
     };
+
+
 
     const styles = [0.22, 0.38, 0.55, 0.75, 0.95].map((a) => `rgba(${AMBER},${a})`);
     const R = 68;
@@ -153,7 +163,7 @@ function Particles({ running }: { running: boolean }) {
   }, []);
 
   const ref = useCanvas(draw, running);
-  return <canvas ref={ref} className="h-full w-full" aria-label="Interactive particle portrait of Arun - move your cursor to scatter it" />;
+  return <canvas ref={ref} role="img" className="h-full w-full" aria-label="Interactive particle portrait of Arun - move your cursor to scatter it" />;
 }
 
 /* ── 2. snake ───────────────────────────────────────────────── */
@@ -172,7 +182,8 @@ function Snake({ running }: { running: boolean }) {
     let food = { x: 16, y: Math.floor(ROWS / 2) };
     let state: "idle" | "playing" | "dead" = "idle";
     let score = 0;
-    let high = parseInt(localStorage.getItem("snake-high") || "0", 10);
+    let high: number;
+    try { high = parseInt(localStorage.getItem("snake-high") || "0", 10); } catch { high = 0; }
     let raf = 0;
     let last = 0;
     let alive = true;
@@ -198,7 +209,7 @@ function Snake({ running }: { running: boolean }) {
         state = "dead";
         if (score > high) {
           high = score;
-          localStorage.setItem("snake-high", String(high));
+          try { localStorage.setItem("snake-high", String(high)); } catch {}
         }
         return;
       }
@@ -291,7 +302,7 @@ function Snake({ running }: { running: boolean }) {
   }, []);
 
   const ref = useCanvas(draw, running);
-  return <canvas ref={ref} className="h-full w-full cursor-pointer" aria-label="Playable snake game - click to start, steer with arrow keys" />;
+  return <canvas ref={ref} role="img" className="h-full w-full cursor-pointer" aria-label="Playable snake game - click to start, steer with arrow keys" />;
 }
 
 /* ── 3. project radar ───────────────────────────────────────── */
@@ -399,7 +410,7 @@ function Radar({ running }: { running: boolean }) {
   }, []);
 
   const ref = useCanvas(draw, running);
-  return <canvas ref={ref} className="h-full w-full" aria-label="Project radar - featured projects appear as blips, click one to open its case study" />;
+  return <canvas ref={ref} role="img" className="h-full w-full" aria-label="Project radar - featured projects appear as blips, click one to open its case study" />;
 }
 
 /* ── 4. game of life ────────────────────────────────────────── */
@@ -501,7 +512,7 @@ function Life({ running }: { running: boolean }) {
   }, []);
 
   const ref = useCanvas(draw, running);
-  return <canvas ref={ref} className="h-full w-full cursor-crosshair" aria-label="Living pixel canvas - drag your cursor to paint new cells" />;
+  return <canvas ref={ref} role="img" className="h-full w-full cursor-crosshair" aria-label="Living pixel canvas - drag your cursor to paint new cells" />;
 }
 
 /* ── the window + channel switcher ──────────────────────────── */
@@ -515,8 +526,10 @@ export function HeroPlayground() {
   // restore last channel
   useEffect(() => {
     setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-    const saved = localStorage.getItem("hero-toy") as Toy | null;
-    if (saved && TOYS.some((t) => t.id === saved)) setToy(saved);
+    try {
+      const saved = localStorage.getItem("hero-toy") as Toy | null;
+      if (saved && TOYS.some((t) => t.id === saved)) setToy(saved);
+    } catch {}
   }, []);
 
   // pause when off-screen or tab hidden
@@ -539,10 +552,10 @@ export function HeroPlayground() {
 
   const pick = (id: Toy) => {
     setToy(id);
-    localStorage.setItem("hero-toy", id);
+    try { localStorage.setItem("hero-toy", id); } catch {}
   };
 
-  const current = TOYS.find((t) => t.id === toy)!;
+  const current = TOYS.find((t) => t.id === toy) ?? TOYS[0];
 
   return (
     <div ref={wrapRef} className="overflow-hidden rounded-lg border border-line bg-panel/80 shadow-2xl shadow-black/40 backdrop-blur-sm">
@@ -573,8 +586,7 @@ export function HeroPlayground() {
       <div className="relative aspect-[4/4.4] bg-night/70">
         {reduced ? (
           /* reduced motion: a calm still portrait instead of animation */
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img src="/images/arun.png" alt="Portrait of Arun Neupane" className="h-full w-full object-contain p-6 opacity-90" />
+          <Image src="/images/arun.png" alt="Portrait of Arun Neupane" fill className="object-contain p-6 opacity-90" />
         ) : (
           <>
             {toy === "particles" && <Particles running={running} />}
