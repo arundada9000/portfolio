@@ -1,11 +1,11 @@
 <div align="center">
-  <img src="public/images/arun.png" alt="Arun Neupane" width="120" height="120" style="border-radius: 50%;" />
+  <img src="public/my-images/arun-casual.jpg" alt="Arun Neupane" width="120" height="120" style="border-radius: 50%;" />
   <br />
   <br />
 
   # Arun Neupane - Portfolio
 
-  **`/arundada9000`** - Frontend Developer · CTO @ Sajilo Digital · Nepal
+  **`/arundada9000`** - Frontend Developer | CTO @ Sajilo Digital | Nepal
 
   <br />
 
@@ -18,7 +18,7 @@
 
   <br />
 
-  **[arunneupane.vercel.app](https://arunneupane.vercel.app)** &nbsp;·&nbsp; **[arun.sajilodigital.com.np](https://arun.sajilodigital.com.np)**
+  **[arunneupane.vercel.app](https://arunneupane.vercel.app)** &nbsp;|&nbsp; **[arun.sajilodigital.com.np](https://arun.sajilodigital.com.np)**
 
   <br />
 </div>
@@ -37,6 +37,18 @@ The design concept is a **late-night amber-phosphor terminal session**. The sign
 - **Case studies**: Architecture decisions, constraint-driven design, and lessons learned - documented for each featured project
 - **Open source**: 70+ public repositories, algorithm visualizers, utilities, and learning-in-public artifacts
 - **Technical depth**: React 19, Next.js 16 App Router, TypeScript strict mode, Tailwind CSS v4, Motion (Framer Motion), GSAP, PostGIS, WebAuthn
+
+---
+
+## Screenshots
+
+<p align="center">
+  <img src="screenshots/portfolio-desktop.png" alt="Arun Neupane portfolio - desktop view" width="720">
+</p>
+
+<p align="center">
+  <img src="screenshots/portfolio-mobile.png" alt="Arun Neupane portfolio - mobile view" width="280">
+</p>
 
 ---
 
@@ -75,7 +87,7 @@ The design concept is a **late-night amber-phosphor terminal session**. The sign
 
 | Section | Description |
 |---|---|
-| **Loader** | A random language (bash, python, rust, sql…) types a fetch command, "downloads" Arun, then the page wipes in - once per session |
+| **Loader** | A random language (bash, python, rust, sql...) types a fetch command, "downloads" Arun, then the page wipes in - once per session |
 | **Hero** | Animated name reveal, typing role switcher, cursor-following glow + dot-grid - and on big screens, the **playground**: four switchable canvas channels (particle portrait, playable snake, project radar, game of life) |
 | **About** | Self-taught origin story, portrait, live stats (70+ repos, 3 production systems, 2+ years) |
 | **Skills** | Category grids (Languages, Frontend, Backend, DevOps) + infinite marquee strip |
@@ -84,7 +96,7 @@ The design concept is a **late-night amber-phosphor terminal session**. The sign
 | **Open Source** | Stats, pinned repos, contribution activity |
 | **Experience** | Timeline: CTO @ Sajilo Digital, Vice Secretary @ Code for Change, independent projects, BSc CSIT |
 | **Contact** | Form (Web3Forms) with terminal feedback + WhatsApp, LinkedIn, Email links |
-| **Terminal (⌘K)** | Full command palette: 40+ commands - navigation, socials, a working music player, snake-adjacent games, jokes, matrix, cowsay, and a few secrets |
+| **Terminal (Cmd+K)** | Full command palette: 40+ commands - navigation, socials, a working music player, snake-adjacent games, jokes, matrix, cowsay, and a few secrets |
 
 ---
 
@@ -95,7 +107,7 @@ The design concept is a **late-night amber-phosphor terminal session**. The sign
 pnpm install
 
 # start dev server
-pnpm dev          # → http://localhost:3000
+pnpm dev          # -> http://localhost:3000
 
 # production build
 pnpm build
@@ -106,7 +118,7 @@ pnpm lint
 
 ### Environment
 
-Copy `.env.local.example` → `.env.local` and set `NEXT_PUBLIC_WEB3FORMS_KEY` for the contact form. Without it, the form degrades to a `mailto:` fallback.
+Copy `.env.local.example` -> `.env.local` and set `NEXT_PUBLIC_WEB3FORMS_KEY` for the contact form. Without it, the form degrades to a `mailto:` fallback.
 
 ---
 
@@ -114,34 +126,34 @@ Copy `.env.local.example` → `.env.local` and set `NEXT_PUBLIC_WEB3FORMS_KEY` f
 
 ```
 arun-portfolio/
-├── public/
-│   ├── images/           # Portrait, OG images
-│   ├── screenshots/      # Project screenshots for gallery
-│   ├── music/            # Terminal music player tracks
-│   ├── testimonials/     # Client testimonial images
-│   ├── sw.js             # Service worker (offline + static caching)
-│   ├── llms.txt          # LLM-friendly profile summary (AI Engine Optimization)
-│   └── arun-neupane-resume.pdf
-├── src/
-│   ├── app/              # Next.js App Router pages
-│   │   ├── layout.tsx    # Root layout + SEO/AEO JSON-LD entity graph
-│   │   ├── page.tsx      # Home page composition
-│   │   ├── not-found.tsx # Custom 404 with terminal theme
-│   │   ├── offline/      # Offline fallback (served by the service worker)
-│   │   ├── robots.ts     # robots.txt
-│   │   ├── sitemap.ts    # sitemap.xml
-│   │   ├── image-sitemap/route.ts  # Image sitemap for Google Images
-│   │   └── work/         # Case study routes (/work/[slug])
-│   ├── components/       # UI components (Hero, About, Skills, Projects, etc.)
-│   └── lib/
-│       └── data/         # All content: site, projects, skills, experience, gallery
-├── next.config.ts        # Security headers, image optimization config
-├── LICENSE               # All Rights Reserved
-├── CONTRIBUTING.md
-├── SECURITY.md
-├── CODE_OF_CONDUCT.md
-├── .gitignore
-└── package.json
++-- public/
+|   +-- images/           # Portrait, OG images
+|   +-- screenshots/      # Project screenshots for gallery
+|   +-- music/            # Terminal music player tracks
+|   +-- testimonials/     # Client testimonial images
+|   +-- sw.js             # Service worker (offline + static caching)
+|   +-- llms.txt          # LLM-friendly profile summary (AI Engine Optimization)
+|   +-- arun-neupane-resume.pdf
++-- src/
+|   +-- app/              # Next.js App Router pages
+|   |   +-- layout.tsx    # Root layout + SEO/AEO JSON-LD entity graph
+|   |   +-- page.tsx      # Home page composition
+|   |   +-- not-found.tsx # Custom 404 with terminal theme
+|   |   +-- offline/      # Offline fallback (served by the service worker)
+|   |   +-- robots.ts     # robots.txt
+|   |   +-- sitemap.ts    # sitemap.xml
+|   |   +-- image-sitemap/route.ts  # Image sitemap for Google Images
+|   |   +-- work/         # Case study routes (/work/[slug])
+|   +-- components/       # UI components (Hero, About, Skills, Projects, etc.)
+|   +-- lib/
+|       +-- data/         # All content: site, projects, skills, experience, gallery
++-- next.config.ts        # Security headers, image optimization config
++-- LICENSE               # All Rights Reserved
++-- CONTRIBUTING.md
++-- SECURITY.md
++-- CODE_OF_CONDUCT.md
++-- .gitignore
++-- package.json
 ```
 
 ### Customization
@@ -178,12 +190,22 @@ After deploying, update `site.url` in `src/lib/data/site.ts` to your production 
 
 <div align="center">
   <sub>
-    Built with ☕ and ⏰ past midnight · Nepal Time (UTC+5:45)
+    Built in Nepal | Timezone UTC+5:45
   </sub>
   <br />
   <sub>
-    <a href="https://github.com/arundada9000">@arundada9000</a> ·
-    <a href="mailto:arunneupane0000@gmail.com">Email</a> ·
+    <a href="https://github.com/arundada9000">@arundada9000</a> |
+    <a href="mailto:arunneupane0000@gmail.com">Email</a> |
     <a href="https://www.linkedin.com/in/arundada9000">LinkedIn</a>
   </sub>
 </div>
+
+---
+
+*vim > exit: no really, :q won't leave.*
+
+*The cursor is still blinking. It's waiting for you.*
+
+---
+
+**Built by Arun Neupane - © 2026 All Rights Reserved**
