@@ -68,7 +68,7 @@ All four were explicitly rejected by Arun:
    forgettable and risk-averse.
 3. **Over-animated / flashy** - scroll-jacking, gratuitous motion, effects that slow the
    page or bury the content. Motion must earn its place.
-4. **Trendy AI-portfolio clichés** - the cream-background serif + terracotta accent, and
+4. **Trendy AI-portfolio cliches** - the cream-background serif + terracotta accent, and
    the single-neon-on-black look that every AI-generated site now shares.
 
 ## Strategic design principles
