@@ -8,7 +8,7 @@
 
 **"The night shift"** - a late-night amber-phosphor terminal session on deep night-blue.
 Dark-only by intent (a developer coding after midnight; the live clock reinforces it).
-Warm amber against cool blue-black, not the clichéd single-neon-on-black. The interface
+Warm amber against cool blue-black, not the cliched single-neon-on-black. The interface
 borrows real terminal literacy - prompts, buffers, a vim statusline - as identity, never
 decoration.
 
@@ -37,7 +37,7 @@ Three roles, deliberately paired - not one neutral family doing everything.
 
 | Role | Family | Usage |
 |------|--------|-------|
-| Display | **Bricolage Grotesque** (700-800, tight −0.03em) | Section headings, hero name, uppercase |
+| Display | **Bricolage Grotesque** (700-800, tight -0.03em) | Section headings, hero name, uppercase |
 | Body | **Instrument Sans** | Paragraphs, prose, form values |
 | Mono | **JetBrains Mono** | Terminal chrome, eyebrows, labels, statusline, code, chips |
 
@@ -47,7 +47,7 @@ Three roles, deliberately paired - not one neutral family doing everything.
 
 ## Layout
 
-- **Mobile-first.** Breakpoints: base (mobile) → `sm` 640 → `md` 768 → `lg` 1024.
+- **Mobile-first.** Breakpoints: base (mobile) -> `sm` 640 -> `md` 768 -> `lg` 1024.
 - Content column: `max-w-6xl` (72rem), padded `px-4 sm:px-6`.
 - Sections: consistent vertical rhythm `py-20 sm:py-28`, `scroll-mt-20` for anchor offset.
 - Grid-of-panels pattern: 1px `line` gaps over a `line` background so cards read as a
@@ -66,7 +66,7 @@ Three roles, deliberately paired - not one neutral family doing everything.
 - **Nav** - fixed, blurred; desktop inline links, mobile full-screen opaque overlay
   (numbered), Escape + resize-past-breakpoint close it.
 - **Reveal / Typing** - motion primitives, both gated on `prefers-reduced-motion`.
-- **Preloader** - the "fetch Arun" bit: a random language (bash/python/rust/sql/…) types a
+- **Preloader** - the "fetch Arun" bit: a random language (bash/python/rust/sql/...) types a
   fetch command, a spinner resolves the host, the response lands, the page wipes in.
   Server-rendered so it owns the first paint; plays once per session; ~2.5s of theater.
 - **HeroPlayground** (desktop only) - a terminal window with four switchable canvas
@@ -74,7 +74,7 @@ Three roles, deliberately paired - not one neutral family doing everything.
   (blips link to case studies), game of life (drag to paint). Experiences, not info -
   the left column already carries the identity. Loops pause off-screen; reduced motion
   gets a still portrait.
-- **CommandPalette (⌘K)** - the site's terminal: 40+ commands, music player, games,
+- **CommandPalette (Cmd+K)** - the site's terminal: 40+ commands, music player, games,
   easter eggs. Chunk loads on idle, off the critical path.
 - **CustomCursor** - amber dot + trailing ring (`(pointer:fine)` only). Both live on
   compositor layers; the ring lerp is frame-rate independent.
