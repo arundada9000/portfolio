@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+ - name: Portfolio website
+   url: https://arunneupane.vercel.app
+   about: Visit the live site - your question may already be answered there.
+ - name: Security vulnerability
+   url: https://github.com/arundada9000/portfolio/blob/main/SECURITY.md
+   about: Report vulnerabilities privately to the maintainer - do NOT open a public issue.
