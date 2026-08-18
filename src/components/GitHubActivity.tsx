@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { site } from "@/lib/data/site";
 import { CountUp } from "./CountUp";
+import { soundTap } from "@/lib/sounds";
+import { hapticTap } from "@/lib/haptics";
 
 type Repo = {
   id: number;
@@ -22,9 +24,8 @@ type State =
   | { status: "ready"; repos: Repo[]; totalStars: number; totalRepos: number; languages: [string, number][] };
 
 const CACHE_KEY = "gh-repos-v1";
-const CACHE_TTL = 30 * 60 * 1000; // 30 min - respects GitHub's 60 req/hr anon limit
+const CACHE_TTL = 30 * 60 * 1000;
 
-// warm terminal palette for the language bar; deterministic per language
 const LANG_COLORS = ["#ffb454", "#ff7a2f", "#8d97a9", "#e9e4d8", "#c98a3a", "#5a6b85"];
 
 function summarize(repos: Repo[]): Extract<State, { status: "ready" }> {
@@ -58,34 +59,20 @@ export function GitHubActivity() {
 
     if (cached) {
       apply(summarize(cached));
-      return () => {
-        alive = false;
-      };
+      return () => { alive = false; };
     }
 
     fetch(`https://api.github.com/users/${site.alias}/repos?per_page=100&sort=updated`, { signal: controller.signal })
-      .then((r) => {
-        if (!r.ok) throw new Error(String(r.status));
-        return r.json();
-      })
+      .then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
       .then((data: Repo[]) => {
-        try {
-          sessionStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), data }));
-        } catch {
-          /* storage full / private mode - non-fatal */
-        }
+        try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), data })); } catch {}
         apply(summarize(data));
       })
       .catch(() => apply({ status: "error" }));
 
-    return () => {
-      alive = false;
-      controller.abort();
-    };
+    return () => { alive = false; controller.abort(); };
   }, []);
 
-  // If the API is unavailable/rate-limited, hide the section entirely
-  // rather than showing an error - the OpenSource section already covers GitHub.
   if (state.status === "error") return null;
 
   return (
@@ -105,17 +92,15 @@ export function GitHubActivity() {
 
       {state.status === "ready" && (
         <>
-          {/* live stat row */}
-          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-3">
+          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-[20px] border border-line/50 bg-line/50 sm:grid-cols-3">
             <Stat value={`${state.totalRepos}`} label="public repos (non-fork)" />
             <Stat value={`★ ${state.totalStars}`} label="total stars earned" />
             <Stat value={state.languages[0]?.[0] ?? "-"} label="most-used language" />
           </dl>
 
-          {/* language distribution bar */}
           {state.languages.length > 0 && (
             <div className="mt-6">
-              <div className="flex h-3 overflow-hidden rounded-full border border-line">
+              <div className="flex h-3 overflow-hidden rounded-full border border-line/50">
                 {state.languages.map(([lang, count], i) => (
                   <span
                     key={lang}
@@ -138,8 +123,7 @@ export function GitHubActivity() {
             </div>
           )}
 
-          {/* top repos - sibling stagger, not a section fade */}
-          <ul className="mt-8 grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-8 grid gap-px overflow-hidden rounded-[20px] border border-line/50 bg-line/50 sm:grid-cols-2 lg:grid-cols-3">
             {state.repos.map((repo, i) => (
               <li
                 key={repo.id}
@@ -150,7 +134,7 @@ export function GitHubActivity() {
                   href={repo.html_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex h-full flex-col p-5 transition-colors hover:bg-night"
+                  className="ios-touch group flex h-full flex-col p-5 transition-colors hover:bg-surface-bg active:scale-[0.98]"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <h3 className="font-mono text-sm font-bold text-fog group-hover:text-amber">{repo.name}</h3>
@@ -171,7 +155,7 @@ export function GitHubActivity() {
             href={site.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-8 inline-block border border-line px-6 py-3 font-mono text-sm text-fog transition-colors hover:border-amber hover:text-amber"
+            className="ios-touch mt-8 inline-block rounded-[12px] border border-line/60 px-6 py-3 font-mono text-sm text-fog transition-all duration-150 hover:border-amber hover:text-amber active:scale-[0.97]"
           >
             see all {state.totalRepos} repos ↗
           </a>
@@ -194,11 +178,11 @@ function Stat({ value, label }: { value: string; label: string }) {
 
 function Skeleton() {
   return (
-    <div className="grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-3" aria-hidden="true">
+    <div className="grid gap-px overflow-hidden rounded-[20px] border border-line/50 bg-line/50 sm:grid-cols-3" aria-hidden="true">
       {Array.from({ length: 3 }).map((_, i) => (
         <div key={i} className="bg-panel p-5">
-          <div className="h-8 w-24 animate-pulse rounded bg-line" />
-          <div className="mt-3 h-3 w-32 animate-pulse rounded bg-line" />
+          <div className="h-8 w-24 animate-pulse rounded-[8px] bg-line" />
+          <div className="mt-3 h-3 w-32 animate-pulse rounded-[8px] bg-line" />
         </div>
       ))}
     </div>

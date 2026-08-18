@@ -35,9 +35,7 @@ export function OpenSource() {
           my open-source energy goes into teaching materials for developers in Nepal.
         </p>
 
-        {/* contribution graph - inverted so the service's light empty cells read
-            as dark on-theme, with hue-rotate bringing the fill back to amber */}
-        <div className="overflow-x-auto rounded-lg border border-line bg-panel p-4">
+        <div className="ios-glass-card overflow-x-auto rounded-[20px] p-4">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={`https://ghchart.rshah.org/ffb454/${site.alias}`}
@@ -48,10 +46,10 @@ export function OpenSource() {
         </div>
       </Reveal>
 
-      <div className="mt-8 grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2">
+      <div className="mt-8 grid gap-px overflow-hidden rounded-[20px] border border-line/50 bg-line/50 sm:grid-cols-2">
         {contributions.map((c, i) => (
           <Reveal key={c.name} delay={i * 0.06}>
-            <a href={c.href} target="_blank" rel="noopener noreferrer" className="group block h-full bg-panel p-6 transition-colors hover:bg-night">
+            <a href={c.href} target="_blank" rel="noopener noreferrer" className="ios-touch group block h-full bg-panel p-6 transition-colors hover:bg-surface-bg active:scale-[0.98]">
               <h3 className="font-mono text-sm font-bold text-fog group-hover:text-amber">
                 {site.alias}/{c.name} ↗
               </h3>
@@ -66,7 +64,7 @@ export function OpenSource() {
           href={`https://github.com/${site.alias}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-block border border-amber/60 px-6 py-3 font-mono text-sm text-amber transition-colors hover:bg-amber hover:text-night"
+          className="ios-touch inline-block rounded-[12px] border border-amber/50 px-6 py-3 font-mono text-sm text-amber transition-all duration-150 hover:bg-amber hover:text-night active:scale-[0.97]"
         >
           view github profile ↗
         </a>

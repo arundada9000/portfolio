@@ -67,7 +67,7 @@ export function Nav() {
               className="ios-touch flex items-center gap-1.5 text-dust transition-colors hover:text-amber"
               aria-label="Open command terminal"
             >
-              <span className="rounded border border-line px-1.5 py-0.5 text-[11px]">⌘K</span>
+              <span className="rounded-[6px] border border-line/50 px-1.5 py-0.5 text-[11px]">⌘K</span>
             </button>
           </li>
           <li>
@@ -86,7 +86,7 @@ export function Nav() {
           <button
             type="button"
             onClick={openTerminal}
-            className="ios-touch rounded border border-line px-1.5 py-0.5 text-[11px] text-dust"
+            className="ios-touch rounded-[6px] border border-line/50 px-1.5 py-0.5 text-[11px] text-dust"
             aria-label="Open command terminal"
           >
             ⌘K

@@ -646,8 +646,8 @@ export function CommandPalette() {
       aria-label="Command terminal"
       onMouseDown={(e) => e.target === e.currentTarget && setOpen(false)}
     >
-      <div className="w-full max-w-xl overflow-hidden rounded-lg border border-line bg-panel shadow-2xl shadow-black/60">
-        <div className="flex items-center gap-2 border-b border-line px-4 py-2.5">
+      <div className="w-full max-w-xl overflow-hidden rounded-[20px] border border-line/50 bg-panel shadow-2xl shadow-black/60">
+        <div className="flex items-center gap-2 border-b border-line/40 px-4 py-2.5">
           <span className="size-2.5 rounded-full bg-ember/70" />
           <span className="size-2.5 rounded-full bg-amber/70" />
           <span className="size-2.5 rounded-full bg-dust/40" />
@@ -671,7 +671,7 @@ export function CommandPalette() {
           ))}
         </div>
 
-        <div className="flex items-center gap-2 border-t border-line px-4 py-3 font-mono text-sm">
+        <div className="flex items-center gap-2 border-t border-line/40 px-4 py-3 font-mono text-sm">
           <span className="text-amber">$</span>
           <input
             ref={inputRef}
@@ -687,7 +687,7 @@ export function CommandPalette() {
         </div>
 
         {input.trim() && suggestions.length > 0 && (
-          <ul className="border-t border-line px-2 py-2 font-mono text-xs">
+          <ul className="border-t border-line/40 px-2 py-2 font-mono text-xs">
             {suggestions.slice(0, 5).map((c, i) => (
               <li key={c.name}>
                 <button

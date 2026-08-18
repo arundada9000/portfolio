@@ -558,9 +558,9 @@ export function HeroPlayground() {
   const current = TOYS.find((t) => t.id === toy) ?? TOYS[0];
 
   return (
-    <div ref={wrapRef} className="overflow-hidden rounded-lg border border-line bg-panel/80 shadow-2xl shadow-black/40 backdrop-blur-sm">
+    <div ref={wrapRef} className="ios-glass-card overflow-hidden rounded-[20px] border border-line/50 shadow-2xl shadow-black/40">
       {/* title bar with channel tabs */}
-      <div className="flex items-center gap-2 border-b border-line px-4 py-2.5">
+      <div className="flex items-center gap-2 border-b border-line/40 px-4 py-2.5">
         <span className="size-2.5 rounded-full bg-ember/70" />
         <span className="size-2.5 rounded-full bg-amber/70" />
         <span className="size-2.5 rounded-full bg-dust/40" />
@@ -583,7 +583,7 @@ export function HeroPlayground() {
       </div>
 
       {/* stage */}
-      <div className="relative aspect-[4/4.4] bg-night/70">
+      <div className="relative aspect-[4/4.4] bg-surface-bg">
         {reduced ? (
           /* reduced motion: a calm still portrait instead of animation */
           <Image src="/images/arun.png" alt="Portrait of Arun Neupane" fill className="object-contain p-6 opacity-90" />
@@ -598,7 +598,7 @@ export function HeroPlayground() {
       </div>
 
       {/* hint line */}
-      <p className="border-t border-line px-4 py-2 font-mono text-[11px] text-dust">
+      <p className="border-t border-line/40 px-4 py-2 font-mono text-[11px] text-dust">
         <span className="text-amber">$</span> {reduced ? "animations off - honoring your motion settings" : current.hint}
       </p>
     </div>
