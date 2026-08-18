@@ -11,8 +11,8 @@ export function TerminalWindow({
   className?: string;
 }) {
   return (
-    <div className={`overflow-hidden rounded-lg border border-line bg-panel ${className}`}>
-      <div className="flex items-center gap-2 border-b border-line px-4 py-2.5">
+    <div className={`ios-glass-card overflow-hidden rounded-[16px] border border-line/50 ${className}`}>
+      <div className="flex items-center gap-2 border-b border-line/40 px-4 py-2.5">
         <span className="size-2.5 rounded-full bg-ember/70" aria-hidden="true" />
         <span className="size-2.5 rounded-full bg-amber/70" aria-hidden="true" />
         <span className="size-2.5 rounded-full bg-dust/40" aria-hidden="true" />

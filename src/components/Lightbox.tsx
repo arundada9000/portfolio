@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import { soundTap } from "@/lib/sounds";
+import { hapticTap } from "@/lib/haptics";
 
 /** Full-screen image viewer with keyboard + click navigation. */
 export function Lightbox({
@@ -18,8 +20,8 @@ export function Lightbox({
   onNavigate: (i: number) => void;
 }) {
   const dialogRef = useRef<HTMLDivElement>(null);
-  const prev = () => onNavigate((index - 1 + images.length) % images.length);
-  const next = () => onNavigate((index + 1) % images.length);
+  const prev = () => { soundTap(); hapticTap(); onNavigate((index - 1 + images.length) % images.length); };
+  const next = () => { soundTap(); hapticTap(); onNavigate((index + 1) % images.length); };
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -80,7 +82,11 @@ export function Lightbox({
         <span>
           <span className="text-amber">{title}</span> · {index + 1}/{images.length}
         </span>
-        <button type="button" onClick={onClose} className="border border-line px-3 py-1 transition-colors hover:border-amber hover:text-amber">
+        <button
+          type="button"
+          onClick={() => { soundTap(); onClose(); }}
+          className="ios-touch rounded-[10px] border border-line/60 px-3 py-2 transition-colors hover:border-amber hover:text-amber active:scale-[0.95]"
+        >
           esc ✕
         </button>
       </div>
@@ -92,7 +98,7 @@ export function Lightbox({
           alt={`${title} screenshot ${index + 1}`}
           fill
           sizes="(max-width: 1280px) 100vw, 1024px"
-          className="max-h-[78vh] w-auto !max-w-full rounded-lg border border-line object-contain"
+          className="max-h-[78vh] w-auto !max-w-full rounded-[16px] border border-line/50 object-contain"
         />
         {images.length > 1 && (
           <>
@@ -100,7 +106,7 @@ export function Lightbox({
               type="button"
               onClick={prev}
               aria-label="Previous"
-              className="absolute left-2 flex size-10 items-center justify-center rounded-full border border-line bg-panel/80 font-mono text-fog backdrop-blur transition-colors hover:border-amber hover:text-amber"
+              className="ios-touch absolute left-2 flex size-11 items-center justify-center rounded-full border border-line/60 bg-panel/80 font-mono text-fog backdrop-blur-sm transition-all duration-150 hover:border-amber hover:text-amber active:scale-90"
             >
               ‹
             </button>
@@ -108,7 +114,7 @@ export function Lightbox({
               type="button"
               onClick={next}
               aria-label="Next"
-              className="absolute right-2 flex size-10 items-center justify-center rounded-full border border-line bg-panel/80 font-mono text-fog backdrop-blur transition-colors hover:border-amber hover:text-amber"
+              className="ios-touch absolute right-2 flex size-11 items-center justify-center rounded-full border border-line/60 bg-panel/80 font-mono text-fog backdrop-blur-sm transition-all duration-150 hover:border-amber hover:text-amber active:scale-90"
             >
               ›
             </button>
@@ -118,14 +124,14 @@ export function Lightbox({
 
       {/* thumbnails */}
       {images.length > 1 && (
-        <div className="mt-4 flex max-w-5xl gap-2 overflow-x-auto" onClick={(e) => e.stopPropagation()}>
+        <div className="mt-4 flex max-w-5xl gap-2 overflow-x-auto scroll-momentum" onClick={(e) => e.stopPropagation()}>
           {images.map((src, i) => (
             <button
               key={src}
               type="button"
-              onClick={() => onNavigate(i)}
-              className={`relative h-14 w-20 shrink-0 overflow-hidden rounded border transition-opacity ${
-                i === index ? "border-amber opacity-100" : "border-line opacity-50 hover:opacity-80"
+              onClick={() => { soundTap(); onNavigate(i); }}
+              className={`ios-touch relative h-14 w-20 shrink-0 overflow-hidden rounded-[10px] border transition-all duration-150 active:scale-95 ${
+                i === index ? "border-amber opacity-100" : "border-line/50 opacity-50 hover:opacity-80"
               }`}
               aria-label={`Go to screenshot ${i + 1}`}
             >

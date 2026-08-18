@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { site } from "@/lib/data/site";
+import { soundTap } from "@/lib/sounds";
+import { hapticTap } from "@/lib/haptics";
 
 type Item =
   | { type: "sep" }
@@ -38,7 +40,6 @@ export function ContextMenu() {
 
   useEffect(() => {
     const onContext = (e: MouseEvent) => {
-      // let inputs keep the native menu (copy/paste)
       if (e.target instanceof Element && e.target.closest("input, textarea")) return;
       e.preventDefault();
       const pad = 12;
@@ -98,23 +99,25 @@ export function ContextMenu() {
       {pos && (
         <div
           ref={menuRef}
-          className="fixed z-[80] w-58 overflow-hidden rounded-lg border border-line bg-panel/95 py-1.5 font-mono text-sm shadow-2xl shadow-black/60 backdrop-blur"
+          className="fixed z-[80] w-58 overflow-hidden rounded-[16px] border border-line/50 bg-panel/95 py-1.5 font-mono text-sm shadow-2xl shadow-black/60 backdrop-blur-xl"
           style={{ left: pos.x, top: pos.y, width: 232 }}
           onClick={(e) => e.stopPropagation()}
         >
           <p className="px-3 py-1.5 text-[11px] text-dust">arun@butwal:~$</p>
           {items.map((it, i) =>
             it.type === "sep" ? (
-              <div key={i} className="my-1 border-t border-line" />
+              <div key={i} className="my-1 border-t border-line/40" />
             ) : (
               <button
                 key={i}
                 type="button"
                 onClick={() => {
+                  soundTap();
+                  hapticTap();
                   it.run();
                   setPos(null);
                 }}
-                className="flex w-full items-center justify-between px-3 py-1.5 text-left text-dust transition-colors hover:bg-line/50 hover:text-amber"
+                className="ios-touch flex w-full items-center justify-between px-3 py-2.5 text-left text-dust transition-colors hover:bg-line/40 hover:text-amber active:scale-[0.98]"
               >
                 {it.label}
                 {it.hint && <span className="text-dust/60">{it.hint}</span>}
@@ -126,7 +129,7 @@ export function ContextMenu() {
 
       {/* copy toast */}
       {copied && (
-        <div className="fixed bottom-14 left-1/2 z-[85] -translate-x-1/2 border border-amber/60 bg-panel px-4 py-2 font-mono text-xs text-amber shadow-lg">
+        <div className="fixed bottom-14 left-1/2 z-[85] -translate-x-1/2 rounded-[12px] border border-amber/60 bg-panel px-4 py-2 font-mono text-xs text-amber shadow-lg backdrop-blur-sm">
           ✓ {copied}
         </div>
       )}

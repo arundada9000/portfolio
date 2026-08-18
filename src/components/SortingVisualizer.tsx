@@ -1,8 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { soundTap, soundSuccess } from "@/lib/sounds";
+import { hapticTap } from "@/lib/haptics";
 
-/** One animation frame: the array state plus which indices are "hot". */
 type Frame = { arr: number[]; active: number[]; sorted: boolean };
 
 type Algo = "bubble" | "selection" | "insertion" | "quick" | "merge";
@@ -27,13 +28,10 @@ function randomArray(n: number): number[] {
   return Array.from({ length: n }, () => 8 + Math.floor(Math.random() * 92));
 }
 
-/** Deterministic starting arrangement so server and client render identically
- *  (avoids a hydration mismatch); the client randomizes on mount. */
 function seedArray(n: number): number[] {
   return Array.from({ length: n }, (_, i) => 12 + ((i * 37 + 17) % 88));
 }
 
-/** Each generator records frames as it sorts a copy of the input. */
 function buildFrames(input: number[], algo: Algo): Frame[] {
   const arr = [...input];
   const frames: Frame[] = [];
@@ -129,7 +127,7 @@ function buildFrames(input: number[], algo: Algo): Frame[] {
 
 export function SortingVisualizer() {
   const [size, setSize] = useState(28);
-  const [speed, setSpeed] = useState(45); // ms per frame
+  const [speed, setSpeed] = useState(45);
   const [algo, setAlgo] = useState<Algo>("bubble");
   const [base, setBase] = useState<number[]>(() => seedArray(28));
   const [step, setStep] = useState(0);
@@ -148,12 +146,10 @@ export function SortingVisualizer() {
     [size]
   );
 
-  // randomize once after mount - server rendered the deterministic seed
   useEffect(() => {
     setBase(randomArray(28));
   }, []);
 
-  // advance while playing
   useEffect(() => {
     if (!playing) return;
     if (step >= frames.length - 1) {
@@ -170,9 +166,8 @@ export function SortingVisualizer() {
   const done = frame.sorted;
 
   return (
-    <div className="rounded-lg border border-line bg-panel p-4 sm:p-6" data-cursor>
-      {/* bars */}
-      <div className="flex h-56 items-end gap-[2px] rounded bg-night/60 p-3 sm:h-72">
+    <div className="ios-glass-card rounded-[20px] p-4 sm:p-6" data-cursor>
+      <div className="flex h-56 items-end gap-[2px] rounded-[12px] bg-surface-bg/60 p-3 sm:h-72">
         {frame.arr.map((v, i) => {
           const hot = frame.active.includes(i);
           return (
@@ -181,15 +176,18 @@ export function SortingVisualizer() {
               className="flex-1 rounded-t-[2px] transition-[height] duration-75"
               style={{
                 height: `${(v / maxVal) * 100}%`,
-                background: done ? "var(--color-amber)" : hot ? "var(--color-ember)" : "color-mix(in srgb, var(--color-amber) 45%, var(--color-line))",
-                boxShadow: hot ? "0 0 12px rgba(255,122,47,0.6)" : "none",
+                background: done
+                  ? "var(--color-accent)"
+                  : hot
+                    ? "var(--color-accent-hover)"
+                    : "color-mix(in srgb, var(--color-accent) 45%, var(--color-surface-border))",
+                boxShadow: hot ? `0 0 12px color-mix(in srgb, var(--color-accent) 60%, transparent)` : "none",
               }}
             />
           );
         })}
       </div>
 
-      {/* status line */}
       <p className="mt-3 font-mono text-xs text-dust" role="status" aria-live="polite">
         <span className="text-amber">{algo}Sort()</span> · {COMPLEXITY[algo]} ·{" "}
         <span className="text-fog">
@@ -197,7 +195,6 @@ export function SortingVisualizer() {
         </span>
       </p>
 
-      {/* controls */}
       <div className="mt-4 flex flex-wrap items-center gap-2">
         <div className="flex flex-wrap gap-1.5">
           {ALGOS.map((a) => (
@@ -205,12 +202,14 @@ export function SortingVisualizer() {
               key={a.id}
               type="button"
               onClick={() => {
+                soundTap();
+                hapticTap();
                 setAlgo(a.id);
                 setStep(0);
                 setPlaying(false);
               }}
-              className={`rounded border px-2.5 py-1 font-mono text-xs transition-colors ${
-                algo === a.id ? "border-amber bg-amber/10 text-amber" : "border-line text-dust hover:border-amber/50 hover:text-fog"
+              className={`ios-touch rounded-[10px] border px-2.5 py-1.5 font-mono text-xs transition-all duration-150 active:scale-[0.97] ${
+                algo === a.id ? "border-amber bg-amber/10 text-amber" : "border-line/50 text-dust hover:border-amber/50 hover:text-fog"
               }`}
             >
               {a.label}
@@ -222,6 +221,8 @@ export function SortingVisualizer() {
           <button
             type="button"
             onClick={() => {
+              soundTap();
+              hapticTap();
               if (done) {
                 setStep(0);
                 setPlaying(true);
@@ -229,14 +230,14 @@ export function SortingVisualizer() {
                 setPlaying((p) => !p);
               }
             }}
-            className="rounded bg-amber px-4 py-1.5 font-mono text-xs font-bold text-night transition-colors hover:bg-ember"
+            className="ios-touch rounded-[12px] bg-amber px-4 py-2 font-mono text-xs font-bold text-night transition-all duration-150 hover:bg-ember active:scale-[0.97]"
           >
             {done ? "↻ replay" : playing ? "❚❚ pause" : "▶ play"}
           </button>
           <button
             type="button"
-            onClick={() => shuffle()}
-            className="rounded border border-line px-3 py-1.5 font-mono text-xs text-dust transition-colors hover:border-amber hover:text-amber"
+            onClick={() => { soundTap(); hapticTap(); shuffle(); }}
+            className="ios-touch rounded-[12px] border border-line/50 px-3 py-2 font-mono text-xs text-dust transition-all duration-150 hover:border-amber hover:text-amber active:scale-[0.97]"
           >
             shuffle
           </button>

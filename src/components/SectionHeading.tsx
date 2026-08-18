@@ -13,13 +13,13 @@ export function SectionHeading({ command, title }: { command: string; title: str
         initial={reduced ? false : { opacity: 0, x: -8 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       >
         <span aria-hidden="true">$ </span>
         {command}
       </motion.p>
 
-      <h2 className="text-display mt-3 text-4xl uppercase sm:text-6xl">
+      <h2 className="text-display mt-3 text-[clamp(2rem,5vw,3.75rem)] uppercase sm:text-6xl">
         <MaskText delay={0.05}>{title}</MaskText>
       </h2>
 

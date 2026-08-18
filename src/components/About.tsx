@@ -31,14 +31,14 @@ export function About() {
               that works offline, room hunting with real maps, algorithm visualizers my
               classmates study with.
             </p>
-            <p className="rounded-lg bg-line/40 p-4 font-mono text-base text-fog">
+            <p className="ios-glass-card rounded-[16px] p-4 font-mono text-base text-fog">
               <span className="text-amber" aria-hidden="true">{"// "}</span>
               Fun fact: the clock in the statusline below is live Nepal time (UTC+5:45 -
               yes, the :45 is real). If it reads past midnight, I&apos;m probably still pushing commits.
             </p>
           </div>
 
-          <dl className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-4">
+          <dl className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-[20px] border border-line/50 bg-line/50 sm:grid-cols-4">
             {site.stats.map((stat) => (
               <div key={stat.label} className="bg-panel p-5">
                 <dt className="order-2 mt-1 block font-mono text-xs text-dust">{stat.label}</dt>
@@ -52,13 +52,13 @@ export function About() {
 
         <Reveal delay={0.15}>
           <figure className="relative">
-            <div className="absolute -inset-2 rounded-lg border border-amber/30" aria-hidden="true" />
+            <div className="absolute -inset-2 rounded-[20px] border border-amber/20" aria-hidden="true" />
             <Image
               src="/my-images/about.jpg"
               alt="Arun Neupane - self-taught frontend developer and CTO from Butwal, Nepal"
               width={640}
               height={800}
-              className="relative w-full rounded-lg border border-line bg-panel object-cover grayscale transition-all duration-500 hover:grayscale-0"
+              className="relative w-full rounded-[20px] border border-line/50 bg-panel object-cover grayscale transition-all duration-500 hover:grayscale-0"
               priority
             />
             <figcaption className="mt-3 font-mono text-xs text-dust">

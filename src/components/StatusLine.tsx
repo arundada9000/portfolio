@@ -74,10 +74,11 @@ export function StatusLine() {
 
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-50 flex h-9 select-none items-stretch overflow-hidden border-t border-line bg-panel font-mono text-[11px] leading-9 sm:text-xs"
+      className="ios-glass-bar fixed inset-x-0 bottom-0 z-50 flex h-9 select-none items-stretch overflow-hidden font-mono text-[11px] leading-9 sm:text-xs"
+      style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
     >
       <span
-        className={`px-3 font-bold tracking-widest ${
+        className={`px-3 font-bold tracking-widest transition-colors duration-200 ${
           mode === "INSERT" ? "bg-ember text-night" : "bg-amber text-night"
         }`}
       >
@@ -87,10 +88,10 @@ export function StatusLine() {
         ~/arun-neupane/<span className="text-fog">{buffer}</span>.tsx
       </span>
       <span className="ml-auto hidden px-3 text-dust sm:block">butwal, nepal</span>
-      <span className="border-l border-line px-3 text-dust">
+      <span className="border-l border-line/50 px-3 text-dust">
         {time} <span className="text-amber">NPT</span>
       </span>
-      <span className="w-14 border-l border-line bg-line/40 px-3 text-right text-fog">
+      <span className="w-14 border-l border-line/50 bg-line/30 px-3 text-right text-fog">
         {position}
       </span>
     </div>

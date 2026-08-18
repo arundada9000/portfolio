@@ -2,7 +2,7 @@ import { site } from "@/lib/data/site";
 
 export function Footer() {
   return (
-    <footer className="border-t border-line">
+    <footer className="border-t border-line/60">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-8 font-mono text-xs text-dust sm:px-6">
         <p>
           © {new Date().getFullYear()} {site.name} · built with Next.js, caffeine, and NPT midnight oil
@@ -10,7 +10,12 @@ export function Footer() {
         <ul className="flex flex-wrap gap-x-4 gap-y-2">
           {site.socials.map((s) => (
             <li key={s.label}>
-              <a href={s.href} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-amber">
+              <a
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ios-touch inline-flex min-h-[44px] items-center transition-colors hover:text-amber"
+              >
                 {s.label.toLowerCase()}
               </a>
             </li>

@@ -5,7 +5,7 @@ import { Reveal } from "./Reveal";
 export function Skills() {
   return (
     <Section id="skills" command="ls -R ~/skills" title="Skills">
-      <div className="grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2">
+      <div className="grid gap-px overflow-hidden rounded-[20px] border border-line/50 bg-line/50 sm:grid-cols-2">
         {skillCategories.map((category, i) => (
           <Reveal key={category.id} delay={i * 0.08}>
             <div className="h-full bg-panel p-6 sm:p-8">
@@ -15,7 +15,7 @@ export function Skills() {
                 {category.skills.map((skill) => (
                   <li
                     key={skill}
-                    className="border border-line px-3 py-1.5 font-mono text-sm text-dust transition-colors hover:border-amber/60 hover:text-amber"
+                    className="ios-touch rounded-[10px] border border-line/60 px-3 py-2 font-mono text-sm text-dust transition-all duration-150 hover:border-amber/50 hover:text-amber active:scale-[0.95]"
                   >
                     {skill}
                   </li>
@@ -28,7 +28,7 @@ export function Skills() {
 
       {/* marquee strip */}
       <div
-        className="mt-10 overflow-hidden border-y border-line py-3 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]"
+        className="mt-10 overflow-hidden border-y border-line/40 py-3 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]"
         aria-hidden="true"
       >
         <div className="animate-marquee flex w-max gap-8 font-mono text-sm text-dust motion-reduce:animate-none">

@@ -11,8 +11,8 @@ export function ExperienceTimeline() {
   return (
     <Section id="experience" command="history | grep career" title="Experience">
       <ol className="relative ml-3 pl-8">
-        {/* static rail + amber line that draws down on scroll */}
-        <span className="absolute left-0 top-0 h-full w-px bg-line" aria-hidden="true" />
+        {/* static rail + accent line that draws down on scroll */}
+        <span className="absolute left-0 top-0 h-full w-px bg-line/60" aria-hidden="true" />
         <motion.span
           className="absolute left-0 top-0 w-px origin-top bg-gradient-to-b from-amber via-amber/60 to-transparent"
           style={{ height: "100%" }}
@@ -26,7 +26,8 @@ export function ExperienceTimeline() {
         {experience.map((item, i) => (
           <li key={`${item.org}-${item.period}`} className="relative pb-12 last:pb-0">
             <motion.span
-              className="absolute -left-[37px] top-2 size-2.5 rounded-full bg-amber shadow-[0_0_12px_rgba(255,180,84,0.6)]"
+              className="absolute -left-[37px] top-2 size-2.5 rounded-full bg-amber"
+              style={{ boxShadow: "0 0 12px color-mix(in srgb, var(--accent) 60%, transparent)" }}
               initial={reduced ? false : { scale: 0 }}
               whileInView={{ scale: 1 }}
               viewport={{ once: true, margin: "-80px" }}
@@ -49,7 +50,7 @@ export function ExperienceTimeline() {
               <p className="mt-3 max-w-2xl leading-relaxed text-dust">{item.description}</p>
               <ul className="mt-4 flex flex-wrap gap-1.5">
                 {item.tech.map((tech) => (
-                  <li key={tech} className="rounded-sm bg-line/50 px-2 py-0.5 font-mono text-[11px] text-dust">
+                  <li key={tech} className="rounded-[8px] bg-line/40 px-2.5 py-1 font-mono text-[11px] text-dust">
                     {tech}
                   </li>
                 ))}

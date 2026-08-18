@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-/** Thin amber bar across the top showing overall page scroll progress. */
+/** Thin accent bar across the top showing overall page scroll progress. */
 export function ScrollProgress() {
   const [p, setP] = useState(0);
 

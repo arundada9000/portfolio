@@ -18,9 +18,9 @@ export function Projects() {
         <p className="text-eyebrow mb-6">
           <span aria-hidden="true">$ </span>ls ~/projects/more
         </p>
-        <ul className="grid gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="grid gap-px overflow-hidden rounded-[20px] border border-line/50 bg-line/50 sm:grid-cols-2 lg:grid-cols-4">
           {moreProjects.map((project) => (
-            <li key={project.slug} className="group bg-panel p-5 transition-colors hover:bg-night">
+            <li key={project.slug} className="ios-touch group bg-panel p-5 transition-colors hover:bg-night active:scale-[0.98]">
               <div className="flex items-baseline justify-between">
                 <h3 className="font-mono text-sm font-bold text-fog group-hover:text-amber">
                   {project.title}

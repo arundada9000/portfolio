@@ -9,7 +9,10 @@ export function ProjectCard({ project }: { project: Project }) {
   const hasCase = !!project.caseStudy;
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-lg border border-line bg-panel transition-all duration-300 hover:-translate-y-1.5 hover:border-amber/50 hover:shadow-[0_4px_16px_-6px_rgba(255,180,84,0.25)]">
+    <article
+      className="group flex h-full flex-col overflow-hidden rounded-[20px] border border-line/50 bg-panel transition-all duration-300 hover:-translate-y-1.5"
+      style={{ boxShadow: "var(--shadow-sm)" }}
+    >
       {hasCase ? (
         <Link href={`/work/${project.slug}`} aria-label={`Read the ${project.title} case study`} className="block">
           <ProjectVisual slug={project.slug} title={project.title} terminal={project.terminal} image={cover} />
@@ -36,14 +39,14 @@ export function ProjectCard({ project }: { project: Project }) {
         </div>
 
         <p className="mt-3 text-dust">{project.summary}</p>
-        <p className="mt-3 flex gap-2 rounded bg-line/40 px-3 py-2 text-sm text-fog">
+        <p className="mt-3 flex gap-2 rounded-[12px] bg-line/30 px-3 py-2 text-sm text-fog">
           <span className="font-mono text-amber" aria-hidden="true">↳</span>
           {project.outcome}
         </p>
 
         <ul className="mt-4 flex flex-wrap gap-1.5">
           {project.tech.slice(0, 6).map((tech) => (
-            <li key={tech} className="rounded-sm bg-line/50 px-2 py-0.5 font-mono text-[11px] text-dust">
+            <li key={tech} className="rounded-[8px] bg-line/40 px-2.5 py-1 font-mono text-[11px] text-dust">
               {tech}
             </li>
           ))}
@@ -56,7 +59,7 @@ export function ProjectCard({ project }: { project: Project }) {
           {hasCase && (
             <Link
               href={`/work/${project.slug}`}
-              className="inline-flex items-center gap-1.5 border border-amber/50 px-3 py-1.5 text-amber transition-colors hover:bg-amber hover:text-night"
+              className="ios-touch inline-flex items-center gap-1.5 rounded-[12px] border border-amber/50 px-3 py-2 text-amber transition-all duration-150 hover:bg-amber hover:text-night active:scale-[0.97]"
             >
               read case study →
             </Link>

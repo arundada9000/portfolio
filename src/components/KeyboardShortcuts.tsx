@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "motion/react";
+import { soundTap } from "@/lib/sounds";
+import { hapticTap } from "@/lib/haptics";
 
 const NAV: Record<string, string> = {
   h: "#hero",
@@ -130,24 +132,28 @@ export function KeyboardShortcuts() {
     >
       <div
         ref={dialogRef}
-        className="w-full max-w-md overflow-hidden rounded-lg border border-line bg-panel shadow-2xl shadow-black/60"
+        className="ios-glass-card w-full max-w-md overflow-hidden rounded-[20px] border border-line/50 shadow-2xl shadow-black/60"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between border-b border-line px-5 py-3">
+        <div className="flex items-center justify-between border-b border-line/40 px-5 py-3">
           <h2 className="font-mono text-sm text-fog">keyboard shortcuts</h2>
-          <button type="button" onClick={() => setOpen(false)} className="font-mono text-xs text-dust hover:text-amber">
+          <button
+            type="button"
+            onClick={() => { soundTap(); setOpen(false); }}
+            className="ios-touch rounded-[8px] px-2 py-1 font-mono text-xs text-dust hover:text-amber"
+          >
             esc
           </button>
         </div>
-        <ul className="divide-y divide-line/60 px-5">
+        <ul className="divide-y divide-line/40 px-5">
           {SHORTCUTS.map(([keys, desc]) => (
-            <li key={keys} className="flex items-center justify-between gap-4 py-2.5 font-mono text-sm">
+            <li key={keys} className="flex items-center justify-between gap-4 py-3 font-mono text-sm">
               <span className="text-dust">{desc}</span>
-              <kbd className="whitespace-nowrap rounded border border-line px-2 py-0.5 text-xs text-amber">{keys}</kbd>
+              <kbd className="whitespace-nowrap rounded-[8px] border border-line/50 px-2 py-0.5 text-xs text-amber">{keys}</kbd>
             </li>
           ))}
         </ul>
-        <p className="border-t border-line px-5 py-3 font-mono text-xs text-dust">
+        <p className="border-t border-line/40 px-5 py-3 font-mono text-xs text-dust">
           tip: open the terminal and type <span className="text-amber">help</span> for more.
         </p>
       </div>
