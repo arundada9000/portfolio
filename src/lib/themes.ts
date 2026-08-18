@@ -180,7 +180,7 @@ export const themes: Theme[] = [
       "surface-elevated": "#ffffff",
       "surface-border": "#f0d4e0",
       "text-primary": "#1a1020",
-      "text-secondary": "#7c6078",
+      "text-secondary": "#5e4a5a",
       "text-accent": "#ec4899",
       accent: "#ec4899",
       "accent-hover": "#d946a8",

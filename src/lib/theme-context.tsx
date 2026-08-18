@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -30,10 +31,6 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-/**
- * Resolves the initial theme on the client, matching the
- * logic used in the inline <script> for flash prevention.
- */
 function resolveInitialTheme(): Theme {
   const saved = loadThemeId();
   if (saved) {
@@ -41,7 +38,6 @@ function resolveInitialTheme(): Theme {
     if (found) return found;
   }
   const mode = getSystemTheme();
-  // Pick the first theme matching the system preference
   const match = themes.find((t) => t.dark === (mode === "dark"));
   return match ?? themes.find((t) => t.id === DEFAULT_THEME)!;
 }
@@ -49,18 +45,16 @@ function resolveInitialTheme(): Theme {
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(resolveInitialTheme);
   const [mounted, setMounted] = useState(false);
+  const liveRef = useRef<HTMLDivElement>(null);
 
-  // On mount, apply the resolved theme (ensures sync with inline script)
   useEffect(() => {
     applyTheme(theme);
     setMounted(true);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Listen for system theme changes
   useEffect(() => {
     const mq = window.matchMedia("(prefers-color-scheme: light)");
     const handler = () => {
-      // Only auto-switch if user hasn't manually chosen
       const saved = loadThemeId();
       if (!saved) {
         const mode = mq.matches ? "light" : "dark";
@@ -85,6 +79,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       setThemeState(found);
       saveThemeId(id);
     });
+    // Announce to screen readers
+    if (liveRef.current) {
+      liveRef.current.textContent = `Theme changed to ${found.name}`;
+    }
   }, []);
 
   const value = useMemo(
@@ -95,6 +93,13 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   return (
     <ThemeContext.Provider value={value}>
       {children}
+      <div
+        ref={liveRef}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+      />
     </ThemeContext.Provider>
   );
 }
@@ -102,7 +107,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 export function useTheme(): ThemeContextValue {
   const ctx = useContext(ThemeContext);
   if (!ctx) {
-    // Fallback for SSR or components outside provider
     return {
       theme: themes.find((t) => t.id === DEFAULT_THEME)!,
       themes,
