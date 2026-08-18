@@ -3,6 +3,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { site } from "@/lib/data/site";
 import { projects } from "@/lib/data/projects";
+import { useTheme } from "@/lib/theme-context";
+import { soundTap, soundThemeSwitch } from "@/lib/sounds";
+import { hapticTap, hapticSuccess } from "@/lib/haptics";
 
 type Line = { kind: "in" | "out" | "err" | "hint"; text: string };
 
@@ -163,6 +166,7 @@ export function CommandPalette() {
 
   const dialogRef = useRef<HTMLDivElement>(null);
   const close = useCallback(() => setOpen(false), []);
+  const { theme: currentTheme, themes: allThemes, setTheme } = useTheme();
 
   useEffect(() => {
     audioRef.current = new Audio();
@@ -487,9 +491,37 @@ export function CommandPalette() {
       // ── misc ──
       { name: "clear", desc: "clear the screen", run: () => { setLines([]); } },
       { name: "cls", desc: "clear the screen", run: () => { setLines([]); } },
+
+      // ── themes ──
+      { name: "theme", args: "[list|switch <name>]", desc: "manage visual themes", run: (arg) => {
+        const [sub, ...rest] = arg.split(/\s+/);
+        if (!sub || sub === "list") {
+          return [
+            { kind: "hint", text: `current: ${currentTheme.name} (${currentTheme.dark ? "dark" : "light"})` },
+            { kind: "hint", text: "" },
+            ...allThemes.map((t) => ({
+              kind: "out" as const,
+              text: `  ${t.id === currentTheme.id ? "●" : "○"} ${t.name.padEnd(18)} ${t.dark ? "🌙" : "☀️"}  ${t.id}`,
+            })),
+            { kind: "hint", text: "" },
+            { kind: "hint", text: "usage: theme switch <name>  -  e.g. theme switch ios-dark" },
+          ];
+        }
+        if (sub === "switch") {
+          const name = rest.join(" ").toLowerCase();
+          if (!name) return [{ kind: "err", text: "usage: theme switch <name>  -  try `theme list`" }];
+          const match = allThemes.find((t) => t.id === name || t.name.toLowerCase().includes(name));
+          if (!match) return [{ kind: "err", text: `unknown theme "${name}"  -  try theme list` }];
+          setTheme(match.id);
+          soundThemeSwitch();
+          hapticSuccess();
+          return [{ kind: "out", text: `✓ theme switched to ${match.name}` }];
+        }
+        return [{ kind: "err", text: `unknown subcommand "${sub}"  -  try theme list` }];
+      }},
     ];
     return list;
-  }, [musicState, playSong, pauseMusic, stopMusic, setVolume, recall, close]);
+  }, [musicState, playSong, pauseMusic, stopMusic, setVolume, recall, close, currentTheme, allThemes, setTheme]);
 
   const suggestions = useMemo(() => {
     const q = input.trim().toLowerCase().split(/\s+/)[0] ?? "";

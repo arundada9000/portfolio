@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { ThemePicker } from "./ThemePicker";
 
 const links = [
   { href: "/#about", label: "about" },
@@ -35,7 +36,10 @@ export function Nav() {
   }, [open]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-line/70 bg-night/80 backdrop-blur-md">
+    <header
+      className="ios-glass-bar fixed inset-x-0 top-0 z-50"
+      style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
+    >
       <nav
         aria-label="Primary"
         className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 font-mono text-sm sm:px-6"
@@ -45,19 +49,22 @@ export function Nav() {
         </Link>
 
         {/* desktop */}
-        <ul className="hidden items-center gap-6 md:flex">
+        <ul className="hidden items-center gap-5 md:flex">
           {links.map((l) => (
             <li key={l.href}>
-              <Link href={l.href} className="text-dust transition-colors hover:text-amber">
+              <Link href={l.href} className="ios-touch flex items-center text-dust transition-colors hover:text-amber">
                 ./{l.label}
               </Link>
             </li>
           ))}
           <li>
+            <ThemePicker />
+          </li>
+          <li>
             <button
               type="button"
               onClick={openTerminal}
-              className="flex items-center gap-1.5 text-dust transition-colors hover:text-amber"
+              className="ios-touch flex items-center gap-1.5 text-dust transition-colors hover:text-amber"
               aria-label="Open command terminal"
             >
               <span className="rounded border border-line px-1.5 py-0.5 text-[11px]">⌘K</span>
@@ -66,19 +73,20 @@ export function Nav() {
           <li>
             <a
               href="/arun-neupane-resume.pdf"
-              className="border border-amber/60 px-3 py-1.5 text-amber transition-colors hover:bg-amber hover:text-night"
+              className="ios-touch border border-amber/60 px-3 py-1.5 text-amber transition-colors hover:bg-amber hover:text-night"
             >
               resume.pdf
             </a>
           </li>
         </ul>
 
-        <div className="flex items-center gap-4 md:hidden">
+        <div className="flex items-center gap-3 md:hidden">
+          <ThemePicker />
           {/* mobile terminal launcher */}
           <button
             type="button"
             onClick={openTerminal}
-            className="rounded border border-line px-1.5 py-0.5 text-[11px] text-dust"
+            className="ios-touch rounded border border-line px-1.5 py-0.5 text-[11px] text-dust"
             aria-label="Open command terminal"
           >
             ⌘K
@@ -86,7 +94,7 @@ export function Nav() {
           {/* mobile toggle */}
           <button
             type="button"
-            className="text-fog"
+            className="ios-touch text-fog"
             aria-expanded={open}
             aria-controls="mobile-menu"
             onClick={() => setOpen((v) => !v)}
@@ -100,7 +108,7 @@ export function Nav() {
       {open && (
         <div
           id="mobile-menu"
-          className="absolute inset-x-0 top-full h-[calc(100dvh-3.5rem)] overflow-y-auto bg-night md:hidden"
+          className="ios-glass-bar absolute inset-x-0 top-full h-[calc(100dvh-3.5rem)] overflow-y-auto scroll-momentum md:hidden"
         >
           <ul className="flex flex-col gap-2 px-6 py-10">
             {links.map((l, i) => (
@@ -108,7 +116,7 @@ export function Nav() {
                 <Link
                   href={l.href}
                   onClick={() => setOpen(false)}
-                  className="text-display block py-2 text-4xl text-fog transition-colors hover:text-amber"
+                  className="text-display ios-touch block py-3 text-4xl text-fog transition-colors hover:text-amber"
                 >
                   <span className="mr-3 font-mono text-sm text-dust">0{i + 1}</span>
                   {l.label.replace("-", " ")}
@@ -118,7 +126,7 @@ export function Nav() {
             <li className="mt-6">
               <a
                 href="/arun-neupane-resume.pdf"
-                className="inline-block border border-amber px-5 py-3 font-mono text-amber"
+                className="ios-touch inline-block border border-amber px-5 py-3 font-mono text-amber"
               >
                 download resume.pdf
               </a>
