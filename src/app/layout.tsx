@@ -15,8 +15,16 @@ import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
 import { DevConsole } from "@/components/DevConsole";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { ServiceWorker } from "@/components/ServiceWorker";
+import { ThemeProvider } from "@/lib/theme-context";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover" as const,
+};
 
 const bricolage = Bricolage_Grotesque({
   variable: "--font-bricolage",
@@ -384,6 +392,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${bricolage.variable} ${instrument.variable} ${jetbrains.variable} h-full antialiased`}>
+      <head>
+        {/* Flash prevention: apply saved theme before first paint */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('portfolio-theme');if(t){document.documentElement.setAttribute('data-theme',t)}}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="crt min-h-full flex flex-col">
         <script
           type="application/ld+json"
@@ -396,26 +412,28 @@ export default function RootLayout({
           crossOrigin="anonymous"
           strategy="lazyOnload"
         />
-        <a
-          href="#work"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-amber focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:text-night"
-        >
-          Skip to content
-        </a>
-        <Preloader />
-        <ScrollProgress />
-        <Nav />
-        <div className="relative z-10 flex-1">{children}</div>
-        <Footer />
-        <StatusLine />
-        <LazyPalette />
-        <KeyboardShortcuts />
-        <ContextMenu />
-        <BackToTop />
-        <CustomCursor />
-        <DevConsole />
-        <ServiceWorker />
-        <Analytics />
+        <ThemeProvider>
+          <a
+            href="#work"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-amber focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:text-night"
+          >
+            Skip to content
+          </a>
+          <Preloader />
+          <ScrollProgress />
+          <Nav />
+          <div className="relative z-10 flex-1">{children}</div>
+          <Footer />
+          <StatusLine />
+          <LazyPalette />
+          <KeyboardShortcuts />
+          <ContextMenu />
+          <BackToTop />
+          <CustomCursor />
+          <DevConsole />
+          <ServiceWorker />
+          <Analytics />
+        </ThemeProvider>
       </body>
     </html>
   );
