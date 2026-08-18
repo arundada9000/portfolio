@@ -75,9 +75,9 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
 
       <nav aria-label="Breadcrumb" className="mb-10 font-mono text-sm">
         <ol className="flex items-center gap-2 text-dust">
-          <li><Link href="/" className="transition-colors hover:text-amber">~/home</Link></li>
+          <li><Link href="/" className="ios-touch inline-block rounded-[8px] px-1 py-0.5 transition-colors hover:text-amber">~/home</Link></li>
           <li aria-hidden="true">/</li>
-          <li><Link href="/#work" className="transition-colors hover:text-amber">work</Link></li>
+          <li><Link href="/#work" className="ios-touch inline-block rounded-[8px] px-1 py-0.5 transition-colors hover:text-amber">work</Link></li>
           <li aria-hidden="true">/</li>
           <li className="text-amber" aria-current="page">{project.slug}</li>
         </ol>
@@ -90,11 +90,11 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
 
       <div className="mt-6 flex flex-wrap items-center gap-4 font-mono text-sm">
         <span className="text-dust">{project.year}</span>
-        <a href={project.github} target="_blank" rel="noopener noreferrer" className="border border-line px-4 py-2 text-fog transition-colors hover:border-amber hover:text-amber">
+        <a href={project.github} target="_blank" rel="noopener noreferrer" className="ios-touch rounded-[12px] border border-line/60 px-4 py-2 text-fog transition-all duration-150 hover:border-amber hover:text-amber active:scale-[0.97]">
           github ↗
         </a>
         {project.live && (
-          <a href={project.live} target="_blank" rel="noopener noreferrer" className="bg-amber px-4 py-2 font-bold text-night transition-colors hover:bg-ember">
+          <a href={project.live} target="_blank" rel="noopener noreferrer" className="ios-touch rounded-[12px] bg-amber px-4 py-2 font-bold text-night transition-all duration-150 hover:bg-ember active:scale-[0.97]">
             live demo ↗
           </a>
         )}
@@ -102,7 +102,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
 
       <ul className="mt-6 flex flex-wrap gap-1.5">
         {project.tech.map((tech) => (
-          <li key={tech} className="rounded-sm bg-line/50 px-2 py-0.5 font-mono text-[11px] text-dust">
+            <li key={tech} className="rounded-[8px] bg-line/40 px-2.5 py-1 font-mono text-[11px] text-dust">
             {tech}
           </li>
         ))}
@@ -162,7 +162,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
         <Reveal>
           <section>
             <h2 className="text-eyebrow mb-4">## key decisions</h2>
-            <div className="grid gap-px overflow-hidden rounded-lg border border-line bg-line">
+            <div className="grid gap-px overflow-hidden rounded-[20px] border border-line/50 bg-line/50">
               {cs.decisions.map((d) => (
                 <div key={d.title} className="bg-panel p-6">
                   <h3 className="text-display text-xl text-fog">{d.title}</h3>
@@ -199,11 +199,11 @@ function NextCaseStudy({ currentSlug }: { currentSlug: string }) {
   const index = withStudies.findIndex((p) => p.slug === currentSlug);
   const next = withStudies[(index + 1) % withStudies.length];
   return (
-    <div className="mt-20 border-t border-line pt-10">
+    <div className="mt-20 border-t border-line/40 pt-10">
       <p className="text-eyebrow mb-3">
         <span aria-hidden="true">$ </span>next
       </p>
-      <Link href={`/work/${next.slug}`} className="text-display text-3xl text-fog transition-colors hover:text-amber sm:text-5xl">
+      <Link href={`/work/${next.slug}`} className="ios-touch text-display text-3xl text-fog transition-all duration-150 hover:text-amber active:scale-[0.98] sm:text-5xl">
         {next.title} →
       </Link>
     </div>
