@@ -234,3 +234,12 @@ export function Sparkles(props: IconProps) {
     </Icon>
   );
 }
+
+export function Device(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <rect x="2" y="3" width="12" height="9" rx="1.5" />
+      <path d="M6 14h4M8 12v2" />
+    </Icon>
+  );
+}

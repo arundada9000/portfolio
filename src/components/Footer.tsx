@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { site } from "@/lib/data/site";
 import { featuredProjects } from "@/lib/data/projects";
-import { ArrowUpRight, Sparkles, Check } from "./Icon";
+import { ArrowUpRight, Download, Check, XMark } from "./Icon";
 import { soundPop, soundSuccess, soundTap } from "@/lib/sounds";
 import { hapticTap, hapticSuccess } from "@/lib/haptics";
 
@@ -13,14 +13,88 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
 }
 
+function getPlatformInstallInstructions() {
+  if (typeof window === "undefined") return { title: "Install Web App", steps: [] };
+  const ua = navigator.userAgent;
+  const isEdge = /Edg\//i.test(ua);
+  const isChrome = /Chrome\//i.test(ua) && !isEdge;
+  const isSafari = /Safari\//i.test(ua) && !/Chrome\//i.test(ua);
+  const isMac = /Macintosh|Mac OS X/i.test(ua);
+  const isWindows = /Windows/i.test(ua);
+  const isIOS = /iPhone|iPad|iPod/i.test(ua);
+  const isAndroid = /Android/i.test(ua);
+
+  if (isWindows && isEdge) {
+    return {
+      title: "Install on Microsoft Edge (Windows)",
+      steps: [
+        "Look at the right side of the address bar at the top.",
+        "Click the 'App available. Install Arun Neupane' icon (⊞+ or ⤓).",
+        "Or click the '...' Menu → 'Apps' → 'Install this site as an app'.",
+      ],
+    };
+  }
+
+  if (isWindows && isChrome) {
+    return {
+      title: "Install on Google Chrome (Windows)",
+      steps: [
+        "Look at the right side of the address bar at the top.",
+        "Click the 'Install Arun Neupane' icon (⤓).",
+        "Or click the '⋮' Menu → 'Save and share' → 'Install Arun Neupane'.",
+      ],
+    };
+  }
+
+  if (isMac && isSafari) {
+    return {
+      title: "Install on Safari (macOS)",
+      steps: [
+        "In the top Apple menu bar, click 'File'.",
+        "Select 'Add to Dock...'",
+        "Click 'Add' to run as a native desktop app.",
+      ],
+    };
+  }
+
+  if (isIOS) {
+    return {
+      title: "Install on iPhone / iPad (Safari)",
+      steps: [
+        "Tap the Share button (⎋) at the bottom toolbar.",
+        "Scroll down and tap 'Add to Home Screen' (➕).",
+        "Tap 'Add' in the top right corner.",
+      ],
+    };
+  }
+
+  if (isAndroid) {
+    return {
+      title: "Install on Android",
+      steps: [
+        "Tap the '⋮' menu in the top right corner of Chrome.",
+        "Tap 'Install app' or 'Add to Home screen'.",
+        "Follow the prompt to add to your home screen.",
+      ],
+    };
+  }
+
+  return {
+    title: "Install Progressive Web App",
+    steps: [
+      "Click the Install button in your browser's address bar (⤓ or ⊞+).",
+      "Or open your browser's menu and select 'Install app' or 'Add to Home screen'.",
+    ],
+  };
+}
+
 export function Footer() {
   const caseStudies = featuredProjects.filter((p) => p.caseStudy);
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
-  const [isInstallable, setIsInstallable] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    // Check if already installed
     if (typeof window !== "undefined") {
       if (window.matchMedia("(display-mode: standalone)").matches) {
         setIsInstalled(true);
@@ -30,13 +104,12 @@ export function Footer() {
     const handleBeforeInstall = (e: Event) => {
       e.preventDefault();
       setInstallPrompt(e as BeforeInstallPromptEvent);
-      setIsInstallable(true);
     };
 
     const handleAppInstalled = () => {
       setIsInstalled(true);
-      setIsInstallable(false);
       setInstallPrompt(null);
+      setShowModal(false);
     };
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstall);
@@ -51,8 +124,8 @@ export function Footer() {
   const handleInstallClick = async () => {
     if (!installPrompt) {
       soundTap();
-      // On iOS or other browsers where event isn't supported, show tip
-      alert("To install this app on your device:\n\n• iOS: Tap Share (⎋) then 'Add to Home Screen'\n• Android / Chrome: Tap Menu (⋮) then 'Install app'");
+      hapticTap();
+      setShowModal(true);
       return;
     }
 
@@ -67,6 +140,8 @@ export function Footer() {
       setInstallPrompt(null);
     }
   };
+
+  const instructions = getPlatformInstallInstructions();
 
   return (
     <footer className="border-t border-line/60 bg-panel/40 backdrop-blur-md pt-12 pb-24 sm:pb-16 font-mono text-xs">
@@ -86,16 +161,17 @@ export function Footer() {
             {/* Install PWA Button */}
             {isInstalled ? (
               <span className="inline-flex items-center gap-1.5 rounded-[8px] border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-1 text-[11px] text-emerald-400 font-bold">
-                <Check size={12} /> PWA Installed
+                <Check size={12} /> app installed
               </span>
             ) : (
               <button
                 type="button"
                 onClick={handleInstallClick}
-                className="ios-touch inline-flex items-center gap-1.5 rounded-[8px] border border-amber/60 bg-amber/10 px-2.5 py-1 text-[11px] text-amber font-bold transition-all hover:bg-amber hover:text-night active:scale-95 shadow-[0_0_8px_rgba(255,180,84,0.15)]"
-                title="Install offline web app"
+                className="ios-touch inline-flex items-center gap-1.5 rounded-[8px] border border-amber/60 bg-amber/10 px-2.5 py-1 text-[11px] text-amber font-medium transition-all hover:bg-amber hover:text-night active:scale-95 shadow-[0_0_8px_rgba(255,180,84,0.15)]"
+                title="Install standalone app"
               >
-                <span>📱 install app</span>
+                <Download size={13} className="text-amber" />
+                <span>install app</span>
               </button>
             )}
 
@@ -110,6 +186,54 @@ export function Footer() {
             </a>
           </div>
         </div>
+
+        {/* Custom Install Modal */}
+        {showModal && (
+          <div
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-night/80 p-4 backdrop-blur-sm animate-[fade-in_0.15s_ease_both]"
+            role="dialog"
+            aria-modal="true"
+            onClick={() => setShowModal(false)}
+          >
+            <div
+              className="ios-glass-card w-full max-w-md overflow-hidden rounded-[20px] border border-line/60 bg-panel p-6 shadow-2xl shadow-black/80"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between border-b border-line/40 pb-3">
+                <div className="flex items-center gap-2">
+                  <Download size={16} className="text-amber" />
+                  <h3 className="font-mono text-sm font-bold text-fog">{instructions.title}</h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="ios-touch rounded-[8px] p-1 text-dust hover:text-amber"
+                >
+                  <XMark size={16} />
+                </button>
+              </div>
+
+              <div className="mt-4 space-y-3 font-mono text-xs text-dust">
+                <p className="text-fog">To install this portfolio as a standalone offline application:</p>
+                <ol className="list-decimal space-y-2 pl-4 leading-relaxed">
+                  {instructions.steps.map((step, i) => (
+                    <li key={i}>{step}</li>
+                  ))}
+                </ol>
+              </div>
+
+              <div className="mt-6 flex justify-end border-t border-line/40 pt-3">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="ios-touch rounded-[10px] bg-amber px-4 py-2 font-mono text-xs font-bold text-night hover:bg-ember active:scale-95"
+                >
+                  Got it
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* 4-Column Grid */}
         <div className="grid grid-cols-1 gap-10 py-12 sm:grid-cols-2 md:grid-cols-4">
