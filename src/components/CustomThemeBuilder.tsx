@@ -463,20 +463,23 @@ function ColorField({
   onChange: (v: string) => void;
 }) {
   return (
-    <div className="flex items-center justify-between gap-2 rounded-[12px] border border-line/50 bg-panel/60 p-2.5">
+    <div className="flex items-center justify-between gap-2 rounded-[12px] border border-line/50 bg-panel/60 p-2.5 transition-colors hover:border-line/80">
       <span className="font-mono text-xs text-dust">{label}</span>
       <div className="flex items-center gap-2">
-        <input
-          type="color"
-          value={value.startsWith("#") ? value : "#000000"}
-          onChange={(e) => onChange(e.target.value)}
-          className="size-7 cursor-pointer appearance-none rounded-full border border-line/60 bg-transparent p-0 [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:rounded-full [&::-webkit-color-swatch]:border-none"
-        />
+        <label className="relative flex size-7 cursor-pointer items-center justify-center rounded-full border border-line/60 shadow-sm transition-transform hover:scale-110 active:scale-95" style={{ backgroundColor: value }}>
+          <input
+            type="color"
+            value={value.startsWith("#") ? value : "#000000"}
+            onChange={(e) => onChange(e.target.value)}
+            className="absolute inset-0 size-full cursor-pointer opacity-0"
+            title={`Pick ${label}`}
+          />
+        </label>
         <input
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-20 rounded-[8px] border border-line/50 bg-surface-bg px-2 py-1 font-mono text-[11px] text-fog focus:border-amber focus:outline-none"
+          className="w-20 rounded-[8px] border border-line/50 bg-surface-bg px-2 py-1 font-mono text-[11px] text-fog focus:border-amber focus:outline-none cursor-text select-all"
         />
       </div>
     </div>

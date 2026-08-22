@@ -35,6 +35,17 @@ export function CustomCursor() {
       t instanceof Element && !!t.closest("a, button, input, textarea, [data-cursor], [role='button']");
 
     const onOver = (e: PointerEvent) => {
+      const isModalOrInput =
+        e.target instanceof Element &&
+        !!e.target.closest("[role='dialog'], input, textarea, select");
+
+      if (isModalOrInput) {
+        if (dot.current) dot.current.style.opacity = "0";
+        if (ring.current) ring.current.style.opacity = "0";
+      } else {
+        if (dot.current) dot.current.style.opacity = "1";
+        if (ring.current) ring.current.style.opacity = "1";
+      }
       ring.current?.classList.toggle("cursor-ring--active", isInteractive(e.target));
     };
     const onDown = () => ring.current?.classList.add("cursor-ring--down");

@@ -144,10 +144,32 @@
 }
 
 /* ── Custom cursor ───────────────────────────────────────────── */
-.cursor-none,
-.cursor-none * {
-  cursor: none !important;
+.cursor-none {
+  cursor: none;
 }
+.cursor-none *:not(input):not(textarea):not(select):not([role="dialog"]):not([role="dialog"] *) {
+  cursor: none;
+}
+
+[role="dialog"],
+[role="dialog"] * {
+  cursor: auto;
+}
+[role="dialog"] button,
+[role="dialog"] a,
+[role="dialog"] [role="button"],
+[role="dialog"] input[type="color"],
+[role="dialog"] .cursor-pointer,
+input[type="color"] {
+  cursor: pointer !important;
+}
+[role="dialog"] input[type="text"],
+[role="dialog"] textarea,
+input[type="text"],
+textarea {
+  cursor: text !important;
+}
+
 .cursor-dot,
 .cursor-ring {
   position: fixed;
@@ -155,7 +177,7 @@
   left: 0;
   z-index: 99999;
   pointer-events: none;
-  transition: opacity 200ms;
+  transition: opacity 150ms;
   will-change: transform;
 }
 .cursor-dot {
