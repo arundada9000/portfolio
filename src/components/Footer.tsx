@@ -1,10 +1,72 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { site } from "@/lib/data/site";
 import { featuredProjects } from "@/lib/data/projects";
-import { ArrowUpRight } from "./Icon";
+import { ArrowUpRight, Sparkles, Check } from "./Icon";
+import { soundPop, soundSuccess, soundTap } from "@/lib/sounds";
+import { hapticTap, hapticSuccess } from "@/lib/haptics";
+
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: "accepted" | "dismissed"; platform: string }>;
+}
 
 export function Footer() {
   const caseStudies = featuredProjects.filter((p) => p.caseStudy);
+  const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [isInstalled, setIsInstalled] = useState(false);
+  const [isInstallable, setIsInstallable] = useState(false);
+
+  useEffect(() => {
+    // Check if already installed
+    if (typeof window !== "undefined") {
+      if (window.matchMedia("(display-mode: standalone)").matches) {
+        setIsInstalled(true);
+      }
+    }
+
+    const handleBeforeInstall = (e: Event) => {
+      e.preventDefault();
+      setInstallPrompt(e as BeforeInstallPromptEvent);
+      setIsInstallable(true);
+    };
+
+    const handleAppInstalled = () => {
+      setIsInstalled(true);
+      setIsInstallable(false);
+      setInstallPrompt(null);
+    };
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstall);
+    window.addEventListener("appinstalled", handleAppInstalled);
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handleBeforeInstall);
+      window.removeEventListener("appinstalled", handleAppInstalled);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!installPrompt) {
+      soundTap();
+      // On iOS or other browsers where event isn't supported, show tip
+      alert("To install this app on your device:\n\n• iOS: Tap Share (⎋) then 'Add to Home Screen'\n• Android / Chrome: Tap Menu (⋮) then 'Install app'");
+      return;
+    }
+
+    soundPop();
+    hapticTap();
+    await installPrompt.prompt();
+    const { outcome } = await installPrompt.userChoice;
+    if (outcome === "accepted") {
+      soundSuccess();
+      hapticSuccess();
+      setIsInstalled(true);
+      setInstallPrompt(null);
+    }
+  };
 
   return (
     <footer className="border-t border-line/60 bg-panel/40 backdrop-blur-md pt-12 pb-24 sm:pb-16 font-mono text-xs">
@@ -20,8 +82,24 @@ export function Footer() {
               Available for select projects <span className="text-dust">· Butwal, Nepal (UTC+5:45)</span>
             </span>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="rounded-[8px] border border-line/50 bg-line/20 px-2.5 py-1 text-[11px] text-amber">
+          <div className="flex items-center gap-3">
+            {/* Install PWA Button */}
+            {isInstalled ? (
+              <span className="inline-flex items-center gap-1.5 rounded-[8px] border border-emerald-500/40 bg-emerald-500/10 px-2.5 py-1 text-[11px] text-emerald-400 font-bold">
+                <Check size={12} /> PWA Installed
+              </span>
+            ) : (
+              <button
+                type="button"
+                onClick={handleInstallClick}
+                className="ios-touch inline-flex items-center gap-1.5 rounded-[8px] border border-amber/60 bg-amber/10 px-2.5 py-1 text-[11px] text-amber font-bold transition-all hover:bg-amber hover:text-night active:scale-95 shadow-[0_0_8px_rgba(255,180,84,0.15)]"
+                title="Install offline web app"
+              >
+                <span>📱 install app</span>
+              </button>
+            )}
+
+            <span className="hidden sm:inline-block rounded-[8px] border border-line/50 bg-line/20 px-2.5 py-1 text-[11px] text-amber">
               ⌘K for terminal · ? for shortcuts
             </span>
             <a

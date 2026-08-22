@@ -21,7 +21,7 @@ const SHORTCUTS: [string, string][] = [
   ["⌘K / Ctrl+K", "open command terminal"],
   ["j / k", "scroll next / prev section"],
   ["g then <key>", "jump to: h, a, s, w, g, o, e, c"],
-  ["t", "cycle next theme"],
+  ["t", "scroll back to top"],
   ["m", "mute / unmute audio feedback"],
   ["?", "show / hide shortcuts cheat sheet"],
   ["Esc", "close any open modal / palette"],
@@ -80,36 +80,41 @@ export function KeyboardShortcuts() {
         setOpen((v) => !v);
       } else if (e.key === "Escape") {
         setOpen(false);
+      } else if (key === "t") {
+        // Scroll back to top
+        e.preventDefault();
+        soundPop();
+        hapticTap();
+        window.scrollTo({
+          top: 0,
+          behavior: reduced ? "auto" : "smooth",
+        });
       } else if (key === "j") {
         // Scroll to next section
         e.preventDefault();
         const sections = getSections();
-        const currentY = window.scrollY + 100;
-        const next = sections.find((s) => s.offsetTop > currentY);
+        const next = sections.find((s) => s.getBoundingClientRect().top > 70);
         if (next) {
           soundPop();
+          hapticTap();
           next.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
+        } else {
+          soundPop();
+          window.scrollBy({ top: window.innerHeight * 0.7, behavior: reduced ? "auto" : "smooth" });
         }
       } else if (key === "k") {
         // Scroll to previous section
         e.preventDefault();
         const sections = getSections();
-        const currentY = window.scrollY - 100;
-        const prevList = sections.filter((s) => s.offsetTop < currentY);
-        const prev = prevList[prevList.length - 1] ?? sections[0];
+        const prevList = sections.filter((s) => s.getBoundingClientRect().top < -70);
+        const prev = prevList[prevList.length - 1];
         if (prev) {
           soundPop();
-          prev.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
-        }
-      } else if (key === "t") {
-        // Cycle theme
-        e.preventDefault();
-        const currentIndex = themes.findIndex((t) => t.id === theme.id);
-        const nextTheme = themes[(currentIndex + 1) % themes.length];
-        if (nextTheme) {
-          setTheme(nextTheme.id);
-          soundThemeSwitch();
           hapticTap();
+          prev.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
+        } else {
+          soundPop();
+          window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
         }
       } else if (key === "m") {
         // Toggle sound
