@@ -5,6 +5,10 @@ const IMAGE_URLS = [
   { url: "/my-images/arun-suit.jpg", caption: "Arun Neupane in formal suit", title: "Arun Neupane - formal portrait" },
   { url: "/my-images/arun-profile.png", caption: "Arun Neupane clean profile cutout", title: "Arun Neupane - profile picture" },
   { url: "/my-images/arun-classroom.jpg", caption: "Arun Neupane in classroom setting", title: "Arun Neupane in class" },
+  { url: "/screenshots/sajilo-sahayata-cover.png", caption: "Sajilo Sahayata disaster-response platform dashboard", title: "Sajilo Sahayata - Disaster Response PWA" },
+  { url: "/screenshots/roomeo-cover.png", caption: "Roomeo room-finding web app with interactive map", title: "Roomeo - Map-First Room Finder" },
+  { url: "/screenshots/sajilo-digital-cover.png", caption: "Sajilo Digital Pvt. Ltd. company platform with terminal UI", title: "Sajilo Digital - Official Platform" },
+  { url: "/screenshots/easy-sorting-cover.png", caption: "Easy Sorting interactive sorting algorithm visualizer", title: "Easy Sorting - Algorithm Visualizer" },
 ];
 
 export async function GET() {
