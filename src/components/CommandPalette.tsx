@@ -472,6 +472,35 @@ export function CommandPalette() {
         { kind: "out", text: "" },
         { kind: "out", text: `✨ ${arg || "arun.sh"} says hello from Butwal, Nepal.` },
       ]},
+      { name: "find", args: "<term>", desc: "fuzzy search projects, skills & repos", run: (arg) => {
+        if (!arg) return [{ kind: "err", text: "usage: find <term>  -  e.g. find react, find map, find police" }];
+        const q = arg.toLowerCase();
+        const matches: Line[] = [];
+        const matchedProjects = projects.filter((p) =>
+          p.title.toLowerCase().includes(q) ||
+          p.slug.toLowerCase().includes(q) ||
+          p.summary.toLowerCase().includes(q) ||
+          p.tech.some((t) => t.toLowerCase().includes(q))
+        );
+        if (matchedProjects.length) {
+          matches.push({ kind: "hint", text: `── projects matching "${arg}" ──` });
+          matchedProjects.forEach((p) => {
+            matches.push({ kind: "out", text: `  ★ ${p.title.padEnd(20)} [${p.tech.slice(0, 3).join(", ")}] → open ${p.slug}` });
+          });
+        }
+        if (!matches.length) {
+          return [{ kind: "err", text: `no results found matching "${arg}". Try "find react", "find map", or "ls".` }];
+        }
+        return matches;
+      }},
+      { name: "blame", desc: "who wrote this code?", run: () => [
+        { kind: "out", text: "commit 8797c44 (HEAD -> main, origin/main)" },
+        { kind: "out", text: "Author: Arun Neupane <arunneupane9000@gmail.com>" },
+        { kind: "out", text: "Date:   Sun 00:15:00 +0545" },
+        { kind: "out", text: "" },
+        { kind: "out", text: "    100% written with Next.js, caffeine, and NPT midnight oil." },
+        { kind: "hint", text: "    Verdict: Arun did it. (And he'd do it again.)" },
+      ]},
       { name: "history", desc: "show command history", run: () => {
         if (!recall.length) return [{ kind: "hint", text: "no history yet." }];
         return recall.map((cmd, i) => ({ kind: "out" as const, text: `  ${recall.length - i}  ${cmd}` }));

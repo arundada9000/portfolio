@@ -1,16 +1,27 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import type { Project } from "@/lib/data/projects";
 import { getGallery } from "@/lib/data/gallery";
 import { ProjectVisual } from "./ProjectVisual";
 import { ArrowRight, ArrowUpRight, Star } from "./Icon";
+import { tiltEffect } from "@/lib/microinteractions";
 
 /** Featured project card: real screenshot (or terminal fallback), content, clear case-study CTA. */
 export function ProjectCard({ project }: { project: Project }) {
   const cover = getGallery(project.galleryKey)?.cover;
   const hasCase = !!project.caseStudy;
+  const cardRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!cardRef.current) return;
+    return tiltEffect(cardRef.current, 3);
+  }, []);
 
   return (
     <article
+      ref={cardRef}
       className="group flex h-full flex-col overflow-hidden rounded-[20px] border border-line/50 bg-panel transition-all duration-300 hover:-translate-y-1.5"
       style={{ boxShadow: "var(--shadow-sm)" }}
     >

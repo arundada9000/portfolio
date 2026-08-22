@@ -34,9 +34,12 @@ The design concept is a **late-night amber-phosphor terminal session**. The sign
 ### What it showcases
 
 - **Production systems**: Disaster-response platform (Sajilo Sahayata), map-first room finder (Roomeo), terminal-driven company site (Sajilo Digital)
-- **Case studies**: Architecture decisions, constraint-driven design, and lessons learned - documented for each featured project
-- **Open source**: 70+ public repositories, algorithm visualizers, utilities, and learning-in-public artifacts
-- **Technical depth**: React 19, Next.js 16 App Router, TypeScript strict mode, Tailwind CSS v4, Motion (Framer Motion), GSAP, PostGIS, WebAuthn
+- **Interactive Case Studies**: Architectural flow blueprints, constraint-driven decisions, and live playground demos natively integrated
+- **iOS HIG Theme Studio & Customizer**: 15+ built-in theme presets, real-time custom palette creator with live preview, hex inputs, and JSON export/import
+- **Command Palette & Fuzzy Search (`⌘K`)**: 40+ commands, live fuzzy search across all 15+ projects and 70+ repositories, interactive music player, terminal matrix rain, and easter eggs
+- **Synthesized Web Audio & Haptics**: Procedural micro-sounds (Apple Minimal, Mechanical Thock, 8-Bit Retro) generated with the Web Audio API without external audio asset weight
+- **Custom Aesthetic 404 & Error Boundaries**: Terminal-themed error diagnostics, copyable stack dumps, and dynamic randomized developer excuses
+- **Technical depth**: React 19, Next.js 16 App Router, TypeScript strict mode, Tailwind CSS v4, Motion (Framer Motion), PostGIS, Web Audio API
 
 ---
 

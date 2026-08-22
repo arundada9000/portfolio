@@ -8,6 +8,7 @@ import { TerminalWindow } from "@/components/TerminalWindow";
 import { Reveal } from "@/components/Reveal";
 import { ProjectGallery } from "@/components/ProjectGallery";
 import { SortingVisualizer } from "@/components/SortingVisualizer";
+import { ArchitectureInspector } from "@/components/ArchitectureInspector";
 import { ArrowUpRight, ArrowRight, Check, Bullet } from "@/components/Icon";
 
 type Params = { slug: string };
@@ -150,13 +151,14 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
         </Reveal>
 
         <Reveal>
-          <section>
+          <section className="space-y-4">
             <h2 className="text-eyebrow mb-4">## architecture</h2>
             <TerminalWindow title={`${project.slug} - data flow`}>
               <pre className="overflow-x-auto text-[13px] leading-relaxed text-fog">
                 {cs.architecture.join("\n")}
               </pre>
             </TerminalWindow>
+            <ArchitectureInspector slug={project.slug} />
           </section>
         </Reveal>
 
