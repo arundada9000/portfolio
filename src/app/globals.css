@@ -153,7 +153,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 90;
+  z-index: 99999;
   pointer-events: none;
   transition: opacity 200ms;
   will-change: transform;

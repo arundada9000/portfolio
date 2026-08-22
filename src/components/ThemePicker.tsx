@@ -72,24 +72,14 @@ export function ThemePicker() {
       {/* Trigger button */}
       <button
         onClick={handleToggle}
-        className="ios-touch flex items-center gap-2 rounded-[12px] border border-line/60 bg-panel/80 px-3 py-2 text-sm text-dust transition-all duration-150 hover:border-amber/40 hover:text-fog active:scale-[0.96]"
-        aria-label="Change theme"
+        className="ios-touch flex h-9 w-9 items-center justify-center rounded-[10px] border border-line/60 bg-panel/80 text-sm text-dust transition-all duration-150 hover:border-amber/50 hover:text-amber active:scale-[0.94]"
+        aria-label={`Change theme (current: ${current.name})`}
+        title={`Theme: ${current.name}`}
         aria-expanded={open}
       >
-        <span className="text-base leading-none" suppressHydrationWarning>
+        <span className="text-base leading-none select-none" suppressHydrationWarning>
           {THEME_ICONS[current.icon] ?? current.icon ?? "🎨"}
         </span>
-        <span className="hidden sm:inline font-mono text-xs" suppressHydrationWarning>
-          {current.name}
-        </span>
-        <svg
-          className={`h-3 w-3 text-dust transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-        </svg>
       </button>
 
       {/* Dropdown panel */}

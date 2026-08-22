@@ -80,7 +80,7 @@ export function Nav() {
               <li key={l.href} className="relative">
                 <Link
                   href={l.href}
-                  className={`ios-touch relative block px-2.5 py-1.5 text-xs transition-colors duration-150 ${
+                  className={`ios-touch relative block whitespace-nowrap px-2 py-1.5 text-xs transition-colors duration-150 ${
                     isActive ? "text-amber font-medium" : "text-dust hover:text-fog"
                   }`}
                 >
@@ -88,7 +88,7 @@ export function Nav() {
                   {isActive && (
                     <motion.span
                       layoutId="activeNavUnderline"
-                      className="absolute inset-x-2 -bottom-0.5 h-0.5 bg-amber shadow-[0_0_8px_var(--accent)]"
+                      className="absolute inset-x-1.5 -bottom-0.5 h-0.5 bg-amber shadow-[0_0_8px_var(--accent)]"
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
