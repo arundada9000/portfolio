@@ -1,6 +1,7 @@
 import { site } from "@/lib/data/site";
 import { Section } from "./Section";
 import { Reveal } from "./Reveal";
+import { ArrowUpRight } from "./Icon";
 
 const contributions = [
   {
@@ -29,7 +30,7 @@ export function OpenSource() {
   return (
     <Section id="open-source" command="git shortlog --all" title="Open Source">
       <Reveal>
-        <p className="mb-8 max-w-2xl text-lg text-dust">
+        <p className="mb-3 max-w-2xl text-sm sm:text-base text-dust">
           Everything I learn ships as a public repo - 70+ and counting, plus GitHub&apos;s{" "}
           <span className="text-fog">Pull Shark</span> badge for merged pull requests. Most of
           my open-source energy goes into teaching materials for developers in Nepal.
@@ -51,7 +52,7 @@ export function OpenSource() {
           <Reveal key={c.name} delay={i * 0.06}>
             <a href={c.href} target="_blank" rel="noopener noreferrer" className="ios-touch group block h-full bg-panel p-6 transition-colors hover:bg-surface-bg active:scale-[0.98]">
               <h3 className="font-mono text-sm font-bold text-fog group-hover:text-amber">
-                {site.alias}/{c.name} ↗
+                {site.alias}/{c.name} <ArrowUpRight size={12} className="inline" />
               </h3>
               <p className="mt-2 text-sm text-dust">{c.detail}</p>
             </a>
@@ -66,7 +67,7 @@ export function OpenSource() {
           rel="noopener noreferrer"
           className="ios-touch inline-block rounded-[12px] border border-amber/50 px-6 py-3 font-mono text-sm text-amber transition-all duration-150 hover:bg-amber hover:text-night active:scale-[0.97]"
         >
-          view github profile ↗
+          view github profile <ArrowUpRight size={12} className="inline" />
         </a>
       </Reveal>
     </Section>

@@ -2,6 +2,7 @@ import { featuredProjects, moreProjects } from "@/lib/data/projects";
 import { Section } from "./Section";
 import { ProjectCard } from "./ProjectCard";
 import { Reveal } from "./Reveal";
+import { Star } from "./Icon";
 
 export function Projects() {
   return (
@@ -14,8 +15,8 @@ export function Projects() {
         ))}
       </div>
 
-      <Reveal className="mt-16">
-        <p className="text-eyebrow mb-6">
+      <Reveal className="mt-10">
+        <p className="text-eyebrow mb-4">
           <span aria-hidden="true">$ </span>ls ~/projects/more
         </p>
         <ul className="grid gap-px overflow-hidden rounded-[20px] border border-line/50 bg-line/50 sm:grid-cols-2 lg:grid-cols-4">
@@ -26,7 +27,7 @@ export function Projects() {
                   {project.title}
                 </h3>
                 <span className="font-mono text-[11px] text-dust">
-                  {project.stars ? `★ ${project.stars}` : project.year}
+                  {project.stars ? <span className="inline-flex items-center gap-1"><Star size={12} className="text-amber" /> {project.stars}</span> : project.year}
                 </span>
               </div>
               <p className="mt-2 text-sm text-dust">{project.summary}</p>

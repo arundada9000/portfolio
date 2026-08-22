@@ -99,3 +99,61 @@ export function setSoundEnabled(v: boolean): void {
     // silent
   }
 }
+
+/** Custom themes localStorage */
+const CUSTOM_THEMES_KEY = "portfolio-custom-themes";
+
+export function loadCustomThemes(): Theme[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(CUSTOM_THEMES_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) {
+      return parsed.filter((t) => t && typeof t.id === "string" && t.colors);
+    }
+    return [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveCustomThemes(themes: Theme[]): void {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(CUSTOM_THEMES_KEY, JSON.stringify(themes));
+  } catch {
+    // silent
+  }
+}
+
+/** Export a theme as a formatted JSON string */
+export function exportThemeJSON(theme: Theme): string {
+  return JSON.stringify(theme, null, 2);
+}
+
+/** Import a theme from a JSON string */
+export function importThemeJSON(jsonStr: string): Theme | null {
+  try {
+    const obj = JSON.parse(jsonStr);
+    if (!obj || typeof obj.name !== "string" || !obj.colors) return null;
+    const isDark = typeof obj.dark === "boolean" ? obj.dark : true;
+    const id =
+      obj.id && !obj.id.startsWith("custom-")
+        ? `custom-${obj.id}`
+        : obj.id ?? `custom-${obj.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Date.now().toString(36)}`;
+    return {
+      id,
+      name: obj.name,
+      icon: obj.icon || (isDark ? "moon" : "sun"),
+      dark: isDark,
+      isCustom: true,
+      colors: {
+        ...obj.colors,
+      },
+    };
+  } catch {
+    return null;
+  }
+}
+

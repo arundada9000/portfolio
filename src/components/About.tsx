@@ -7,9 +7,9 @@ import { CountUp } from "./CountUp";
 export function About() {
   return (
     <Section id="about" command="cat about.md" title="About">
-      <div className="grid gap-12 md:grid-cols-[1fr_320px]">
+      <div className="grid gap-8 md:grid-cols-[1fr_320px]">
         <Reveal>
-          <div className="space-y-5 text-lg leading-relaxed text-dust">
+          <div className="space-y-4 text-base leading-relaxed text-dust sm:text-lg">
             <p>
               I&apos;m a self-taught developer from {site.location}. In 2023 I opened my first
               HTML course; by 2025 I was architecting systems used by Nepal Police and a
@@ -31,14 +31,14 @@ export function About() {
               that works offline, room hunting with real maps, algorithm visualizers my
               classmates study with.
             </p>
-            <p className="ios-glass-card rounded-[16px] p-4 font-mono text-base text-fog">
+            <p className="ios-glass-card rounded-[16px] p-3.5 font-mono text-sm sm:text-base text-fog">
               <span className="text-amber" aria-hidden="true">{"// "}</span>
               Fun fact: the clock in the statusline below is live Nepal time (UTC+5:45 -
               yes, the :45 is real). If it reads past midnight, I&apos;m probably still pushing commits.
             </p>
           </div>
 
-          <dl className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-[20px] border border-line/50 bg-line/50 sm:grid-cols-4">
+          <dl className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-[20px] border border-line/50 bg-line/50 sm:grid-cols-4">
             {site.stats.map((stat) => (
               <div key={stat.label} className="bg-panel p-5">
                 <dt className="order-2 mt-1 block font-mono text-xs text-dust">{stat.label}</dt>

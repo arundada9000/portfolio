@@ -2,9 +2,10 @@
 
 import { useCallback, useRef, useState } from "react";
 import { useTheme } from "@/lib/theme-context";
-import { soundPop, soundSwitch } from "@/lib/sounds";
+import { soundPop, soundSwitch, soundTap } from "@/lib/sounds";
 import { hapticTap } from "@/lib/haptics";
 import type { Theme } from "@/lib/themes";
+import { Plus, Trash, Palette } from "./Icon";
 
 const THEME_ICONS: Record<string, string> = {
   amber: "⚡",
@@ -15,10 +16,18 @@ const THEME_ICONS: Record<string, string> = {
   flower: "🌸",
   leaf: "🌿",
   cloud: "☁️",
+  palette: "🎨",
 };
 
 export function ThemePicker() {
-  const { theme: current, themes, setTheme } = useTheme();
+  const {
+    theme: current,
+    themes,
+    customThemes,
+    setTheme,
+    removeCustomTheme,
+    openCustomThemeBuilder,
+  } = useTheme();
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -39,6 +48,25 @@ export function ThemePicker() {
     hapticTap();
   }, []);
 
+  const handleCreateTheme = useCallback(() => {
+    setOpen(false);
+    soundTap();
+    hapticTap();
+    openCustomThemeBuilder();
+  }, [openCustomThemeBuilder]);
+
+  const handleDeleteCustom = useCallback(
+    (e: React.MouseEvent, id: string) => {
+      e.stopPropagation();
+      soundTap();
+      hapticTap();
+      removeCustomTheme(id);
+    },
+    [removeCustomTheme],
+  );
+
+  const builtInThemes = themes.filter((t) => !t.isCustom);
+
   return (
     <div className="relative">
       {/* Trigger button */}
@@ -48,8 +76,12 @@ export function ThemePicker() {
         aria-label="Change theme"
         aria-expanded={open}
       >
-        <span className="text-base leading-none">{THEME_ICONS[current.icon] ?? "🎨"}</span>
-        <span className="hidden sm:inline font-mono text-xs">{current.name}</span>
+        <span className="text-base leading-none" suppressHydrationWarning>
+          {THEME_ICONS[current.icon] ?? current.icon ?? "🎨"}
+        </span>
+        <span className="hidden sm:inline font-mono text-xs" suppressHydrationWarning>
+          {current.name}
+        </span>
         <svg
           className={`h-3 w-3 text-dust transition-transform duration-200 ${open ? "rotate-180" : ""}`}
           fill="none"
@@ -71,56 +103,120 @@ export function ThemePicker() {
           {/* Panel */}
           <div
             ref={panelRef}
-            className="absolute right-0 top-full z-[85] mt-2 w-64 overflow-hidden rounded-[16px] border border-line/60 bg-panel shadow-lg"
+            className="absolute right-0 top-full z-[85] mt-2 w-72 overflow-hidden rounded-[20px] border border-line/60 bg-panel shadow-2xl animate-[slide-up_0.2s_cubic-bezier(0.32,0.72,0,1)_both]"
           >
-            <div className="p-3">
-              <div className="mb-2 px-1 font-mono text-[11px] uppercase tracking-widest text-dust">
-                themes
+            <div className="max-h-96 overflow-y-auto p-3 space-y-3">
+              <div>
+                <div className="mb-2 px-1 font-mono text-[11px] uppercase tracking-widest text-dust">
+                  Built-in Themes
+                </div>
+                <div className="space-y-1">
+                  {builtInThemes.map((t) => {
+                    const isActive = t.id === current.id;
+                    return (
+                      <button
+                        key={t.id}
+                        onClick={() => handleSelect(t)}
+                        className={`ios-touch flex w-full items-center gap-3 rounded-[12px] px-3 py-2.5 text-left text-sm transition-all duration-150 ${
+                          isActive
+                            ? "bg-amber/10 text-amber font-semibold"
+                            : "text-fog hover:bg-line/40"
+                        }`}
+                      >
+                        {/* Color swatch */}
+                        <div className="flex shrink-0 gap-1">
+                          <span
+                            className="h-4 w-4 rounded-full border border-line/50"
+                            style={{ background: t.colors["surface-bg"] }}
+                          />
+                          <span
+                            className="h-4 w-4 rounded-full border border-line/50"
+                            style={{ background: t.colors.accent }}
+                          />
+                          <span
+                            className="h-4 w-4 rounded-full border border-line/50"
+                            style={{ background: t.colors["text-primary"] }}
+                          />
+                        </div>
+                        <span className="flex-1 truncate text-xs">
+                          {THEME_ICONS[t.icon] ?? t.icon} {t.name}
+                        </span>
+                        <span className="text-[10px] text-dust/60">
+                          {t.dark ? "🌙" : "☀️"}
+                        </span>
+                        {isActive && (
+                          <span className="text-amber text-xs">●</span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-              <div className="space-y-1">
-                {themes.map((t) => {
-                  const isActive = t.id === current.id;
-                  return (
-                    <button
-                      key={t.id}
-                      onClick={() => handleSelect(t)}
-                      className={`ios-touch flex w-full items-center gap-3 rounded-[10px] px-3 py-2.5 text-left text-sm transition-all duration-150 ${
-                        isActive
-                          ? "bg-amber/10 text-amber"
-                          : "text-fog hover:bg-line/40"
-                      }`}
-                    >
-                      {/* Color swatch */}
-                      <div className="flex shrink-0 gap-1">
-                        <span
-                          className="h-4 w-4 rounded-full border border-line/50"
-                          style={{ background: t.colors["surface-bg"] }}
-                        />
-                        <span
-                          className="h-4 w-4 rounded-full border border-line/50"
-                          style={{ background: t.colors.accent }}
-                        />
-                        <span
-                          className="h-4 w-4 rounded-full border border-line/50"
-                          style={{ background: t.colors["text-primary"] }}
-                        />
-                      </div>
-                      <span className="flex-1 truncate text-xs font-medium">
-                        {THEME_ICONS[t.icon]} {t.name}
-                      </span>
-                      <span className="text-[10px] text-dust/60">
-                        {t.dark ? "🌙" : "☀️"}
-                      </span>
-                      {isActive && (
-                        <span className="text-amber text-xs">●</span>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
+
+              {/* Custom themes section if any */}
+              {customThemes.length > 0 && (
+                <div className="border-t border-line/40 pt-2">
+                  <div className="mb-2 px-1 font-mono text-[11px] uppercase tracking-widest text-dust">
+                    Custom Themes ({customThemes.length})
+                  </div>
+                  <div className="space-y-1">
+                    {customThemes.map((t) => {
+                      const isActive = t.id === current.id;
+                      return (
+                        <div
+                          key={t.id}
+                          onClick={() => handleSelect(t)}
+                          role="button"
+                          tabIndex={0}
+                          className={`ios-touch flex w-full cursor-pointer items-center gap-3 rounded-[12px] px-3 py-2.5 text-left text-sm transition-all duration-150 ${
+                            isActive
+                              ? "bg-amber/10 text-amber font-semibold"
+                              : "text-fog hover:bg-line/40"
+                          }`}
+                        >
+                          <div className="flex shrink-0 gap-1">
+                            <span
+                              className="h-4 w-4 rounded-full border border-line/50"
+                              style={{ background: t.colors["surface-bg"] }}
+                            />
+                            <span
+                              className="h-4 w-4 rounded-full border border-line/50"
+                              style={{ background: t.colors.accent }}
+                            />
+                            <span
+                              className="h-4 w-4 rounded-full border border-line/50"
+                              style={{ background: t.colors["text-primary"] }}
+                            />
+                          </div>
+                          <span className="flex-1 truncate text-xs">
+                            {THEME_ICONS[t.icon] ?? t.icon} {t.name}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => handleDeleteCustom(e, t.id)}
+                            className="size-6 flex items-center justify-center rounded text-dust/60 hover:text-ember hover:bg-line/60"
+                            title="Delete custom theme"
+                          >
+                            <Trash size={12} />
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
-            <div className="border-t border-line/40 px-3 py-2 font-mono text-[10px] text-dust/60">
-              also try: <span className="text-amber/70">theme switch &lt;name&gt;</span> in terminal
+
+            {/* Bottom button to launch CustomThemeBuilder */}
+            <div className="border-t border-line/40 p-2 bg-panel/80">
+              <button
+                type="button"
+                onClick={handleCreateTheme}
+                className="ios-touch flex w-full items-center justify-center gap-2 rounded-[12px] border border-dashed border-line/80 px-3 py-2.5 font-mono text-xs font-medium text-fog transition-all duration-150 hover:border-amber hover:text-amber active:scale-[0.98]"
+              >
+                <Plus size={14} className="text-amber" />
+                <span>Create Custom Theme…</span>
+              </button>
             </div>
           </div>
         </>
@@ -128,3 +224,4 @@ export function ThemePicker() {
     </div>
   );
 }
+

@@ -15,13 +15,13 @@ export function ProjectGallery({ images, title }: { images: string[]; title: str
   return (
     <section>
       <h2 className="text-eyebrow mb-4">## screens</h2>
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         {images.map((src, i) => (
           <button
             key={src}
             type="button"
             onClick={() => { soundPop(); hapticTap(); setOpen(i); }}
-            className={`group relative overflow-hidden rounded-[16px] border border-line/50 bg-surface-bg ${
+            className={`group relative aspect-[16/10] w-full overflow-hidden rounded-[16px] border border-line/50 bg-panel ${
               i === 0 ? "sm:col-span-2" : ""
             }`}
             aria-label={`View screenshot ${i + 1} of ${title}`}
@@ -31,9 +31,9 @@ export function ProjectGallery({ images, title }: { images: string[]; title: str
               alt={`${title} screenshot ${i + 1}`}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 50vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+              className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
             />
-            <span className="pointer-events-none absolute inset-0 bg-surface-bg/0 transition-colors group-hover:bg-surface-bg/20" />
+            <span className="pointer-events-none absolute inset-0 bg-night/0 transition-colors group-hover:bg-night/20" />
             <span className="pointer-events-none absolute bottom-2 right-2 rounded-[8px] border border-line/50 bg-panel/80 px-2 py-0.5 font-mono text-[10px] text-dust opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100">
               expand ⤢
             </span>

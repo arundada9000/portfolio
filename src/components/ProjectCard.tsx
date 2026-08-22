@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Project } from "@/lib/data/projects";
 import { getGallery } from "@/lib/data/gallery";
 import { ProjectVisual } from "./ProjectVisual";
+import { ArrowRight, ArrowUpRight, Star } from "./Icon";
 
 /** Featured project card: real screenshot (or terminal fallback), content, clear case-study CTA. */
 export function ProjectCard({ project }: { project: Project }) {
@@ -34,7 +35,7 @@ export function ProjectCard({ project }: { project: Project }) {
           </h3>
           <span className="font-mono text-xs text-dust">
             {project.year}
-            {project.stars ? ` · ★ ${project.stars}` : ""}
+            {project.stars ? <span className="inline-flex items-center gap-1"><Star size={12} className="text-amber" /> {project.stars}</span> : ""}
           </span>
         </div>
 
@@ -61,7 +62,7 @@ export function ProjectCard({ project }: { project: Project }) {
               href={`/work/${project.slug}`}
               className="ios-touch inline-flex items-center gap-1.5 rounded-[12px] border border-amber/50 px-3 py-2 text-amber transition-all duration-150 hover:bg-amber hover:text-night active:scale-[0.97]"
             >
-              read case study →
+              read case study <ArrowRight size={12} className="inline" />
             </Link>
           )}
           <a href={project.github} target="_blank" rel="noopener noreferrer" className="link-underline ml-auto text-dust">
@@ -69,7 +70,7 @@ export function ProjectCard({ project }: { project: Project }) {
           </a>
           {project.live && (
             <a href={project.live} target="_blank" rel="noopener noreferrer" className="link-underline text-dust">
-              live ↗
+              live <ArrowUpRight size={12} className="inline" />
             </a>
           )}
         </div>

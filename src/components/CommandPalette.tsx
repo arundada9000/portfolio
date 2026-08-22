@@ -4,8 +4,18 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { site } from "@/lib/data/site";
 import { projects } from "@/lib/data/projects";
 import { useTheme } from "@/lib/theme-context";
-import { soundTap, soundThemeSwitch } from "@/lib/sounds";
-import { hapticTap, hapticSuccess } from "@/lib/haptics";
+import { DEFAULT_THEME } from "@/lib/themes";
+import { exportThemeJSON, importThemeJSON } from "@/lib/theme-utils";
+import {
+  soundTap,
+  soundThemeSwitch,
+  soundSuccess,
+  soundError,
+  soundPop,
+  areSoundsEnabled,
+  setSoundsEnabled,
+} from "@/lib/sounds";
+import { hapticTap, hapticSuccess, hapticError } from "@/lib/haptics";
 
 type Line = { kind: "in" | "out" | "err" | "hint"; text: string };
 
@@ -166,7 +176,13 @@ export function CommandPalette() {
 
   const dialogRef = useRef<HTMLDivElement>(null);
   const close = useCallback(() => setOpen(false), []);
-  const { theme: currentTheme, themes: allThemes, setTheme } = useTheme();
+  const {
+    theme: currentTheme,
+    themes: allThemes,
+    setTheme,
+    addCustomTheme,
+    openCustomThemeBuilder,
+  } = useTheme();
 
   useEffect(() => {
     audioRef.current = new Audio();
@@ -235,7 +251,8 @@ export function CommandPalette() {
           { kind: "hint", text: "── navigation ──  about · skills · work · gallery · open-source · experience · contact" },
           { kind: "hint", text: "── projects ──    ls · open <project> · repo <name>" },
           { kind: "hint", text: "── links ──       github · linkedin · whatsapp · instagram · facebook · email · youtube · twitter · sajilo" },
-          { kind: "hint", text: "── music ──       music · play [song] · pause · stop · next · volume <0-100>" },
+          { kind: "hint", text: "── themes ──      theme [list|switch <name>|create|reset|export|import]" },
+          { kind: "hint", text: "── audio ──       sound [on|off|toggle] · music · play [song] · pause · stop · next · volume <0-100>" },
           { kind: "hint", text: "── fun ──         neofetch · matrix · joke · motivate · quote · fortune · ascii · cowsay <t> · 8ball <q> · roll · coinflip · bofh · bingo" },
           { kind: "hint", text: "── dev ──         man <cmd> · whoami · date · cal · uptime · weather · ping · curl · history · socials · echo <text>" },
           { kind: "hint", text: "── easter ──      sudo · secret · hire · namaste · hello · coffee · tea · compliment · invite · banner <t> · figlet <t>" },
@@ -493,18 +510,18 @@ export function CommandPalette() {
       { name: "cls", desc: "clear the screen", run: () => { setLines([]); } },
 
       // ── themes ──
-      { name: "theme", args: "[list|switch <name>]", desc: "manage visual themes", run: (arg) => {
+      { name: "theme", args: "[list|switch <name>|create|reset|export|import <json>]", desc: "manage visual themes & custom styles", run: (arg) => {
         const [sub, ...rest] = arg.split(/\s+/);
         if (!sub || sub === "list") {
           return [
-            { kind: "hint", text: `current: ${currentTheme.name} (${currentTheme.dark ? "dark" : "light"})` },
+            { kind: "hint", text: `current: ${currentTheme.name} (${currentTheme.dark ? "dark" : "light"})${currentTheme.isCustom ? " [custom]" : ""}` },
             { kind: "hint", text: "" },
             ...allThemes.map((t) => ({
               kind: "out" as const,
-              text: `  ${t.id === currentTheme.id ? "●" : "○"} ${t.name.padEnd(18)} ${t.dark ? "🌙" : "☀️"}  ${t.id}`,
+              text: `  ${t.id === currentTheme.id ? "●" : "○"} ${t.name.padEnd(20)} ${t.dark ? "🌙" : "☀️"}  ${t.id}${t.isCustom ? " (custom)" : ""}`,
             })),
             { kind: "hint", text: "" },
-            { kind: "hint", text: "usage: theme switch <name>  -  e.g. theme switch ios-dark" },
+            { kind: "hint", text: "subcommands: switch <name> · create · reset · export · import <json>" },
           ];
         }
         if (sub === "switch") {
@@ -517,11 +534,65 @@ export function CommandPalette() {
           hapticSuccess();
           return [{ kind: "out", text: `✓ theme switched to ${match.name}` }];
         }
-        return [{ kind: "err", text: `unknown subcommand "${sub}"  -  try theme list` }];
+        if (sub === "create") {
+          close();
+          openCustomThemeBuilder();
+          soundPop();
+          hapticTap();
+          return [{ kind: "hint", text: "opening Theme Studio…" }];
+        }
+        if (sub === "reset") {
+          setTheme(DEFAULT_THEME);
+          soundThemeSwitch();
+          hapticSuccess();
+          return [{ kind: "out", text: `✓ theme reset to default (Midnight Amber)` }];
+        }
+        if (sub === "export") {
+          const json = exportThemeJSON(currentTheme);
+          navigator.clipboard?.writeText(json);
+          soundPop();
+          hapticSuccess();
+          return [
+            { kind: "out", text: json },
+            { kind: "hint", text: "✓ theme JSON copied to clipboard!" },
+          ];
+        }
+        if (sub === "import") {
+          const jsonStr = rest.join(" ");
+          if (!jsonStr) return [{ kind: "err", text: "usage: theme import <json_string>" }];
+          const imported = importThemeJSON(jsonStr);
+          if (!imported) return [{ kind: "err", text: "invalid theme JSON format" }];
+          addCustomTheme(imported);
+          soundSuccess();
+          hapticSuccess();
+          return [{ kind: "out", text: `✓ imported and applied theme: ${imported.name}` }];
+        }
+        return [{ kind: "err", text: `unknown subcommand "${sub}"  -  try: theme list` }];
+      }},
+
+      // ── audio ──
+      { name: "sound", args: "[on|off|toggle]", desc: "toggle UI sound effects", run: (arg) => {
+        const mode = arg.trim().toLowerCase();
+        if (!mode || mode === "toggle") {
+          const next = !areSoundsEnabled();
+          setSoundsEnabled(next);
+          if (next) soundPop();
+          return [{ kind: "out", text: `UI sound effects ${next ? "enabled 🔊" : "muted 🔇"}` }];
+        }
+        if (mode === "on" || mode === "enable") {
+          setSoundsEnabled(true);
+          soundPop();
+          return [{ kind: "out", text: "UI sound effects enabled 🔊" }];
+        }
+        if (mode === "off" || mode === "mute") {
+          setSoundsEnabled(false);
+          return [{ kind: "out", text: "UI sound effects muted 🔇" }];
+        }
+        return [{ kind: "err", text: "usage: sound [on|off|toggle]" }];
       }},
     ];
     return list;
-  }, [musicState, playSong, pauseMusic, stopMusic, setVolume, recall, close, currentTheme, allThemes, setTheme]);
+  }, [musicState, playSong, pauseMusic, stopMusic, setVolume, recall, close, currentTheme, allThemes, setTheme, addCustomTheme, openCustomThemeBuilder]);
 
   const suggestions = useMemo(() => {
     const q = input.trim().toLowerCase().split(/\s+/)[0] ?? "";

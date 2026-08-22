@@ -25,6 +25,7 @@ function play(
   type: OscillatorType = "sine",
   volume = 0.06,
 ): void {
+  if (!soundsEnabled) return;
   const c = getCtx();
   if (!c) return;
   const osc = c.createOscillator();

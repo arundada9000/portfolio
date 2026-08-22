@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { soundTap, soundSuccess } from "@/lib/sounds";
 import { hapticTap } from "@/lib/haptics";
+import { Check, RotateCcw, Play, Pause } from "./Icon";
 
 type Frame = { arr: number[]; active: number[]; sorted: boolean };
 
@@ -177,11 +178,11 @@ export function SortingVisualizer() {
               style={{
                 height: `${(v / maxVal) * 100}%`,
                 background: done
-                  ? "var(--color-accent)"
+                  ? "var(--accent)"
                   : hot
-                    ? "var(--color-accent-hover)"
-                    : "color-mix(in srgb, var(--color-accent) 45%, var(--color-surface-border))",
-                boxShadow: hot ? `0 0 12px color-mix(in srgb, var(--color-accent) 60%, transparent)` : "none",
+                    ? "var(--accent-hover)"
+                    : "color-mix(in srgb, var(--accent) 45%, var(--surface-border))",
+                boxShadow: hot ? `0 0 12px color-mix(in srgb, var(--accent-hover) 60%, transparent)` : "none",
               }}
             />
           );
@@ -191,7 +192,7 @@ export function SortingVisualizer() {
       <p className="mt-3 font-mono text-xs text-dust" role="status" aria-live="polite">
         <span className="text-amber">{algo}Sort()</span> · {COMPLEXITY[algo]} ·{" "}
         <span className="text-fog">
-          {done ? "sorted ✓" : `step ${step}/${frames.length - 1}`}
+          {done ? <span className="inline-flex items-center gap-1"><Check size={12} className="text-amber" /> sorted</span> : `step ${step}/${frames.length - 1}`}
         </span>
       </p>
 
@@ -232,7 +233,7 @@ export function SortingVisualizer() {
             }}
             className="ios-touch rounded-[12px] bg-amber px-4 py-2 font-mono text-xs font-bold text-night transition-all duration-150 hover:bg-ember active:scale-[0.97]"
           >
-            {done ? "↻ replay" : playing ? "❚❚ pause" : "▶ play"}
+            {done ? <span className="inline-flex items-center gap-1"><RotateCcw size={12} /> replay</span> : playing ? <span className="inline-flex items-center gap-1"><Pause size={12} /> pause</span> : <span className="inline-flex items-center gap-1"><Play size={12} /> play</span>}
           </button>
           <button
             type="button"

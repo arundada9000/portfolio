@@ -8,6 +8,7 @@ import { Section } from "./Section";
 import { Lightbox } from "./Lightbox";
 import { soundPop } from "@/lib/sounds";
 import { hapticTap } from "@/lib/haptics";
+import { ArrowRight } from "./Icon";
 
 export function Gallery() {
   const [active, setActive] = useState<{ key: string; index: number } | null>(null);
@@ -15,7 +16,7 @@ export function Gallery() {
 
   return (
     <Section id="gallery" command="open ~/screenshots/*" title="Gallery">
-      <p className="mb-10 max-w-2xl text-lg text-dust">
+      <p className="mb-3 max-w-2xl text-sm sm:text-base text-dust">
         {galleries.length} projects, {galleries.reduce((n, g) => n + g.images.length, 0)} screens.
         Click any project to flip through its shots.
       </p>
@@ -39,11 +40,11 @@ export function Gallery() {
                 sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
               />
-              <span className="absolute inset-0 bg-gradient-to-t from-night via-night/30 to-transparent opacity-80 transition-opacity group-hover:opacity-95" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-night/95 via-night/40 to-transparent" />
             </button>
 
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 p-3">
-              <p className="text-display text-sm text-fog">{g.title}</p>
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 p-3 z-10">
+              <p className="text-display text-sm text-fog font-bold drop-shadow-sm">{g.title}</p>
               <p className="font-mono text-[10px] text-dust">
                 {g.tag} · {g.images.length} shots
               </p>
@@ -54,7 +55,7 @@ export function Gallery() {
                 href={`/work/${g.slug}`}
                 className="absolute right-2 top-2 rounded-[8px] border border-amber/50 bg-panel/80 px-2 py-1 font-mono text-[10px] text-amber opacity-0 backdrop-blur-sm transition-all duration-200 hover:bg-amber hover:text-night group-hover:opacity-100 active:scale-95"
               >
-                case study →
+                case study <ArrowRight size={12} className="inline" />
               </Link>
             )}
           </div>

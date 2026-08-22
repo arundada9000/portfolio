@@ -36,6 +36,7 @@ export interface Theme {
   icon: string;
   dark: boolean;
   colors: ThemeColors;
+  isCustom?: boolean;
 }
 
 export const themes: Theme[] = [
@@ -251,6 +252,147 @@ export const themes: Theme[] = [
 
 export const DEFAULT_THEME = "midnight-amber";
 
-export function getThemeById(id: string): Theme | undefined {
-  return themes.find((t) => t.id === id);
+export function getThemeById(id: string, allThemes: Theme[] = themes): Theme | undefined {
+  return allThemes.find((t) => t.id === id);
 }
+
+export interface CustomThemeSeed {
+  name: string;
+  dark: boolean;
+  icon?: string;
+  bg: string;
+  card: string;
+  border: string;
+  text: string;
+  textSecondary: string;
+  accent: string;
+  accentHover: string;
+}
+
+export function createCustomTheme(seed: CustomThemeSeed, idOverride?: string): Theme {
+  const isDark = seed.dark;
+  const id =
+    idOverride ??
+    `custom-${seed.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${Date.now().toString(36)}`;
+  return {
+    id,
+    name: seed.name,
+    icon: seed.icon ?? "palette",
+    dark: isDark,
+    isCustom: true,
+    colors: {
+      "surface-bg": seed.bg,
+      "surface-card": seed.card,
+      "surface-elevated": seed.card,
+      "surface-border": seed.border,
+      "text-primary": seed.text,
+      "text-secondary": seed.textSecondary,
+      "text-accent": seed.accent,
+      accent: seed.accent,
+      "accent-hover": seed.accentHover,
+      "color-success": isDark ? "#34d399" : "#34c759",
+      "color-danger": isDark ? "#f87171" : "#ff3b30",
+      "color-warning": isDark ? "#fbbf24" : "#ff9500",
+      "color-info": isDark ? "#60a5fa" : "#007aff",
+      "glass-bg": isDark ? "rgba(20,25,35,0.78)" : "rgba(255,255,255,0.78)",
+      "glass-border": isDark ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.12)",
+      "shadow-sm": isDark ? "0 1px 3px rgba(0,0,0,0.3)" : "0 1px 3px rgba(0,0,0,0.06)",
+      "shadow-md": isDark ? "0 4px 12px rgba(0,0,0,0.4)" : "0 4px 12px rgba(0,0,0,0.08)",
+      "shadow-lg": isDark ? "0 8px 32px rgba(0,0,0,0.5)" : "0 8px 32px rgba(0,0,0,0.12)",
+    },
+  };
+}
+
+export const THEME_STARTER_PRESETS: { name: string; seed: CustomThemeSeed }[] = [
+  {
+    name: "Cyberpunk Neon",
+    seed: {
+      name: "Cyberpunk Neon",
+      dark: true,
+      icon: "sparkle",
+      bg: "#080811",
+      card: "#121124",
+      border: "#292349",
+      text: "#f0f2ff",
+      textSecondary: "#8b85b8",
+      accent: "#00f0ff",
+      accentHover: "#ff0055",
+    },
+  },
+  {
+    name: "Solarized Dark",
+    seed: {
+      name: "Solarized Dark",
+      dark: true,
+      icon: "sun",
+      bg: "#002b36",
+      card: "#073642",
+      border: "#0e4a59",
+      text: "#839496",
+      textSecondary: "#586e75",
+      accent: "#b58900",
+      accentHover: "#cb4b16",
+    },
+  },
+  {
+    name: "Nord Frost",
+    seed: {
+      name: "Nord Frost",
+      dark: true,
+      icon: "cloud",
+      bg: "#242933",
+      card: "#2e3440",
+      border: "#3b4252",
+      text: "#eceff4",
+      textSecondary: "#d8dee9",
+      accent: "#88c0d0",
+      accentHover: "#81a1c1",
+    },
+  },
+  {
+    name: "Dracula",
+    seed: {
+      name: "Dracula",
+      dark: true,
+      icon: "moon",
+      bg: "#1e1f29",
+      card: "#282a36",
+      border: "#44475a",
+      text: "#f8f8f2",
+      textSecondary: "#6272a4",
+      accent: "#bd93f9",
+      accentHover: "#ff79c6",
+    },
+  },
+  {
+    name: "Matcha Light",
+    seed: {
+      name: "Matcha Light",
+      dark: false,
+      icon: "leaf",
+      bg: "#f6f8f5",
+      card: "#ffffff",
+      border: "#dce3da",
+      text: "#223324",
+      textSecondary: "#5c6e5e",
+      accent: "#4e8752",
+      accentHover: "#39683c",
+    },
+  },
+  {
+    name: "OLED Monochrome",
+    seed: {
+      name: "OLED Monochrome",
+      dark: true,
+      icon: "moon",
+      bg: "#000000",
+      card: "#121212",
+      border: "#282828",
+      text: "#ffffff",
+      textSecondary: "#999999",
+      accent: "#ffffff",
+      accentHover: "#cccccc",
+    },
+  },
+];
+

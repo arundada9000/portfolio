@@ -5,6 +5,7 @@ import { site } from "@/lib/data/site";
 import { CountUp } from "./CountUp";
 import { soundTap } from "@/lib/sounds";
 import { hapticTap } from "@/lib/haptics";
+import { ArrowUpRight, Star } from "./Icon";
 
 type Repo = {
   id: number;
@@ -76,12 +77,12 @@ export function GitHubActivity() {
   if (state.status === "error") return null;
 
   return (
-    <section id="github" data-section="github" className="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6 sm:py-28">
+    <section id="github" data-section="github" className="mx-auto max-w-6xl scroll-mt-16 px-4 py-4 sm:px-6 sm:py-6">
       <p className="text-eyebrow">
         <span aria-hidden="true">$ </span>gh repo list {site.alias} --live
       </p>
-      <div className="mt-3 mb-12 flex flex-wrap items-end justify-between gap-4">
-        <h2 className="text-display text-4xl uppercase sm:text-6xl">Live from GitHub</h2>
+      <div className="mt-1 mb-2 sm:mb-3 flex flex-wrap items-end justify-between gap-4">
+        <h2 className="text-display text-4xl uppercase sm:text-5xl">Live from GitHub</h2>
         <span className="font-mono text-xs text-dust">
           {state.status === "loading" && "fetching…"}
           {state.status === "ready" && "fetched at runtime · cached 30m"}
@@ -94,7 +95,7 @@ export function GitHubActivity() {
         <>
           <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-[20px] border border-line/50 bg-line/50 sm:grid-cols-3">
             <Stat value={`${state.totalRepos}`} label="public repos (non-fork)" />
-            <Stat value={`★ ${state.totalStars}`} label="total stars earned" />
+            <Stat value={`${state.totalStars}`} label="total stars earned" icon={<Star size={16} className="text-amber" />} />
             <Stat value={state.languages[0]?.[0] ?? "-"} label="most-used language" />
           </dl>
 
@@ -138,7 +139,7 @@ export function GitHubActivity() {
                 >
                   <div className="flex items-start justify-between gap-2">
                     <h3 className="font-mono text-sm font-bold text-fog group-hover:text-amber">{repo.name}</h3>
-                    <span className="shrink-0 font-mono text-xs text-amber">★ {repo.stargazers_count}</span>
+                    <span className="shrink-0 inline-flex items-center gap-1 font-mono text-xs text-amber"><Star size={12} /> {repo.stargazers_count}</span>
                   </div>
                   <p className="mt-2 line-clamp-2 flex-1 text-sm text-dust">
                     {repo.description ?? "No description."}
@@ -157,7 +158,7 @@ export function GitHubActivity() {
             rel="noopener noreferrer"
             className="ios-touch mt-8 inline-block rounded-[12px] border border-line/60 px-6 py-3 font-mono text-sm text-fog transition-all duration-150 hover:border-amber hover:text-amber active:scale-[0.97]"
           >
-            see all {state.totalRepos} repos ↗
+            see all {state.totalRepos} repos <ArrowUpRight size={12} className="inline" />
           </a>
         </>
       )}
@@ -165,10 +166,11 @@ export function GitHubActivity() {
   );
 }
 
-function Stat({ value, label }: { value: string; label: string }) {
+function Stat({ value, label, icon }: { value: string; label: string; icon?: React.ReactNode }) {
   return (
     <div className="bg-panel p-5">
-      <dd className="text-display text-3xl text-amber">
+      <dd className="text-display text-3xl text-amber flex items-center gap-2">
+        {icon}
         <CountUp value={value} />
       </dd>
       <dt className="mt-1 font-mono text-xs text-dust">{label}</dt>

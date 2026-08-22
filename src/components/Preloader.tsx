@@ -103,7 +103,8 @@ export function Preloader() {
     <div
       aria-hidden="true"
       suppressHydrationWarning
-      className={`fixed inset-0 z-[100] flex flex-col justify-between overflow-hidden bg-surface-bg p-6 transition-transform duration-[600ms] ease-[cubic-bezier(0.76,0,0.24,1)] sm:p-10 ${
+      style={{ backgroundColor: "var(--surface-bg, #0a0e15)" }}
+      className={`fixed inset-0 z-[100] flex flex-col justify-between overflow-hidden bg-night p-6 transition-transform duration-[600ms] ease-[cubic-bezier(0.76,0,0.24,1)] sm:p-10 ${
         phase === "leaving" ? "-translate-y-full" : ""
       }`}
     >

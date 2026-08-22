@@ -14,7 +14,7 @@ export function Section({
   children: ReactNode;
 }) {
   return (
-    <section id={id} data-section={id} className="mx-auto max-w-6xl scroll-mt-20 px-4 py-20 sm:px-6 sm:py-28">
+    <section id={id} data-section={id} className="mx-auto max-w-6xl scroll-mt-16 px-4 py-2 sm:px-6 sm:py-3">
       <SectionHeading command={command} title={title} />
       {children}
     </section>

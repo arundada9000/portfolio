@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { soundTap } from "@/lib/sounds";
 import { hapticTap } from "@/lib/haptics";
+import { XMark, ArrowLeft, ArrowRight } from "./Icon";
 
 /** Full-screen image viewer with keyboard + click navigation. */
 export function Lightbox({
@@ -85,20 +86,25 @@ export function Lightbox({
         <button
           type="button"
           onClick={() => { soundTap(); onClose(); }}
-          className="ios-touch rounded-[10px] border border-line/60 px-3 py-2 transition-colors hover:border-amber hover:text-amber active:scale-[0.95]"
+          className="ios-touch inline-flex items-center gap-1.5 rounded-[10px] border border-line/60 px-3 py-2 transition-colors hover:border-amber hover:text-amber active:scale-[0.95]"
         >
-          esc ✕
+          <span>esc</span>
+          <XMark size={14} />
         </button>
       </div>
 
       {/* image */}
-      <div className="relative flex max-h-[78vh] w-full max-w-5xl items-center justify-center" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="relative flex h-[60vh] sm:h-[74vh] w-full max-w-5xl items-center justify-center overflow-hidden rounded-[16px] border border-line/60 bg-night/90 p-2 shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
         <Image
           src={images[index]}
           alt={`${title} screenshot ${index + 1}`}
           fill
-          sizes="(max-width: 1280px) 100vw, 1024px"
-          className="max-h-[78vh] w-auto !max-w-full rounded-[16px] border border-line/50 object-contain"
+          priority
+          sizes="(max-width: 1280px) 100vw, 1200px"
+          className="object-contain p-2"
         />
         {images.length > 1 && (
           <>
@@ -108,7 +114,7 @@ export function Lightbox({
               aria-label="Previous"
               className="ios-touch absolute left-2 flex size-11 items-center justify-center rounded-full border border-line/60 bg-panel/80 font-mono text-fog backdrop-blur-sm transition-all duration-150 hover:border-amber hover:text-amber active:scale-90"
             >
-              ‹
+              <ArrowLeft size={18} />
             </button>
             <button
               type="button"
@@ -116,7 +122,7 @@ export function Lightbox({
               aria-label="Next"
               className="ios-touch absolute right-2 flex size-11 items-center justify-center rounded-full border border-line/60 bg-panel/80 font-mono text-fog backdrop-blur-sm transition-all duration-150 hover:border-amber hover:text-amber active:scale-90"
             >
-              ›
+              <ArrowRight size={18} />
             </button>
           </>
         )}

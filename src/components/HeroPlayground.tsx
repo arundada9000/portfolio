@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { featuredProjects } from "@/lib/data/projects";
+import { useTheme } from "@/lib/theme-context";
+import { hexToRgb } from "@/lib/theme-utils";
 
 /**
  * The hero's right-side toy box: one terminal window, four interactive
@@ -19,9 +21,6 @@ const TOYS: { id: Toy; label: string; hint: string }[] = [
   { id: "radar", label: "radar", hint: "hover the blips · click to open" },
   { id: "life", label: "life", hint: "drag to paint new life" },
 ];
-
-const AMBER = "255,180,84";
-const EMBER = "255,122,47";
 
 /* ── shared canvas plumbing ─────────────────────────────────── */
 
@@ -45,7 +44,7 @@ function useCanvas(draw: (ctx: CanvasRenderingContext2D, w: number, h: number) =
 
 /* ── 1. particle portrait ───────────────────────────────────── */
 
-function Particles({ running }: { running: boolean }) {
+function Particles({ running, amberRgb }: { running: boolean; amberRgb: string }) {
   const draw = useCallback((ctx: CanvasRenderingContext2D, W: number, H: number) => {
     let raf = 0;
     let alive = true;
@@ -56,7 +55,7 @@ function Particles({ running }: { running: boolean }) {
     const img = document.createElement("img");
     img.onerror = () => {
       ctx.clearRect(0, 0, W, H);
-      ctx.fillStyle = `rgba(${AMBER},0.4)`;
+      ctx.fillStyle = `rgba(${amberRgb},0.4)`;
       ctx.font = "13px monospace";
       ctx.textAlign = "center";
       ctx.fillText("// portrait unavailable", W / 2, H / 2);
@@ -102,7 +101,7 @@ function Particles({ running }: { running: boolean }) {
 
 
 
-    const styles = [0.22, 0.38, 0.55, 0.75, 0.95].map((a) => `rgba(${AMBER},${a})`);
+    const styles = [0.22, 0.38, 0.55, 0.75, 0.95].map((a) => `rgba(${amberRgb},${a})`);
     const R = 68;
 
     const loop = () => {
@@ -160,368 +159,452 @@ function Particles({ running }: { running: boolean }) {
       window.removeEventListener("scroll", invalidate);
       window.removeEventListener("resize", invalidate);
     };
-  }, []);
+  }, [amberRgb]);
 
   const ref = useCanvas(draw, running);
-  return <canvas ref={ref} role="img" className="h-full w-full" aria-label="Interactive particle portrait of Arun - move your cursor to scatter it" />;
+  return (
+    <canvas
+      ref={ref}
+      role="img"
+      className="h-full w-full"
+      aria-label="Interactive particle portrait of Arun - move your cursor to scatter it"
+    />
+  );
 }
 
 /* ── 2. snake ───────────────────────────────────────────────── */
 
-function Snake({ running }: { running: boolean }) {
-  const draw = useCallback((ctx: CanvasRenderingContext2D, W: number, H: number) => {
-    const COLS = 24;
-    const CELL = Math.floor(W / COLS);
-    const ROWS = Math.floor(H / CELL);
-    const px = (W - COLS * CELL) / 2;
-    const py = (H - ROWS * CELL) / 2;
+function Snake({
+  running,
+  amberRgb,
+  emberRgb,
+  bgRgb,
+}: {
+  running: boolean;
+  amberRgb: string;
+  emberRgb: string;
+  bgRgb: string;
+}) {
+  const draw = useCallback(
+    (ctx: CanvasRenderingContext2D, W: number, H: number) => {
+      const COLS = 24;
+      const CELL = Math.floor(W / COLS);
+      const ROWS = Math.floor(H / CELL);
+      const px = (W - COLS * CELL) / 2;
+      const py = (H - ROWS * CELL) / 2;
 
-    let snake = [{ x: 8, y: Math.floor(ROWS / 2) }];
-    let dir = { x: 1, y: 0 };
-    let queued = dir;
-    let food = { x: 16, y: Math.floor(ROWS / 2) };
-    let state: "idle" | "playing" | "dead" = "idle";
-    let score = 0;
-    let high: number;
-    try { high = parseInt(localStorage.getItem("snake-high") || "0", 10); } catch { high = 0; }
-    let raf = 0;
-    let last = 0;
-    let alive = true;
-
-    const placeFood = () => {
-      do {
-        food = { x: Math.floor(Math.random() * COLS), y: Math.floor(Math.random() * ROWS) };
-      } while (snake.some((s) => s.x === food.x && s.y === food.y));
-    };
-
-    const reset = () => {
-      snake = [{ x: 8, y: Math.floor(ROWS / 2) }];
-      dir = { x: 1, y: 0 };
-      queued = dir;
-      score = 0;
-      placeFood();
-    };
-
-    const step = () => {
-      dir = queued;
-      const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
-      if (head.x < 0 || head.y < 0 || head.x >= COLS || head.y >= ROWS || snake.some((s) => s.x === head.x && s.y === head.y)) {
-        state = "dead";
-        if (score > high) {
-          high = score;
-          try { localStorage.setItem("snake-high", String(high)); } catch {}
-        }
-        return;
+      let snake = [{ x: 8, y: Math.floor(ROWS / 2) }];
+      let dir = { x: 1, y: 0 };
+      let queued = dir;
+      let food = { x: 16, y: Math.floor(ROWS / 2) };
+      let state: "idle" | "playing" | "dead" = "idle";
+      let score = 0;
+      let high: number;
+      try {
+        high = parseInt(localStorage.getItem("snake-high") || "0", 10);
+      } catch {
+        high = 0;
       }
-      snake.unshift(head);
-      if (head.x === food.x && head.y === food.y) {
-        score += 10;
-        placeFood();
-      } else {
-        snake.pop();
-      }
-    };
+      let raf = 0;
+      let last = 0;
+      let alive = true;
 
-    const render = () => {
-      ctx.clearRect(0, 0, W, H);
-      // board frame
-      ctx.strokeStyle = `rgba(${AMBER},0.15)`;
-      ctx.strokeRect(px + 0.5, py + 0.5, COLS * CELL - 1, ROWS * CELL - 1);
-      // food
-      ctx.fillStyle = `rgba(${EMBER},0.95)`;
-      ctx.fillRect(px + food.x * CELL + 2, py + food.y * CELL + 2, CELL - 4, CELL - 4);
-      // snake
-      snake.forEach((s, i) => {
-        ctx.fillStyle = i === 0 ? `rgba(${AMBER},1)` : `rgba(${AMBER},${Math.max(0.35, 1 - i * 0.06)})`;
-        ctx.fillRect(px + s.x * CELL + 1, py + s.y * CELL + 1, CELL - 2, CELL - 2);
-      });
-      // hud
-      ctx.fillStyle = `rgba(${AMBER},0.9)`;
-      ctx.font = "12px monospace";
-      ctx.textAlign = "left";
-      ctx.fillText(`score ${score}`, px + 4, py - 6 < 10 ? 12 : py - 6);
-      ctx.textAlign = "right";
-      ctx.fillText(`best ${high}`, px + COLS * CELL - 4, py - 6 < 10 ? 12 : py - 6);
-      // overlays
-      if (state !== "playing") {
-        ctx.fillStyle = "rgba(10,14,21,0.72)";
-        ctx.fillRect(px, py, COLS * CELL, ROWS * CELL);
-        ctx.fillStyle = `rgba(${AMBER},1)`;
-        ctx.textAlign = "center";
-        ctx.font = "bold 16px monospace";
-        ctx.fillText(state === "idle" ? "▶ click to play" : `game over · ${score}`, W / 2, H / 2 - 6);
-        ctx.font = "11px monospace";
-        ctx.fillStyle = `rgba(${AMBER},0.7)`;
-        ctx.fillText(state === "idle" ? "arrows or WASD" : "click to try again", W / 2, H / 2 + 14);
-      }
-    };
-
-    const loop = (now: number) => {
-      if (!alive) return;
-      if (state === "playing" && now - last > 110) {
-        last = now;
-        step();
-      }
-      render();
-      raf = requestAnimationFrame(loop);
-    };
-
-    const canvas = ctx.canvas;
-    const onClick = () => {
-      if (state !== "playing") {
-        reset();
-        state = "playing";
-      }
-    };
-    const onKey = (e: KeyboardEvent) => {
-      if (state !== "playing") return;
-      const k = e.key.toLowerCase();
-      const map: Record<string, { x: number; y: number }> = {
-        arrowup: { x: 0, y: -1 }, w: { x: 0, y: -1 },
-        arrowdown: { x: 0, y: 1 }, s: { x: 0, y: 1 },
-        arrowleft: { x: -1, y: 0 }, a: { x: -1, y: 0 },
-        arrowright: { x: 1, y: 0 }, d: { x: 1, y: 0 },
+      const placeFood = () => {
+        do {
+          food = { x: Math.floor(Math.random() * COLS), y: Math.floor(Math.random() * ROWS) };
+        } while (snake.some((s) => s.x === food.x && s.y === food.y));
       };
-      const next = map[k];
-      if (!next) return;
-      e.preventDefault();
-      // no instant 180° turns
-      if (next.x !== -dir.x || next.y !== -dir.y) queued = next;
-    };
 
-    canvas.addEventListener("click", onClick);
-    window.addEventListener("keydown", onKey);
-    raf = requestAnimationFrame(loop);
+      const reset = () => {
+        snake = [{ x: 8, y: Math.floor(ROWS / 2) }];
+        dir = { x: 1, y: 0 };
+        queued = dir;
+        score = 0;
+        placeFood();
+      };
 
-    return () => {
-      alive = false;
-      cancelAnimationFrame(raf);
-      canvas.removeEventListener("click", onClick);
-      window.removeEventListener("keydown", onKey);
-    };
-  }, []);
+      const step = () => {
+        dir = queued;
+        const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+        if (
+          head.x < 0 ||
+          head.y < 0 ||
+          head.x >= COLS ||
+          head.y >= ROWS ||
+          snake.some((s) => s.x === head.x && s.y === head.y)
+        ) {
+          state = "dead";
+          if (score > high) {
+            high = score;
+            try {
+              localStorage.setItem("snake-high", String(high));
+            } catch {}
+          }
+          return;
+        }
+        snake.unshift(head);
+        if (head.x === food.x && head.y === food.y) {
+          score += 10;
+          placeFood();
+        } else {
+          snake.pop();
+        }
+      };
+
+      const render = () => {
+        ctx.clearRect(0, 0, W, H);
+        // board frame
+        ctx.strokeStyle = `rgba(${amberRgb},0.15)`;
+        ctx.strokeRect(px + 0.5, py + 0.5, COLS * CELL - 1, ROWS * CELL - 1);
+        // food
+        ctx.fillStyle = `rgba(${emberRgb},0.95)`;
+        ctx.fillRect(px + food.x * CELL + 2, py + food.y * CELL + 2, CELL - 4, CELL - 4);
+        // snake
+        snake.forEach((s, i) => {
+          ctx.fillStyle =
+            i === 0 ? `rgba(${amberRgb},1)` : `rgba(${amberRgb},${Math.max(0.35, 1 - i * 0.06)})`;
+          ctx.fillRect(px + s.x * CELL + 1, py + s.y * CELL + 1, CELL - 2, CELL - 2);
+        });
+        // hud
+        ctx.fillStyle = `rgba(${amberRgb},0.9)`;
+        ctx.font = "12px monospace";
+        ctx.textAlign = "left";
+        ctx.fillText(`score ${score}`, px + 4, py - 6 < 10 ? 12 : py - 6);
+        ctx.textAlign = "right";
+        ctx.fillText(`best ${high}`, px + COLS * CELL - 4, py - 6 < 10 ? 12 : py - 6);
+        // overlays
+        if (state !== "playing") {
+          ctx.fillStyle = `rgba(${bgRgb},0.78)`;
+          ctx.fillRect(px, py, COLS * CELL, ROWS * CELL);
+          ctx.fillStyle = `rgba(${amberRgb},1)`;
+          ctx.textAlign = "center";
+          ctx.font = "bold 16px monospace";
+          ctx.fillText(state === "idle" ? "▶ click to play" : `game over · ${score}`, W / 2, H / 2 - 6);
+          ctx.font = "11px monospace";
+          ctx.fillStyle = `rgba(${amberRgb},0.7)`;
+          ctx.fillText(state === "idle" ? "arrows or WASD" : "click to try again", W / 2, H / 2 + 14);
+        }
+      };
+
+      const loop = (now: number) => {
+        if (!alive) return;
+        if (state === "playing" && now - last > 110) {
+          last = now;
+          step();
+        }
+        render();
+        raf = requestAnimationFrame(loop);
+      };
+
+      const canvas = ctx.canvas;
+      const onClick = () => {
+        if (state !== "playing") {
+          reset();
+          state = "playing";
+        }
+      };
+      const onKey = (e: KeyboardEvent) => {
+        if (state !== "playing") return;
+        const k = e.key.toLowerCase();
+        const map: Record<string, { x: number; y: number }> = {
+          arrowup: { x: 0, y: -1 },
+          w: { x: 0, y: -1 },
+          arrowdown: { x: 0, y: 1 },
+          s: { x: 0, y: 1 },
+          arrowleft: { x: -1, y: 0 },
+          a: { x: -1, y: 0 },
+          arrowright: { x: 1, y: 0 },
+          d: { x: 1, y: 0 },
+        };
+        const next = map[k];
+        if (!next) return;
+        e.preventDefault();
+        // no instant 180° turns
+        if (next.x !== -dir.x || next.y !== -dir.y) queued = next;
+      };
+
+      canvas.addEventListener("click", onClick);
+      window.addEventListener("keydown", onKey);
+      raf = requestAnimationFrame(loop);
+
+      return () => {
+        alive = false;
+        cancelAnimationFrame(raf);
+        canvas.removeEventListener("click", onClick);
+        window.removeEventListener("keydown", onKey);
+      };
+    },
+    [amberRgb, emberRgb, bgRgb],
+  );
 
   const ref = useCanvas(draw, running);
-  return <canvas ref={ref} role="img" className="h-full w-full cursor-pointer" aria-label="Playable snake game - click to start, steer with arrow keys" />;
+  return (
+    <canvas
+      ref={ref}
+      role="img"
+      className="h-full w-full cursor-pointer"
+      aria-label="Playable snake game - click to start, steer with arrow keys"
+    />
+  );
 }
 
 /* ── 3. project radar ───────────────────────────────────────── */
 
-function Radar({ running }: { running: boolean }) {
-  const draw = useCallback((ctx: CanvasRenderingContext2D, W: number, H: number) => {
-    const cx = W / 2;
-    const cy = H / 2;
-    const R = Math.min(W, H) / 2 - 18;
-    let sweep = 0;
-    let raf = 0;
-    let alive = true;
-    let hovered = -1;
+function Radar({
+  running,
+  amberRgb,
+  emberRgb,
+}: {
+  running: boolean;
+  amberRgb: string;
+  emberRgb: string;
+}) {
+  const draw = useCallback(
+    (ctx: CanvasRenderingContext2D, W: number, H: number) => {
+      const cx = W / 2;
+      const cy = H / 2;
+      const R = Math.min(W, H) / 2 - 18;
+      let sweep = 0;
+      let raf = 0;
+      let alive = true;
+      let hovered = -1;
 
-    const blips = featuredProjects.map((p, i) => {
-      const angle = (i / featuredProjects.length) * Math.PI * 2 + 0.7;
-      const radius = 0.42 + (i % 3) * 0.2;
-      return { title: p.title, slug: p.slug, x: cx + Math.cos(angle) * R * radius, y: cy + Math.sin(angle) * R * radius, angle };
-    });
-
-    const loop = () => {
-      if (!alive) return;
-      ctx.clearRect(0, 0, W, H);
-
-      // rings + crosshairs
-      ctx.strokeStyle = `rgba(${AMBER},0.16)`;
-      for (const f of [0.33, 0.66, 1]) {
-        ctx.beginPath();
-        ctx.arc(cx, cy, R * f, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-      ctx.beginPath();
-      ctx.moveTo(cx - R, cy);
-      ctx.lineTo(cx + R, cy);
-      ctx.moveTo(cx, cy - R);
-      ctx.lineTo(cx, cy + R);
-      ctx.stroke();
-
-      // sweep wedge
-      const grad = ctx.createConicGradient ? ctx.createConicGradient(sweep, cx, cy) : null;
-      if (grad) {
-        grad.addColorStop(0, `rgba(${AMBER},0.28)`);
-        grad.addColorStop(0.12, "rgba(255,180,84,0)");
-        grad.addColorStop(1, "rgba(255,180,84,0)");
-        ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.arc(cx, cy, R, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.strokeStyle = `rgba(${AMBER},0.85)`;
-      ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.lineTo(cx + Math.cos(sweep) * R, cy + Math.sin(sweep) * R);
-      ctx.stroke();
-
-      // blips: glow right after the sweep passes them
-      blips.forEach((b, i) => {
-        const diff = (sweep - b.angle + Math.PI * 4) % (Math.PI * 2);
-        const heat = Math.max(0, 1 - diff / 1.6);
-        const active = i === hovered;
-        ctx.fillStyle = active ? `rgba(${EMBER},1)` : `rgba(${AMBER},${0.25 + heat * 0.75})`;
-        ctx.beginPath();
-        ctx.arc(b.x, b.y, active ? 6 : 3.5 + heat * 2, 0, Math.PI * 2);
-        ctx.fill();
-        if (active || heat > 0.55) {
-          ctx.fillStyle = active ? `rgba(${EMBER},1)` : `rgba(${AMBER},${heat})`;
-          ctx.font = "11px monospace";
-          ctx.textAlign = b.x > cx ? "right" : "left";
-          ctx.fillText(b.title.toLowerCase(), b.x + (b.x > cx ? -10 : 10), b.y - 8);
-        }
+      const blips = featuredProjects.map((p, i) => {
+        const angle = (i / featuredProjects.length) * Math.PI * 2 + 0.7;
+        const radius = 0.42 + (i % 3) * 0.2;
+        return {
+          title: p.title,
+          slug: p.slug,
+          x: cx + Math.cos(angle) * R * radius,
+          y: cy + Math.sin(angle) * R * radius,
+          angle,
+        };
       });
 
-      sweep += 0.017;
+      const loop = () => {
+        if (!alive) return;
+        ctx.clearRect(0, 0, W, H);
+
+        // rings + crosshairs
+        ctx.strokeStyle = `rgba(${amberRgb},0.16)`;
+        for (const f of [0.33, 0.66, 1]) {
+          ctx.beginPath();
+          ctx.arc(cx, cy, R * f, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+        ctx.beginPath();
+        ctx.moveTo(cx - R, cy);
+        ctx.lineTo(cx + R, cy);
+        ctx.moveTo(cx, cy - R);
+        ctx.lineTo(cx, cy + R);
+        ctx.stroke();
+
+        // sweep wedge
+        const grad = ctx.createConicGradient ? ctx.createConicGradient(sweep, cx, cy) : null;
+        if (grad) {
+          grad.addColorStop(0, `rgba(${amberRgb},0.28)`);
+          grad.addColorStop(0.12, `rgba(${amberRgb},0)`);
+          grad.addColorStop(1, `rgba(${amberRgb},0)`);
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.moveTo(cx, cy);
+          ctx.arc(cx, cy, R, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.strokeStyle = `rgba(${amberRgb},0.85)`;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + Math.cos(sweep) * R, cy + Math.sin(sweep) * R);
+        ctx.stroke();
+
+        // blips: glow right after the sweep passes them
+        blips.forEach((b, i) => {
+          const diff = (sweep - b.angle + Math.PI * 4) % (Math.PI * 2);
+          const heat = Math.max(0, 1 - diff / 1.6);
+          const active = i === hovered;
+          ctx.fillStyle = active ? `rgba(${emberRgb},1)` : `rgba(${amberRgb},${0.25 + heat * 0.75})`;
+          ctx.beginPath();
+          ctx.arc(b.x, b.y, active ? 6 : 3.5 + heat * 2, 0, Math.PI * 2);
+          ctx.fill();
+          if (active || heat > 0.55) {
+            ctx.fillStyle = active ? `rgba(${emberRgb},1)` : `rgba(${amberRgb},${heat})`;
+            ctx.font = "11px monospace";
+            ctx.textAlign = b.x > cx ? "right" : "left";
+            ctx.fillText(b.title.toLowerCase(), b.x + (b.x > cx ? -10 : 10), b.y - 8);
+          }
+        });
+
+        sweep += 0.017;
+        raf = requestAnimationFrame(loop);
+      };
+
+      const canvas = ctx.canvas;
+      let crect: DOMRect | null = null;
+      const invalidate = () => (crect = null);
+      const hit = (e: PointerEvent) => {
+        crect ??= canvas.getBoundingClientRect();
+        const mx = e.clientX - crect.left;
+        const my = e.clientY - crect.top;
+        hovered = blips.findIndex((b) => (b.x - mx) ** 2 + (b.y - my) ** 2 < 16 ** 2);
+        canvas.style.cursor = hovered >= 0 ? "pointer" : "default";
+      };
+      const onClick = () => {
+        if (hovered >= 0) window.location.assign(`/work/${blips[hovered].slug}`);
+      };
+      canvas.addEventListener("pointermove", hit);
+      canvas.addEventListener("click", onClick);
+      window.addEventListener("scroll", invalidate, { passive: true });
+      window.addEventListener("resize", invalidate);
       raf = requestAnimationFrame(loop);
-    };
 
-    const canvas = ctx.canvas;
-    let crect: DOMRect | null = null;
-    const invalidate = () => (crect = null);
-    const hit = (e: PointerEvent) => {
-      crect ??= canvas.getBoundingClientRect();
-      const mx = e.clientX - crect.left;
-      const my = e.clientY - crect.top;
-      hovered = blips.findIndex((b) => (b.x - mx) ** 2 + (b.y - my) ** 2 < 16 ** 2);
-      canvas.style.cursor = hovered >= 0 ? "pointer" : "default";
-    };
-    const onClick = () => {
-      if (hovered >= 0) window.location.assign(`/work/${blips[hovered].slug}`);
-    };
-    canvas.addEventListener("pointermove", hit);
-    canvas.addEventListener("click", onClick);
-    window.addEventListener("scroll", invalidate, { passive: true });
-    window.addEventListener("resize", invalidate);
-    raf = requestAnimationFrame(loop);
-
-    return () => {
-      alive = false;
-      cancelAnimationFrame(raf);
-      canvas.removeEventListener("pointermove", hit);
-      canvas.removeEventListener("click", onClick);
-      window.removeEventListener("scroll", invalidate);
-      window.removeEventListener("resize", invalidate);
-    };
-  }, []);
+      return () => {
+        alive = false;
+        cancelAnimationFrame(raf);
+        canvas.removeEventListener("pointermove", hit);
+        canvas.removeEventListener("click", onClick);
+        window.removeEventListener("scroll", invalidate);
+        window.removeEventListener("resize", invalidate);
+      };
+    },
+    [amberRgb, emberRgb],
+  );
 
   const ref = useCanvas(draw, running);
-  return <canvas ref={ref} role="img" className="h-full w-full" aria-label="Project radar - featured projects appear as blips, click one to open its case study" />;
+  return (
+    <canvas
+      ref={ref}
+      role="img"
+      className="h-full w-full"
+      aria-label="Project radar - featured projects appear as blips, click one to open its case study"
+    />
+  );
 }
 
 /* ── 4. game of life ────────────────────────────────────────── */
 
-function Life({ running }: { running: boolean }) {
-  const draw = useCallback((ctx: CanvasRenderingContext2D, W: number, H: number) => {
-    const CELL = 7;
-    const COLS = Math.floor(W / CELL);
-    const ROWS = Math.floor(H / CELL);
-    let grid = new Uint8Array(COLS * ROWS);
-    let next = new Uint8Array(COLS * ROWS);
-    let raf = 0;
-    let last = 0;
-    let alive = true;
-    let painting = false;
+function Life({ running, amberRgb }: { running: boolean; amberRgb: string }) {
+  const draw = useCallback(
+    (ctx: CanvasRenderingContext2D, W: number, H: number) => {
+      const CELL = 7;
+      const COLS = Math.floor(W / CELL);
+      const ROWS = Math.floor(H / CELL);
+      let grid = new Uint8Array(COLS * ROWS);
+      let next = new Uint8Array(COLS * ROWS);
+      let raf = 0;
+      let last = 0;
+      let alive = true;
+      let painting = false;
 
-    const seed = () => {
-      for (let i = 0; i < grid.length; i++) grid[i] = Math.random() < 0.14 ? 1 : 0;
-    };
-    seed();
+      const seed = () => {
+        for (let i = 0; i < grid.length; i++) grid[i] = Math.random() < 0.14 ? 1 : 0;
+      };
+      seed();
 
-    const stepLife = () => {
-      let population = 0;
-      for (let y = 0; y < ROWS; y++) {
-        for (let x = 0; x < COLS; x++) {
-          let n = 0;
-          for (let dy = -1; dy <= 1; dy++) {
-            for (let dx = -1; dx <= 1; dx++) {
-              if (!dx && !dy) continue;
-              n += grid[((y + dy + ROWS) % ROWS) * COLS + ((x + dx + COLS) % COLS)];
+      const stepLife = () => {
+        let population = 0;
+        for (let y = 0; y < ROWS; y++) {
+          for (let x = 0; x < COLS; x++) {
+            let n = 0;
+            for (let dy = -1; dy <= 1; dy++) {
+              for (let dx = -1; dx <= 1; dx++) {
+                if (!dx && !dy) continue;
+                n += grid[((y + dy + ROWS) % ROWS) * COLS + ((x + dx + COLS) % COLS)];
+              }
             }
+            const i = y * COLS + x;
+            next[i] = grid[i] ? (n === 2 || n === 3 ? 1 : 0) : n === 3 ? 1 : 0;
+            population += next[i];
           }
-          const i = y * COLS + x;
-          next[i] = grid[i] ? (n === 2 || n === 3 ? 1 : 0) : n === 3 ? 1 : 0;
-          population += next[i];
         }
-      }
-      [grid, next] = [next, grid];
-      if (population < COLS * ROWS * 0.015) seed(); // never let it die out
-    };
+        [grid, next] = [next, grid];
+        if (population < COLS * ROWS * 0.015) seed(); // never let it die out
+      };
 
-    const render = () => {
-      ctx.clearRect(0, 0, W, H);
-      ctx.fillStyle = `rgba(${AMBER},0.85)`;
-      for (let y = 0; y < ROWS; y++) {
-        for (let x = 0; x < COLS; x++) {
-          if (grid[y * COLS + x]) ctx.fillRect(x * CELL + 1, y * CELL + 1, CELL - 2, CELL - 2);
+      const render = () => {
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = `rgba(${amberRgb},0.85)`;
+        for (let y = 0; y < ROWS; y++) {
+          for (let x = 0; x < COLS; x++) {
+            if (grid[y * COLS + x]) ctx.fillRect(x * CELL + 1, y * CELL + 1, CELL - 2, CELL - 2);
+          }
         }
-      }
-    };
+      };
 
-    const loop = (now: number) => {
-      if (!alive) return;
-      if (now - last > 130) {
-        last = now;
-        stepLife();
-      }
-      render();
+      const loop = (now: number) => {
+        if (!alive) return;
+        if (now - last > 130) {
+          last = now;
+          stepLife();
+        }
+        render();
+        raf = requestAnimationFrame(loop);
+      };
+
+      const canvas = ctx.canvas;
+      let crect: DOMRect | null = null;
+      const invalidate = () => (crect = null);
+      const paint = (e: PointerEvent) => {
+        crect ??= canvas.getBoundingClientRect();
+        const gx = Math.floor((e.clientX - crect.left) / CELL);
+        const gy = Math.floor((e.clientY - crect.top) / CELL);
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            const x = gx + dx;
+            const y = gy + dy;
+            if (x >= 0 && y >= 0 && x < COLS && y < ROWS && Math.random() > 0.3)
+              grid[y * COLS + x] = 1;
+          }
+        }
+      };
+      const down = (e: PointerEvent) => {
+        painting = true;
+        paint(e);
+      };
+      const move = (e: PointerEvent) => painting && paint(e);
+      const up = () => (painting = false);
+      canvas.addEventListener("pointerdown", down);
+      canvas.addEventListener("pointermove", move);
+      window.addEventListener("pointerup", up);
+      window.addEventListener("scroll", invalidate, { passive: true });
+      window.addEventListener("resize", invalidate);
       raf = requestAnimationFrame(loop);
-    };
 
-    const canvas = ctx.canvas;
-    let crect: DOMRect | null = null;
-    const invalidate = () => (crect = null);
-    const paint = (e: PointerEvent) => {
-      crect ??= canvas.getBoundingClientRect();
-      const gx = Math.floor((e.clientX - crect.left) / CELL);
-      const gy = Math.floor((e.clientY - crect.top) / CELL);
-      for (let dy = -1; dy <= 1; dy++) {
-        for (let dx = -1; dx <= 1; dx++) {
-          const x = gx + dx;
-          const y = gy + dy;
-          if (x >= 0 && y >= 0 && x < COLS && y < ROWS && Math.random() > 0.3) grid[y * COLS + x] = 1;
-        }
-      }
-    };
-    const down = (e: PointerEvent) => {
-      painting = true;
-      paint(e);
-    };
-    const move = (e: PointerEvent) => painting && paint(e);
-    const up = () => (painting = false);
-    canvas.addEventListener("pointerdown", down);
-    canvas.addEventListener("pointermove", move);
-    window.addEventListener("pointerup", up);
-    window.addEventListener("scroll", invalidate, { passive: true });
-    window.addEventListener("resize", invalidate);
-    raf = requestAnimationFrame(loop);
-
-    return () => {
-      alive = false;
-      cancelAnimationFrame(raf);
-      canvas.removeEventListener("pointerdown", down);
-      canvas.removeEventListener("pointermove", move);
-      window.removeEventListener("pointerup", up);
-      window.removeEventListener("scroll", invalidate);
-      window.removeEventListener("resize", invalidate);
-    };
-  }, []);
+      return () => {
+        alive = false;
+        cancelAnimationFrame(raf);
+        canvas.removeEventListener("pointerdown", down);
+        canvas.removeEventListener("pointermove", move);
+        window.removeEventListener("pointerup", up);
+        window.removeEventListener("scroll", invalidate);
+        window.removeEventListener("resize", invalidate);
+      };
+    },
+    [amberRgb],
+  );
 
   const ref = useCanvas(draw, running);
-  return <canvas ref={ref} role="img" className="h-full w-full cursor-crosshair" aria-label="Living pixel canvas - drag your cursor to paint new cells" />;
+  return (
+    <canvas
+      ref={ref}
+      role="img"
+      className="h-full w-full cursor-crosshair"
+      aria-label="Living pixel canvas - drag your cursor to paint new cells"
+    />
+  );
 }
 
 /* ── the window + channel switcher ──────────────────────────── */
 
 export function HeroPlayground() {
+  const { theme } = useTheme();
   const [toy, setToy] = useState<Toy>("particles");
   const [running, setRunning] = useState(true);
   const [reduced, setReduced] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
+
+  const amberRgb = hexToRgb(theme.colors.accent);
+  const emberRgb = hexToRgb(theme.colors["accent-hover"]);
+  const bgRgb = hexToRgb(theme.colors["surface-bg"]);
 
   // restore last channel
   useEffect(() => {
@@ -552,13 +635,18 @@ export function HeroPlayground() {
 
   const pick = (id: Toy) => {
     setToy(id);
-    try { localStorage.setItem("hero-toy", id); } catch {}
+    try {
+      localStorage.setItem("hero-toy", id);
+    } catch {}
   };
 
   const current = TOYS.find((t) => t.id === toy) ?? TOYS[0];
 
   return (
-    <div ref={wrapRef} className="ios-glass-card overflow-hidden rounded-[20px] border border-line/50 shadow-2xl shadow-black/40">
+    <div
+      ref={wrapRef}
+      className="ios-glass-card overflow-hidden rounded-[20px] border border-line/50 shadow-2xl shadow-black/40"
+    >
       {/* title bar with channel tabs */}
       <div className="flex items-center gap-2 border-b border-line/40 px-4 py-2.5">
         <span className="size-2.5 rounded-full bg-ember/70" />
@@ -572,7 +660,7 @@ export function HeroPlayground() {
               role="tab"
               aria-selected={toy === t.id}
               onClick={() => pick(t.id)}
-              className={`rounded px-2 py-0.5 font-mono text-[11px] transition-colors ${
+              className={`rounded-[8px] px-2 py-0.5 font-mono text-[11px] transition-colors ${
                 toy === t.id ? "bg-amber/15 text-amber" : "text-dust hover:text-fog"
               }`}
             >
@@ -586,20 +674,35 @@ export function HeroPlayground() {
       <div className="relative aspect-[4/4.4] bg-surface-bg">
         {reduced ? (
           /* reduced motion: a calm still portrait instead of animation */
-          <Image src="/images/arun.png" alt="Portrait of Arun Neupane" fill className="object-contain p-6 opacity-90" />
+          <Image
+            src="/images/arun.png"
+            alt="Portrait of Arun Neupane"
+            fill
+            className="object-contain p-6 opacity-90"
+          />
         ) : (
           <>
-            {toy === "particles" && <Particles running={running} />}
-            {toy === "snake" && <Snake running={running} />}
-            {toy === "radar" && <Radar running={running} />}
-            {toy === "life" && <Life running={running} />}
+            {toy === "particles" && <Particles running={running} amberRgb={amberRgb} />}
+            {toy === "snake" && (
+              <Snake
+                running={running}
+                amberRgb={amberRgb}
+                emberRgb={emberRgb}
+                bgRgb={bgRgb}
+              />
+            )}
+            {toy === "radar" && (
+              <Radar running={running} amberRgb={amberRgb} emberRgb={emberRgb} />
+            )}
+            {toy === "life" && <Life running={running} amberRgb={amberRgb} />}
           </>
         )}
       </div>
 
       {/* hint line */}
       <p className="border-t border-line/40 px-4 py-2 font-mono text-[11px] text-dust">
-        <span className="text-amber">$</span> {reduced ? "animations off - honoring your motion settings" : current.hint}
+        <span className="text-amber">$</span>{" "}
+        {reduced ? "animations off - honoring your motion settings" : current.hint}
       </p>
     </div>
   );

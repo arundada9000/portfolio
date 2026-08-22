@@ -15,6 +15,7 @@ import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
 import { DevConsole } from "@/components/DevConsole";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { ServiceWorker } from "@/components/ServiceWorker";
+import { CustomThemeBuilder } from "@/components/CustomThemeBuilder";
 import { ThemeProvider } from "@/lib/theme-context";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
@@ -391,12 +392,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${instrument.variable} ${jetbrains.variable} h-full antialiased`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${bricolage.variable} ${instrument.variable} ${jetbrains.variable} h-full antialiased`}
+    >
       <head>
         {/* Flash prevention: apply saved theme before first paint */}
-        <script
+        <Script
+          id="theme-flash-prevention"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('portfolio-theme');if(t){document.documentElement.setAttribute('data-theme',t)}}catch(e){}})();`,
+            __html: `(function(){try{var t=localStorage.getItem('portfolio-theme');if(t){document.documentElement.setAttribute('data-theme',t);var raw=localStorage.getItem('portfolio-custom-themes');if(raw){var customs=JSON.parse(raw);if(Array.isArray(customs)){var found=customs.find(function(c){return c&&c.id===t});if(found&&found.colors){if(found.dark){document.documentElement.classList.add('dark');document.documentElement.classList.remove('light');}else{document.documentElement.classList.add('light');document.documentElement.classList.remove('dark');}Object.entries(found.colors).forEach(function(e){document.documentElement.style.setProperty('--'+e[0],e[1]);});}}}}}catch(e){}})();`,
           }}
         />
       </head>
@@ -431,6 +438,7 @@ export default function RootLayout({
           <BackToTop />
           <CustomCursor />
           <DevConsole />
+          <CustomThemeBuilder />
           <ServiceWorker />
           <Analytics />
         </ThemeProvider>

@@ -13,9 +13,12 @@ import { site } from "@/lib/data/site";
 export function DevConsole() {
   useEffect(() => {
     // ── 1. greeting ────────────────────────────────────────────
-    const big = "color:#ffb454;font:700 42px/1.1 monospace";
-    const dim = "color:#8d97a9;font:14px/1.6 monospace";
-    const hot = "color:#ff7a2f;font:700 14px/1.6 monospace";
+    const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#ffb454";
+    const dust = getComputedStyle(document.documentElement).getPropertyValue("--text-secondary").trim() || "#8d97a9";
+    const ember = getComputedStyle(document.documentElement).getPropertyValue("--accent-hover").trim() || "#ff7a2f";
+    const big = `color:${accent};font:700 42px/1.1 monospace`;
+    const dim = `color:${dust};font:14px/1.6 monospace`;
+    const hot = `color:${ember};font:700 14px/1.6 monospace`;
     console.log("%c> arun.sh", big);
     console.log(
       "%cHey, curious developer 👋  You opened the console - I respect that.\n" +

@@ -8,6 +8,7 @@ import { TerminalWindow } from "@/components/TerminalWindow";
 import { Reveal } from "@/components/Reveal";
 import { ProjectGallery } from "@/components/ProjectGallery";
 import { SortingVisualizer } from "@/components/SortingVisualizer";
+import { ArrowUpRight, ArrowRight, Check, Bullet } from "@/components/Icon";
 
 type Params = { slug: string };
 
@@ -91,11 +92,11 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
       <div className="mt-6 flex flex-wrap items-center gap-4 font-mono text-sm">
         <span className="text-dust">{project.year}</span>
         <a href={project.github} target="_blank" rel="noopener noreferrer" className="ios-touch rounded-[12px] border border-line/60 px-4 py-2 text-fog transition-all duration-150 hover:border-amber hover:text-amber active:scale-[0.97]">
-          github ↗
+          github <ArrowUpRight size={12} className="inline" />
         </a>
         {project.live && (
           <a href={project.live} target="_blank" rel="noopener noreferrer" className="ios-touch rounded-[12px] bg-amber px-4 py-2 font-bold text-night transition-all duration-150 hover:bg-ember active:scale-[0.97]">
-            live demo ↗
+            live demo <ArrowUpRight size={12} className="inline" />
           </a>
         )}
       </div>
@@ -139,9 +140,9 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
             <h2 className="text-eyebrow mb-4">## constraints &amp; tradeoffs</h2>
             <ul className="space-y-3">
               {cs.constraints.map((c) => (
-                <li key={c} className="flex gap-3 leading-relaxed text-dust">
-                  <span className="text-amber" aria-hidden="true">▸</span>
-                  {c}
+                <li key={c} className="flex gap-3 leading-relaxed text-dust items-start">
+                  <Bullet size={12} className="text-amber mt-1 shrink-0" />
+                  <span>{c}</span>
                 </li>
               ))}
             </ul>
@@ -178,9 +179,9 @@ export default async function CaseStudyPage({ params }: { params: Promise<Params
             <h2 className="text-eyebrow mb-4">## results &amp; lessons</h2>
             <ul className="space-y-3">
               {cs.results.map((r) => (
-                <li key={r} className="flex gap-3 leading-relaxed text-dust">
-                  <span className="text-amber" aria-hidden="true">✓</span>
-                  {r}
+                <li key={r} className="flex gap-3 leading-relaxed text-dust items-start">
+                  <Check size={14} className="text-amber mt-1 shrink-0" />
+                  <span>{r}</span>
                 </li>
               ))}
             </ul>
@@ -203,8 +204,9 @@ function NextCaseStudy({ currentSlug }: { currentSlug: string }) {
       <p className="text-eyebrow mb-3">
         <span aria-hidden="true">$ </span>next
       </p>
-      <Link href={`/work/${next.slug}`} className="ios-touch text-display text-3xl text-fog transition-all duration-150 hover:text-amber active:scale-[0.98] sm:text-5xl">
-        {next.title} →
+      <Link href={`/work/${next.slug}`} className="ios-touch inline-flex items-center gap-3 text-display text-3xl text-fog transition-all duration-150 hover:text-amber active:scale-[0.98] sm:text-5xl">
+        <span>{next.title}</span>
+        <ArrowRight size={28} className="inline" />
       </Link>
     </div>
   );
