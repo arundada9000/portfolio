@@ -535,12 +535,13 @@ export default function RootLayout({
       className={`${bricolage.variable} ${instrument.variable} ${jetbrains.variable} h-full antialiased`}
     >
       <head>
-        {/* Flash prevention: apply saved theme before first paint */}
+        {/* Flash prevention: apply saved theme before first paint + early PWA prompt capturer */}
         <Script
           id="theme-flash-prevention"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('portfolio-theme');if(t){document.documentElement.setAttribute('data-theme',t);var raw=localStorage.getItem('portfolio-custom-themes');if(raw){var customs=JSON.parse(raw);if(Array.isArray(customs)){var found=customs.find(function(c){return c&&c.id===t});if(found&&found.colors){if(found.dark){document.documentElement.classList.add('dark');document.documentElement.classList.remove('light');}else{document.documentElement.classList.add('light');document.documentElement.classList.remove('dark');}Object.entries(found.colors).forEach(function(e){document.documentElement.style.setProperty('--'+e[0],e[1]);});}}}}}catch(e){}})();`,
+            __html: `(function(){try{var t=localStorage.getItem('portfolio-theme');if(t){document.documentElement.setAttribute('data-theme',t);var raw=localStorage.getItem('portfolio-custom-themes');if(raw){var customs=JSON.parse(raw);if(Array.isArray(customs)){var found=customs.find(function(c){return c&&c.id===t});if(found&&found.colors){if(found.dark){document.documentElement.classList.add('dark');document.documentElement.classList.remove('light');}else{document.documentElement.classList.add('light');document.documentElement.classList.remove('dark');}Object.entries(found.colors).forEach(function(e){document.documentElement.style.setProperty('--'+e[0],e[1]);});}}}}}catch(e){}})();
+            (function(){if(typeof window!=='undefined'){window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();window.__pwaInstallPrompt=e;window.dispatchEvent(new CustomEvent('pwa-prompt-ready'));});}})();`,
           }}
         />
       </head>

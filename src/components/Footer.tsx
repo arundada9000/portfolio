@@ -96,49 +96,77 @@ export function Footer() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      if (window.matchMedia("(display-mode: standalone)").matches) {
+      if (
+        window.matchMedia("(display-mode: standalone)").matches ||
+        (window.navigator as unknown as { standalone?: boolean }).standalone
+      ) {
         setIsInstalled(true);
       }
+
+      // Check if early script captured prompt
+      const earlyPrompt = (window as unknown as { __pwaInstallPrompt?: BeforeInstallPromptEvent }).__pwaInstallPrompt;
+      if (earlyPrompt) {
+        setInstallPrompt(earlyPrompt);
+      }
+
+      const onPromptReady = () => {
+        const p = (window as unknown as { __pwaInstallPrompt?: BeforeInstallPromptEvent }).__pwaInstallPrompt;
+        if (p) setInstallPrompt(p);
+      };
+
+      const handleBeforeInstall = (e: Event) => {
+        e.preventDefault();
+        (window as unknown as { __pwaInstallPrompt?: BeforeInstallPromptEvent }).__pwaInstallPrompt = e as BeforeInstallPromptEvent;
+        setInstallPrompt(e as BeforeInstallPromptEvent);
+      };
+
+      const handleAppInstalled = () => {
+        setIsInstalled(true);
+        setInstallPrompt(null);
+        setShowModal(false);
+      };
+
+      window.addEventListener("pwa-prompt-ready", onPromptReady);
+      window.addEventListener("beforeinstallprompt", handleBeforeInstall);
+      window.addEventListener("appinstalled", handleAppInstalled);
+
+      return () => {
+        window.removeEventListener("pwa-prompt-ready", onPromptReady);
+        window.removeEventListener("beforeinstallprompt", handleBeforeInstall);
+        window.removeEventListener("appinstalled", handleAppInstalled);
+      };
     }
-
-    const handleBeforeInstall = (e: Event) => {
-      e.preventDefault();
-      setInstallPrompt(e as BeforeInstallPromptEvent);
-    };
-
-    const handleAppInstalled = () => {
-      setIsInstalled(true);
-      setInstallPrompt(null);
-      setShowModal(false);
-    };
-
-    window.addEventListener("beforeinstallprompt", handleBeforeInstall);
-    window.addEventListener("appinstalled", handleAppInstalled);
-
-    return () => {
-      window.removeEventListener("beforeinstallprompt", handleBeforeInstall);
-      window.removeEventListener("appinstalled", handleAppInstalled);
-    };
   }, []);
 
   const handleInstallClick = async () => {
-    if (!installPrompt) {
-      soundTap();
+    const promptEvent =
+      installPrompt ||
+      (typeof window !== "undefined"
+        ? (window as unknown as { __pwaInstallPrompt?: BeforeInstallPromptEvent }).__pwaInstallPrompt
+        : null);
+
+    if (promptEvent) {
+      soundPop();
       hapticTap();
-      setShowModal(true);
-      return;
+      try {
+        await promptEvent.prompt();
+        const { outcome } = await promptEvent.userChoice;
+        if (outcome === "accepted") {
+          soundSuccess();
+          hapticSuccess();
+          setIsInstalled(true);
+          setInstallPrompt(null);
+          (window as unknown as { __pwaInstallPrompt?: null }).__pwaInstallPrompt = null;
+        }
+        return;
+      } catch (err) {
+        console.warn("[PWA] Direct prompt failed:", err);
+      }
     }
 
-    soundPop();
+    soundTap();
     hapticTap();
-    await installPrompt.prompt();
-    const { outcome } = await installPrompt.userChoice;
-    if (outcome === "accepted") {
-      soundSuccess();
-      hapticSuccess();
-      setIsInstalled(true);
-      setInstallPrompt(null);
-    }
+    setShowModal(true);
   };
 
   const instructions = getPlatformInstallInstructions();
